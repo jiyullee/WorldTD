@@ -1,9 +1,17 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<< HEAD
+guid: 30e82a99f434f75478a2b64475ca9c17
+=======
+guid: 0787eb804eca24c498b00e4d370fd42e
+>>>>>>> feat/UI
+=======
 <<<<<<< HEAD:World Tower Defense/Assets/Resources.meta
 guid: 0787eb804eca24c498b00e4d370fd42e
 =======
 guid: 7366faeeb46235b4a8512d887799f1dc
 >>>>>>> feat/Pattern:World Tower Defense/Assets/Scripts/Patterns/JeongSeok.meta
+>>>>>>> feat/UI
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
