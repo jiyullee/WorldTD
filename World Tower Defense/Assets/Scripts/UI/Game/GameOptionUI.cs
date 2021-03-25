@@ -20,7 +20,7 @@ public class GameOptionUI : MonoBehaviourSubUI
 
     private void LoadLobby()
     {
-       // SceneManager.Instance.LoadScene("Lobby");
+        SceneManager.Instance.LoadScene("Lobby");
     }
 
     private void ExitGame()

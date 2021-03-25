@@ -1,13 +1,9 @@
 fileFormatVersion: 2
 <<<<<<< HEAD:World Tower Defense/Assets/Scripts/Manager.meta
-<<<<<<< HEAD:World Tower Defense/Assets/Scripts/Manager.meta
-guid: c92b4f5980c49ef4e89ef2d299edb5b2
+guid: a68f4af8bd4ddf347b76fcfa042ab2f7
 =======
 guid: a06c412d83dd7ef448a734e4ec90482f
 >>>>>>> feat/Pattern:World Tower Defense/Assets/Scripts/Patterns/JiYul.meta
-=======
-guid: 33d7cd83050793a448eb5b2c6e778494
->>>>>>> feat/UI:World Tower Defense/Assets/Scripts/UI/Game.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

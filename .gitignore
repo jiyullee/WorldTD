@@ -13,8 +13,13 @@
 /[Ll]ogs/
 /.idea/
 .idea
+<<<<<<< HEAD
 /[Uu]serSettings/
 
+=======
+
+>>>>>>> feat/Pattern
+>>>>>>> feat/Manager
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
 
