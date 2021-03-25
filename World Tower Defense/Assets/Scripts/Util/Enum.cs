@@ -9,5 +9,8 @@ public enum UIState
     Lobby,
     OptionUI,
     CollectionUI,
-    GameUI
+    GameUI,
+    StateUI,
+    StoreUI,
+    GameOptionUI,
 }
