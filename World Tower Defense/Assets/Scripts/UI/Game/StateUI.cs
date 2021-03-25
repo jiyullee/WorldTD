@@ -12,7 +12,7 @@ public class StateUI : MonoBehaviourSubUI
 
     public override void Init()
     {
-        AddButtonEvent("Option/Button", PauseGame);
+        AddButtonEvent("OptionBtn", PauseGame);
     }
 
     private void PauseGame()

@@ -15,7 +15,7 @@ public class MainLobbyUI : MonoBehaviourSubUI
 
     private void StartGame()
     {
-        Debug.Log("Click_StartGame");
+        SceneManager.Instance.LoadScene("Game");
     }
     
     private void EndGame()
