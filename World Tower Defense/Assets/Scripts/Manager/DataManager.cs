@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class DataManager : UnitySingleton<DataManager>
 {
-    List<Dictionary<string, object>> monsterDataList = new List<Dictionary<string, object>>();
+    private List<Dictionary<string, object>> monsterDataList = new List<Dictionary<string, object>>();
+    public List<Dictionary<string, object>> MonsterDataList { get => monsterDataList; }
+    private List<Dictionary<string, object>> towerDataList = new List<Dictionary<string, object>>();
+    public List<Dictionary<string, object>> TowerDataList { get => monsterDataList; }
 
     public override void OnCreated()
     {
@@ -13,5 +16,6 @@ public class DataManager : UnitySingleton<DataManager>
     public override void OnInitiate()
     {
         monsterDataList = CsvPaser.Read("MonsterData");
+        // monsterDataList = CsvPaser.Read("TowerData");
     }
 }
