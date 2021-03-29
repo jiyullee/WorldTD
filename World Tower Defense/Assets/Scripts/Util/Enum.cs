@@ -14,3 +14,10 @@ public enum UIState
     StoreUI,
     GameOptionUI,
 }
+
+public enum TILE_DATA
+{
+    TOWER,
+    ROAD,
+    WALL
+}
