@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Polling : UnitySingleton<Polling>
 {
     [SerializeField]
@@ -9,52 +10,58 @@ public class Polling : UnitySingleton<Polling>
     private int initiaCount = 10;
     [SerializeField]
     [Tooltip("풀링할 객체 프리팹")]
-    private GameObject[] poolingGameObject;
-    //객체를 담을 queue
-    private Queue<GameObject>[] poolingObjectQueue;
+    private PollingObject[] poolingGameObject;
+
+    private Dictionary<string, Queue<PollingObject>> pollingQueueDictionary = new Dictionary<string, Queue<PollingObject>>();
+    private Dictionary<string, PollingObject> pollingObjectDictionary = new Dictionary<string, PollingObject>();
+
     //생성
     public override void OnCreated()
     {
-        poolingObjectQueue = new Queue<GameObject>[poolingGameObject.Length];
         for (int j = 0; j < poolingGameObject.Length; j++)
         {
-            poolingObjectQueue[j] = new Queue<GameObject>();
+            pollingObjectDictionary.Add(poolingGameObject[j].PrefabName, poolingGameObject[j]);
+            pollingQueueDictionary.Add(poolingGameObject[j].PrefabName, new Queue<PollingObject>());
         }
-
     }
 
     //초기화
     public override void OnInitiate()
     {
-        for (int j = 0; j < poolingGameObject.Length; j++)
-            for (int i = 0; i < initiaCount; i++)
-                poolingObjectQueue[j].Enqueue(CreateNewObject(j));
-
+        foreach (var i in pollingObjectDictionary)
+        {
+            for (int j = 0; j < initiaCount; j++)
+                pollingQueueDictionary[i.Key].Enqueue(CreateNewObject(i.Key));
+        }
     }
 
     //새로 만드는 함수
-    private GameObject CreateNewObject(int index)
+    private PollingObject CreateNewObject(string prefabName)
     {
-        var newObj = Instantiate(poolingGameObject[index]);
+        var newObj = Instantiate(pollingObjectDictionary[prefabName]);
         newObj.gameObject.SetActive(false);
         newObj.transform.SetParent(Instance.transform);
         return newObj;
     }
 
-    //싱글톤으로 꺼내는 함수, 인수로는 꺼내는 객체를 넣어야함(객체의 부모가 될것)
-    public static GameObject GetObject(GameObject callObject, int index)
+    //싱글톤으로 꺼내는 함수, 인수로는 꺼내는 객체와 꺼내는 프리팹 이름을 넣어야함(객체의 부모가 될것)
+    public static PollingObject GetObject(GameObject callObject, string name)
     {
-        GameObject obj;
-        //없으면 생성, 있으면 큐 꺼내서 반환
-        if (Instance.poolingObjectQueue[index].Count > 0)
+        PollingObject obj;
+        if (Instance.pollingQueueDictionary.ContainsKey(name) == false)
         {
-            obj = Instance.poolingObjectQueue[index].Dequeue();
-            Debug.Log(Instance.poolingObjectQueue[index] + "Dequeue");
+            Debug.Log("is not PollingObjectName");
+            return null;
+        }
+
+        //없으면 생성, 있으면 큐 꺼내서 반환
+        if (Instance.pollingQueueDictionary[name].Count > 0)
+        {
+            obj = Instance.pollingQueueDictionary[name].Dequeue();
         }
         else
         {
-            obj = Instance.CreateNewObject(index);
-            Debug.Log(Instance.poolingObjectQueue[index] + "Create");
+            obj = Instance.CreateNewObject(name);
 
         }
         if (obj == null)
@@ -69,10 +76,10 @@ public class Polling : UnitySingleton<Polling>
     }
 
     //싱글톤에게 반환해주는 함수 인자로는 풀링된 객체(gameobject)를 줘야함.
-    public static void ReturnObject(GameObject pollingObj, int index)
+    public static void ReturnObject(PollingObject pollingObj)
     {
         pollingObj.gameObject.SetActive(false);
         pollingObj.transform.SetParent(Instance.transform);
-        Instance.poolingObjectQueue[index].Enqueue(pollingObj);
+        Instance.pollingQueueDictionary[pollingObj.PrefabName].Enqueue(pollingObj);
     }
 }
