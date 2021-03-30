@@ -18,6 +18,10 @@ public class Polling2 : UnitySingleton<Polling2>
     //생성
     public override void OnCreated()
     {
+        if (poolingGameObject.Length == 0)
+        {
+            Debug.Log("풀링할 객체가 없습니다. 할당해 주세요");
+        }
         for (int j = 0; j < poolingGameObject.Length; j++)
         {
             pollingObjectDictionary.Add(poolingGameObject[j].PrefabName, poolingGameObject[j]);
