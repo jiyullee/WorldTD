@@ -14,3 +14,11 @@ public enum UIState
     StoreUI,
     GameOptionUI,
 }
+
+[System.Serializable]
+public enum Difficulty
+{
+    easy,
+    nomal,
+    hard
+}
