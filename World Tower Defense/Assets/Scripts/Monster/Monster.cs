@@ -6,8 +6,8 @@ public class Monster : PollingObject
 {
     [SerializeField]
     protected float[] weight = { 1, 1.25f, 1.5f };
-    protected MonsterData monsterData;
-    public MonsterData MonsterData
+    protected MonsterDataSingleton.MonsterDataset monsterData;
+    public MonsterDataSingleton.MonsterDataset MonsterData
     {
         get => monsterData;
         set => monsterData = value;
@@ -26,8 +26,8 @@ public class Monster : PollingObject
 
     protected void SetDifficulty()
     {
-        monsterData.HP = (int)(weight[(int)difficulty] * (float)monsterData.HP);
-        monsterData.Amor = (int)(weight[(int)difficulty] * (float)monsterData.HP);
+        monsterData.hp *= (int)weight[(int)difficulty];
+        monsterData.amor *= (int)weight[(int)difficulty];
     }
 
     public override void OnCreated()

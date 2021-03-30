@@ -7,7 +7,7 @@ public class MonsterSponer : MonoBehaviour
     [SerializeField] private float spawnCycle = 0.5f;
     [SerializeField] private Sprite[] monsterImage;
     private int amount;
-    private MonsterData monsterData;
+    private MonsterDataSingleton.MonsterDataset monsterData;
     private int stage = 0;
     [SerializeField] private int maxStage = 30;
     private List<Dictionary<string, object>> monsterDataList;
@@ -24,8 +24,8 @@ public class MonsterSponer : MonoBehaviour
 
     private void SetMonster(int stage)
     {
-        monsterData.HP = (int)monsterDataList[stage]["HP"];
-        monsterData.Amor = (int)monsterDataList[stage]["Armor"];
+        monsterData.hp = (int)monsterDataList[stage]["HP"];
+        monsterData.amor = (int)monsterDataList[stage]["Armor"];
         monsterData.speed = (int)monsterDataList[stage]["Speed"];
         monsterData.sprite = (Sprite)monsterImage[0];
         //monsterData.sprite = (sprite)monsterImage[monsterDataList[stage]["spriteIndex"]];

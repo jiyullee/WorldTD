@@ -16,13 +16,6 @@ public enum UIState
 }
 
 
-public enum TILE_DATA
-{
-    TOWER,
-    ROAD,
-    WALL
-}
-
 [System.Serializable]
 public enum Difficulty
 {

@@ -28,7 +28,7 @@ public abstract class DataSets<T> : UnitySingleton<DataSets<T>> where T : DataSe
     /// </summary>
     public abstract class DataClass
     {
-        public Sprite sprite { get; protected set; }
+        public Sprite sprite { get; set; }
     }
     #endregion
 
