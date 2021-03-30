@@ -36,5 +36,11 @@ public enum ParsingDataSet
     MonsterData,
     TowerData,
     ShopData
-    
+
+}
+public enum TILE_DATA
+{
+    TOWER,
+    ROAD,
+    WALL
 }
