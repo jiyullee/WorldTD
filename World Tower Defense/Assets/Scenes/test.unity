@@ -215,8 +215,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1799176892}
-  - component: {fileID: 1799176891}
   - component: {fileID: 1799176890}
+  - component: {fileID: 1799176891}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -245,9 +245,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1799176889}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bcbbf7b988aaed40a760c4497202404, type: 3}
+  m_Script: {fileID: 11500000, guid: 2c765fea94a4fe6459fa462985c11bea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnCycle: 0.5
+  monsterImage:
+  - {fileID: 21300000, guid: 4c877bf4490f2c240b4a98a7a1ed975f, type: 3}
+  maxStage: 30
 --- !u!4 &1799176892
 Transform:
   m_ObjectHideFlags: 0

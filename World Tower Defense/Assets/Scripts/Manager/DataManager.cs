@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 public class DataManager : UnitySingleton<DataManager>
 {
+<<<<<<< HEAD
     private ParsingDataSet dataSet;
     //메타 문자열
     static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
@@ -54,6 +55,12 @@ public class DataManager : UnitySingleton<DataManager>
         }
         return list;
     }
+=======
+    private List<Dictionary<string, object>> monsterDataList = new List<Dictionary<string, object>>();
+    public List<Dictionary<string, object>> MonsterDataList { get => monsterDataList; }
+    private List<Dictionary<string, object>> towerDataList = new List<Dictionary<string, object>>();
+    public List<Dictionary<string, object>> TowerDataList { get => monsterDataList; }
+>>>>>>> feat/Manager
 
     public override void OnCreated()
     {
@@ -62,5 +69,10 @@ public class DataManager : UnitySingleton<DataManager>
 
     public override void OnInitiate()
     {
+<<<<<<< HEAD
+=======
+        monsterDataList = CsvPaser.Read("MonsterData");
+        // monsterDataList = CsvPaser.Read("TowerData");
+>>>>>>> feat/Manager
     }
 }
