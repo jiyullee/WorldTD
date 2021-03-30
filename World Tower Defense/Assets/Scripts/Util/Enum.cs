@@ -15,13 +15,14 @@ public enum UIState
     GameOptionUI,
 }
 
-<<<<<<< HEAD
+
 public enum TILE_DATA
 {
     TOWER,
     ROAD,
     WALL
-=======
+}
+
 [System.Serializable]
 public enum Difficulty
 {
@@ -35,6 +36,5 @@ public enum ParsingDataSet
     MonsterData,
     TowerData,
     ShopData
-
->>>>>>> feat/Data
+    
 }
