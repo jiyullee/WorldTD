@@ -15,9 +15,26 @@ public enum UIState
     GameOptionUI,
 }
 
+<<<<<<< HEAD
 public enum TILE_DATA
 {
     TOWER,
     ROAD,
     WALL
+=======
+[System.Serializable]
+public enum Difficulty
+{
+    Easy,
+    Nomal,
+    Hard
+}
+//enum.tostring을 통해 string값으로 변환한 뒤에 줘야함.
+public enum ParsingDataSet
+{
+    MonsterData,
+    TowerData,
+    ShopData
+
+>>>>>>> feat/Data
 }
