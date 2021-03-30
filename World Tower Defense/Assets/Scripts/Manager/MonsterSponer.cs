@@ -1,50 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MonsterSponer : MonoBehaviour
 {
-    [SerializeField]
-    private float spawnCycle = 0.5f;
-    [SerializeField]
-    private Image monsterImage;
+    [SerializeField] private float spawnCycle = 0.5f;
+    [SerializeField] private Sprite[] monsterImage;
     private int amount;
     private MonsterData monsterData;
     private int stage = 0;
-    private int maxStage = 30;
-    List<Dictionary<string, object>> monsterDataList;
+    [SerializeField] private int maxStage = 30;
+    private List<Dictionary<string, object>> monsterDataList;
 
-    private void Start()
+    private void Awake()
     {
-        SetMonster(0);
-        StartCoroutine("SponMonster");
-        monsterDataList = DataManager.Instance.MonsterDataList;
+        monsterDataList = DataManager.Read(ParsingDataSet.MonsterData);
         maxStage = monsterDataList.Count;
     }
-
-    void SetMonster(int stage)
+    private void Start()
     {
-        monsterData = new MonsterData();
+        StartCoroutine("SponnerController");
+    }
+
+    private void SetMonster(int stage)
+    {
         monsterData.HP = (int)monsterDataList[stage]["HP"];
         monsterData.Amor = (int)monsterDataList[stage]["Armor"];
         monsterData.speed = (int)monsterDataList[stage]["Speed"];
-        //monsterData.Image = (Image)monsterImage[monsterDataList[stage]["ImageIndex"]];
+        monsterData.sprite = (Sprite)monsterImage[0];
+        //monsterData.sprite = (sprite)monsterImage[monsterDataList[stage]["spriteIndex"]];
         amount = (int)monsterDataList[stage]["Amount"];
     }
 
 
     //유한 상태 기계 FSM
-    IEnumerator SponNer()
+    IEnumerator SponnerController()
     {
+        Debug.Log("StartSPonner");
         while (true)
         {
             SetMonster(stage++);
             yield return StartCoroutine("SponMonster");
+            //yield return 몬스터 맵에 없는지 확인하는 함수
             if (stage == maxStage)
                 break;
         }
-        //게임 클리어
+        //게임 클리어 코드
+        Gamemanager.Instance.GameClear();
     }
 
     IEnumerator SponMonster()
@@ -53,7 +55,7 @@ public class MonsterSponer : MonoBehaviour
         {
             yield return new WaitForSeconds(spawnCycle);
             Monster mademonster = (Monster)Polling2.GetObject(this.gameObject, "monster");
-            // Monster mademonster = (Monster)Polling2.GetObject(Gamemanager.startPoint, "monster");
+            // Monster mademonster = (Monster)Polling2.GetObject(Gamemanager.wayPoint[0], "monster");
             mademonster.MonsterData = monsterData;
             amount--;
         }
