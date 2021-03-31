@@ -17,6 +17,7 @@ public interface ISingleton
 
 public abstract class Singleton<T> : ISingleton where T : Singleton<T>, new()
 {
+    protected Singleton() {}
     public abstract void OnCreated();
 
     public abstract void OnInitiate();

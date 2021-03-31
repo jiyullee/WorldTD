@@ -1,18 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using GameData;
 public class Monster : PollingObject
 {
     [SerializeField]
     protected float[] weight = { 1, 1.25f, 1.5f };
-    protected MonsterDataSingleton.MonsterDataset monsterData;
-    public MonsterDataSingleton.MonsterDataset MonsterData
-    {
-        get => monsterData;
-        set => monsterData = value;
-    }
 
+    [SerializeField] private int hp;
+    [SerializeField] private int amor;
+    
     private Difficulty difficulty;
     public Difficulty Difficulty
     {
@@ -24,10 +21,16 @@ public class Monster : PollingObject
         SetDifficulty();
     }
 
+    public void SetMonsterData(int stage)
+    {
+        hp = MonsterData.Instance.GetTableData(stage).HP;
+        amor = MonsterData.Instance.GetTableData(stage).Armor;
+    }
+    
     protected void SetDifficulty()
     {
-        monsterData.hp *= (int)weight[(int)difficulty];
-        monsterData.amor *= (int)weight[(int)difficulty];
+        hp *= (int)weight[(int)difficulty];
+        amor *= (int)weight[(int)difficulty];
     }
 
     public override void OnCreated()

@@ -3,11 +3,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using GameData;
 
 public class DataManager : UnitySingleton<DataManager>
 {
 
     private ParsingDataSet dataSet;
+    
     //메타 문자열
     static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
     static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
@@ -56,6 +58,8 @@ public class DataManager : UnitySingleton<DataManager>
         return list;
     }
 
+    
+    
     private List<Dictionary<string, object>> monsterDataList = new List<Dictionary<string, object>>();
     public List<Dictionary<string, object>> MonsterDataList { get => monsterDataList; }
     private List<Dictionary<string, object>> towerDataList = new List<Dictionary<string, object>>();
@@ -64,7 +68,10 @@ public class DataManager : UnitySingleton<DataManager>
 
     public override void OnCreated()
     {
-        throw new NotImplementedException();
+        DontDestroyOnLoad(gameObject);
+        
+        if(MonsterData.Instance != null)
+            MonsterData.Instance.ReadTable();
     }
 
     public override void OnInitiate()
