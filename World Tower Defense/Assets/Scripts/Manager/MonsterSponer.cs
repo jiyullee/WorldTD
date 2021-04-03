@@ -5,53 +5,81 @@ using GameData;
 
 public class MonsterSponer : MonoBehaviour
 {
+    [SerializeField] private float stageWaitingTime = 2.0f;
     [SerializeField] private float spawnCycle = 0.5f;
+    [SerializeField] private int maxStage = 30;
     [SerializeField] private Sprite[] monsterImage;
+    private GameObject startPoint;
+    private Sprite nextSprite;
+    Queue<PollingObject> monsterQueue;
     private int amount;
     private static int stage = 0;
-    [SerializeField] private int maxStage = 30;
+    private bool flag = true;
 
     private void Awake()
     {
-       
-    }
-    private void Start()
-    {
+        monsterQueue = new Queue<PollingObject>();
+        startPoint = LoadManager.Instance.GetMap()[0].gameObject;
         StartCoroutine("SponnerController");
     }
 
-    private void SetMonster(int stage)
+    /// <summary>
+    /// 몬스터의 데이터를 세팅해줌.
+    /// 이미지가 생길 경우 이미지 스크립트로 해줄것.
+    /// </summary>
+    private void SetMonster()
     {
-        //monsterData.sprite = (sprite)monsterImage[monsterDataList[stage]["spriteIndex"]];
+        nextSprite = monsterImage[MonsterData.Instance.GetTableData(stage).spriteIndex];
         amount = MonsterData.Instance.GetTableData(stage).Amount;
     }
-    
-    //유한 상태 기계 FSM
+
+    /// <summary>
+    /// 몬스터를 스테이지 수만큼 스폰해주는 컨트롤러
+    /// 다음 스테이지 갈 경우 새로 켜줘야함.
+    /// </summary>
     IEnumerator SponnerController()
     {
-        Debug.Log("StartSPonner");
         while (true)
         {
             if (stage >= maxStage) break;
-            SetMonster(stage);
-            stage++;
+            SetMonster();
             yield return StartCoroutine("SponMonster");
-            //yield return 몬스터 맵에 없는지 확인하는 함수
+            yield return new WaitForSeconds(stageWaitingTime);
+            stage++;
+            //몬스터 스폰중;
         }
         //게임 클리어 코드
         Gamemanager.Instance.GameClear();
     }
 
+    /*
+        /// <summary>
+        /// 몬스터의 소환 혹은 대기 상태를 결정해줌
+        /// 몬스터 소환하고 다 잡을때 까지 대기할 경우 (FSM으로 사용)
+        /// </summary>
+        private void State()
+        {
+            if (monsterQueue.Count > 0 && flag == true)
+            {
+            }
+            else if (flag == false)
+            {
+                StartCoroutine("SponMonster");
+            }
+        }
+    */
+
+    /// <summary>
+    /// 몬스터를 amount개 소환하는 sponer
+    /// </summary>
     IEnumerator SponMonster()
     {
-        //Debug.Log(stage);
         while (amount > 0)
         {
-           
             yield return new WaitForSeconds(spawnCycle);
-            Monster mademonster = (Monster)Polling2.GetObject(this.gameObject, "Monster");
-            // Monster mademonster = (Monster)Polling2.GetObject(Gamemanager.wayPoint[0], "monster");
-            mademonster.SetMonsterData(stage);
+            Monster monster = (Monster)Polling2.GetObject(startPoint, "Monster");
+            monster.SetMonsterData(stage, nextSprite);
+            monsterQueue.Enqueue(monster);
             amount--;
         }
     }
