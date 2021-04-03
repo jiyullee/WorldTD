@@ -23,7 +23,7 @@ namespace GameData
         //메타 문자열
         static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
         static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
-        static char[] TRIM_CHARS = {'\"'};
+        static char[] TRIM_CHARS = { '\"' };
 
         /// <summary>
         /// 딕셔너리가 들어 있는 테이블
@@ -101,15 +101,15 @@ namespace GameData
                     {
                         finalvalue = f;
                     }
-                    
+
                     entry[header[j]] = value;
                     if (!list.ContainsKey(key))
                         list.Add(key, entry);
                 }
 
-                
+
             }
-            
+
             return list;
         }
 
@@ -137,13 +137,12 @@ namespace GameData
                 var tableDataClass = new T();
                 var tableKey = collectionPair.Key;
                 var tableValue = collectionPair.Value;
-                Debug.Log(tableKey);
                 for (int i = 0; i < fields.Length; i++)
                 {
                     var fieldInfo = fields[i];
                     var fieldName = fieldInfo.Name;
                     var fieldType = fieldInfo.FieldType;
-                    
+
                     if (fieldName == "KEY")
                         fieldInfo.SetValue(tableDataClass, collectionPair.Key);
                     else if (tableValue.ContainsKey(fieldName))
