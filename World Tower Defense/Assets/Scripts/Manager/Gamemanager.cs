@@ -8,6 +8,12 @@ public class Gamemanager : UnitySingleton<Gamemanager>
     [SerializeField]
     private const int MaxHp = 30;
     private int hp;
+    /// 차후 게임 시작 창에서 setting해줄것.
+    [SerializeField] private Difficulty difficulty;
+    public Difficulty Difficulty
+    {
+        get => difficulty;
+    }
     public override void OnCreated()
     {
     }
@@ -17,7 +23,6 @@ public class Gamemanager : UnitySingleton<Gamemanager>
     {
         hp = MaxHp;
     }
-
 
     //일시정지시 0, 배율시 맞는 배율 삽입
     public void TimeSetting(float Magnification)

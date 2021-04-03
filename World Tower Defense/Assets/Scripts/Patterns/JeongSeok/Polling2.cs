@@ -47,8 +47,9 @@ public class Polling2 : UnitySingleton<Polling2>
         newObj.transform.SetParent(Instance.transform);
         return newObj;
     }
-
-    //싱글톤으로 꺼내는 함수, 인수로는 꺼내는 객체와 꺼내는 프리팹 이름을 넣어야함(객체의 부모가 될것)
+    /// <summary>
+    /// 싱글톤으로 꺼내는 함수, 인수로는 꺼내는 객체와 꺼내는 프리팹 이름을 넣어야함(객체의 부모가 될것)
+    /// </summary>
     public static PollingObject GetObject(GameObject callObject, string name)
     {
         PollingObject obj;
@@ -79,11 +80,14 @@ public class Polling2 : UnitySingleton<Polling2>
         return obj;
     }
 
-    //싱글톤에게 반환해주는 함수 인자로는 풀링된 객체(gameobject)를 줘야함.
+    /// <summary>
+    /// 싱글톤에게 반환해주는 함수 PollingObject = this
+    /// </summary>
     public static void ReturnObject(PollingObject pollingObj)
     {
         pollingObj.gameObject.SetActive(false);
         pollingObj.transform.SetParent(Instance.transform);
+        pollingObj.transform.position = Instance.transform.position;
         Instance.pollingQueueDictionary[pollingObj.PrefabName].Enqueue(pollingObj);
     }
 }
