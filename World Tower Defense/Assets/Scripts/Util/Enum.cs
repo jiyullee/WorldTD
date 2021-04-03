@@ -17,7 +17,7 @@ public enum UIState
 
 
 [System.Serializable]
-public enum Difficulty
+public enum Difficulty : int
 {
     Easy,
     Nomal,
@@ -28,10 +28,10 @@ public enum Difficulty
 
 public enum ParsingDataSet : int
 {
-    MonsterData ,
-    TowerData ,
-    ShopData ,
-    END ,
+    MonsterData,
+    TowerData,
+    ShopData,
+    END,
 
 }
 public enum TILE_DATA
