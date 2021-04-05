@@ -15,10 +15,6 @@ namespace GameData
             public string info;
             public int spriteIndex;
         }
-
-        public override void OnCreated()
-        {
-
-        }
+        
     }
 }
