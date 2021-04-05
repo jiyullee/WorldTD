@@ -6,7 +6,7 @@ namespace GameData
 {
     public class TowerData : DataSets<TowerData, TowerData.TowerDataClass>
     {
-        public class TowerDataClass
+        public class TowerDataClass : DataClass
         {
             public string TowerName;
             public string SynergyName;

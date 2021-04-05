@@ -59,6 +59,11 @@ namespace GameData
             ReadTable();
         }
 
+        public override void OnCreated()
+        {
+            
+        }
+
         #endregion
 
         #region Functions
