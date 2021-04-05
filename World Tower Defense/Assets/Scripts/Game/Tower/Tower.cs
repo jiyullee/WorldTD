@@ -1,16 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameData;
 using UnityEngine;
 
-abstract public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour
 {
-    protected float range;
-    protected float speed;
-    protected float attack; 
-    protected float defense;
-
-    protected int cost;
-    protected int grade;
-    protected string synergy;
-    abstract public void Attack();
+    private string towerName;
+    private string synergyName;
+    private int cost;
+    private int grade;
+    
+    private float range;
+    private float speed;
+    private float attack;
+    
+    public void SetTowerData(int key)
+    {
+        TowerData.TowerDataClass towerDataClass = TowerData.Instance.GetTableData(key);
+        towerName = towerDataClass.TowerName;
+        synergyName = towerDataClass.SynergyName;
+        cost = towerDataClass.Cost;
+        range = towerDataClass.Range;
+        speed = towerDataClass.Speed;
+        attack = towerDataClass.Attack;
+        grade = 1;
+    }
 }
