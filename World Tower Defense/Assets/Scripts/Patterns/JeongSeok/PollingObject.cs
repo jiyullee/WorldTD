@@ -2,18 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ISPollingObject
+public interface ISPollingObject : ISingleton
 {
-    /// <summary>
-    /// 풀링 오브젝트가 생성될 경우
-    /// </summary>
-    void OnCreated();
-
-    /// <summary>
-    /// 풀링 오브젝트 초기화
-    /// </summary>
-    void OnInitiate();
-
     /// <summary>
     /// 딕셔너리, 큐에 넣기위해 이름 생성
     /// </summary>
