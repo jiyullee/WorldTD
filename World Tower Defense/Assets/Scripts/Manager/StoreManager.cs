@@ -11,6 +11,8 @@ public class StoreManager : UnitySingleton<StoreManager>
     private int[] weight = {30, 20, 20, 20, 10};
     private int max_store = 5;
     public static TowerInstance selectedTowerInstance;
+    public static bool isSelecting;
+    
     public override void OnCreated()
     {
         list_all_towers = new List<TowerInstance>[5 + 1];
@@ -70,18 +72,21 @@ public class StoreManager : UnitySingleton<StoreManager>
     public void SetSelectedInstance(TowerInstance p_towerInstance)
     {
         selectedTowerInstance = p_towerInstance;
+        isSelecting = true;
     }
 
     public void SetNullInstance()
     {
         selectedTowerInstance = null;
+        isSelecting = false;
     }
 
     public void CreateTower(Vector3 p_pos)
     {
-        Debug.Log("CreateTower");
+        //타워 생성 후 타워 정보 삭제 -> 배치 가능한 버튼 OFF & 기물 구매 가능 ON
         TowerManager.Instance.CreateTower(selectedTowerInstance, p_pos);
-        selectedTowerInstance = null;
-        MapUI.Instance.SelectableButtons(false);
+        SetNullInstance();
+        MapUI.Instance.SetViewSelectableButtons(false);
+        StoreUI.Instance.SetActiveButtons(true);
     }
 }

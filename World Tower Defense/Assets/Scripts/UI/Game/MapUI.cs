@@ -26,11 +26,11 @@ public class MapUI : MonoBehaviourSubUI
         for (int i = 0; i < pos_towers.Length; i++)
         {
             GameObject buttonObject = new GameObject("TowerButton");
-            Button button = buttonObject.AddComponent<Button>();
-            Image image = buttonObject.AddComponent<Image>();
+            buttonObject.AddComponent<Button>();
+            buttonObject.AddComponent<Image>();
             TowerButtonUI buttonUI = buttonObject.AddComponent<TowerButtonUI>();
             buttonUI.Init();
-            image.color = new Color(1,1,1,0);
+            
             Vector2 pos = Camera.main.WorldToScreenPoint(pos_towers[i]);
             buttonObject.GetComponent<RectTransform>().SetPositionAndRotation(pos, Quaternion.identity);
             buttonObject.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
@@ -40,12 +40,19 @@ public class MapUI : MonoBehaviourSubUI
         }
     }
 
-    public void SelectableButtons(bool state)
+    public void SetViewSelectableButtons()
     {
         for (int i = 0; i < list_buttonUI.Count; i++)
         {
-            list_buttonUI[i].Selectable(state);
+            list_buttonUI[i].SetView();
         }
     }
     
+    public void SetViewSelectableButtons(bool state)
+    {
+        for (int i = 0; i < list_buttonUI.Count; i++)
+        {
+            list_buttonUI[i].SetView(state);
+        }
+    }
 }

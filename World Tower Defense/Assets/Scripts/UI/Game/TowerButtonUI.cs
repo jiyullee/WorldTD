@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TowerButtonUI : MonoBehaviourSubUI
 {
-    private bool canSelect;
+    private bool placeTower;
     private Button button;
     private Image image;
     public override void Init()
@@ -13,21 +13,30 @@ public class TowerButtonUI : MonoBehaviourSubUI
         button = GetComponent<Button>();
         image = GetComponent<Image>();
         AddButtonEvent(button, Select);
-        canSelect = true;
+        placeTower = false;
+        SetView(false);
+        image.color = Color.blue;
     }
 
-    public void Selectable(bool state)
+    public void SetView()
     {
-
-        if (!state) 
-            image.color = new Color(1,0,0,0);
+        //타워 배치 중이면 미배치된 타워 버튼 ON
+        //타워 배치 중이 아니라면 배치된 타워 버튼 ON
+        if (StoreManager.isSelecting)
+        {
+            gameObject.SetActive(!placeTower);
+        }
         else
-            image.color =  new Color(0,0,1,1);
+        {
+            gameObject.SetActive(placeTower);
+        }
+            
     }
-
+    
     private void Select()
     {
         //타워 생성
+        placeTower = true;
         StoreManager.Instance.CreateTower(transform.position);
     }
 }
