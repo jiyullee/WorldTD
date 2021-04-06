@@ -27,7 +27,9 @@ public class StoreTower : MonoBehaviourSubUI
 
     private void BuyTower()
     {
-        TowerManager.Instance.CreateTower(towerInstance);
+        //TowerManager.Instance.CreateTower(towerInstance);
+        StoreManager.Instance.SetSelectedInstance(towerInstance);
+        MapUI.Instance.SelectableButtons(true);
     }
 
 }

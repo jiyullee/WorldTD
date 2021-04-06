@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapManager : MonoBehaviour
+public class MapManager : UnitySingleton<MapManager>
 {
     private Tilemap _tilemap;
     public GameObject tempObject;
@@ -12,13 +12,21 @@ public class MapManager : MonoBehaviour
     [SerializeField] private List<TileData> tileDatas;
 
     private Dictionary<TileBase, TileData> dataFromTiles;
-    private List<TileBase> towerTiles = new List<TileBase>();
-    private List<TileBase> placed_Tiles = new List<TileBase>();
-    private List<TileBase> unPlaced_Tiles = new List<TileBase>();
-    private void Awake()
+
+    public List<Vector3> list_towerPos = new List<Vector3>();
+    public override void OnCreated()
     {
         _tilemap = GetComponentInChildren<Tilemap>();
         dataFromTiles = new Dictionary<TileBase, TileData>();
+    }
+
+    public override void OnInitiate()
+    {
+        AddTilePoses();
+    }
+
+    private void AddTilePoses()
+    {
         
         foreach (var tileData in tileDatas)
         {
@@ -36,14 +44,11 @@ public class MapManager : MonoBehaviour
                 Vector3Int vInt = new Vector3Int(j,i,0);
                 Vector3 pos = _tilemap.CellToWorld(vInt) + new Vector3(0.32f,0.32f,0f);
                 TileBase tile = _tilemap.GetTile(vInt);
-           
                 if (tile && dataFromTiles.ContainsKey(tile))
                 {
                     if (dataFromTiles[tile].tile_data == TILE_DATA.TOWER)
                     {
-                        GameObject obj = Instantiate(tempObject, pos, Quaternion.identity);
-                        obj.transform.parent = transform;
-                        towerTiles.Add(tile);
+                        list_towerPos.Add(pos);
                     }
                 }
                     

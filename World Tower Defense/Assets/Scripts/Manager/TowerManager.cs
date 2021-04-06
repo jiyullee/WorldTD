@@ -16,10 +16,13 @@ public class TowerManager : UnitySingleton<TowerManager>
         
     }
 
-    public void CreateTower(TowerInstance p_towerInstance)
+    public void CreateTower(TowerInstance towerInstance, Vector3 p_pos)
     {
+        if (towerInstance == null) return;
+        Debug.Log("TowerManager Create Tower");
         Tower tower = (Tower)Polling2.GetObject(gameObject, "Tower");
-        tower.SetTowerData(p_towerInstance);
+        tower.transform.position = Camera.main.ScreenToWorldPoint(p_pos) + new Vector3(0,0,5);
+        tower.SetTowerData(towerInstance);
         list_tower.Add(tower);
     }
     

@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviourSubUI
         AddUI(UIState.StateUI,"StateUI", "StateUI");
         AddUI(UIState.StoreUI, "StoreUI", "StoreUI");
         AddUI(UIState.GameOptionUI, "OptionUI", "GameOptionUI");
+        AddUI(UIState.MapUI, "MapUI", "MapUI");
         
         foreach (var data in uiList)
         {

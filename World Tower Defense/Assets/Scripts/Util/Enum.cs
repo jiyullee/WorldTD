@@ -13,6 +13,7 @@ public enum UIState
     StateUI,
     StoreUI,
     GameOptionUI,
+    MapUI,
 }
 
 

@@ -10,6 +10,7 @@ public class StoreManager : UnitySingleton<StoreManager>
     private int max_country;
     private int[] weight = {30, 20, 20, 20, 10};
     private int max_store = 5;
+    public static TowerInstance selectedTowerInstance;
     public override void OnCreated()
     {
         list_all_towers = new List<TowerInstance>[5 + 1];
@@ -18,12 +19,12 @@ public class StoreManager : UnitySingleton<StoreManager>
             list_all_towers[i] = new List<TowerInstance>();
         }
         AddList();
-        RefreshStore();
+        
     }
 
     public override void OnInitiate()
     {
-        
+
     }
 
     private void AddList()
@@ -66,14 +67,21 @@ public class StoreManager : UnitySingleton<StoreManager>
         }
     }
 
-    public void BuyTower()
+    public void SetSelectedInstance(TowerInstance p_towerInstance)
     {
-        
+        selectedTowerInstance = p_towerInstance;
     }
 
-    private void CreateTower()
+    public void SetNullInstance()
     {
-        
+        selectedTowerInstance = null;
     }
 
+    public void CreateTower(Vector3 p_pos)
+    {
+        Debug.Log("CreateTower");
+        TowerManager.Instance.CreateTower(selectedTowerInstance, p_pos);
+        selectedTowerInstance = null;
+        MapUI.Instance.SelectableButtons(false);
+    }
 }
