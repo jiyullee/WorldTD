@@ -8,7 +8,8 @@ public class StoreManager : UnitySingleton<StoreManager>
     public List<TowerInstance>[] list_all_towers;
     private List<TowerInstance> list_remain_towers;
     private int max_country;
-    private int[] weight = {100, 0, 0, 0, 0};
+    private int[] weight = {30, 20, 20, 20, 10};
+    private int max_store = 5;
     public override void OnCreated()
     {
         list_all_towers = new List<TowerInstance>[5 + 1];
@@ -37,9 +38,31 @@ public class StoreManager : UnitySingleton<StoreManager>
         }
     }
 
+    /// <summary>
+    /// 상점에서 코스트 랜덤 선택
+    /// </summary>
+    /// <returns></returns>
+    private int SelectRand()
+    {
+        float rand = Random.Range(0, 100);
+        int cost = 0;
+        float sum = weight[cost];
+        while (true)
+        {
+            if (rand <= sum)
+            {
+                return cost + 1;
+            }
+            sum += weight[++cost];
+        }
+    }
     public void RefreshStore()
     {
-        
+        for (int i = 0; i < max_store; i++)
+        {
+            int cost = SelectRand();
+            StoreUI.Instance.Refresh(i, list_all_towers[cost][Random.Range(0, list_all_towers[cost].Count)]);
+        }
     }
 
 }

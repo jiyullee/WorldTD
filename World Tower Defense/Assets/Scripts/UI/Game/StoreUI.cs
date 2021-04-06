@@ -5,31 +5,32 @@ using UnityEngine.UI;
 
 public class StoreUI : MonoBehaviourSubUI
 {
+    public static StoreUI Instance;
     private Text goldText;
-    private Button[] btns_tower;
+    private StoreTower[] storeTowers;
     public override void Init()
     {
-        AddButtonEvent("Bottom/RefreshBtn", Refresh);
+        Instance = this;
+        AddButtonEvent("Bottom/RefreshBtn", StoreManager.Instance.RefreshStore);
         AddButtonEvent("Bottom/LvUpBtn", LevelUp);
-        btns_tower = transform.Find("Top/Scroll View/Viewport").GetComponentsInChildren<Button>();
-        for (int i = 0; i < btns_tower.Length; i++)
+        storeTowers = transform.Find("Top/Scroll View/Viewport").GetComponentsInChildren<StoreTower>();
+        for (int i = 0; i < storeTowers.Length; i++)
         {
-            AddButtonEvent(btns_tower[i], BuyTower);
+            storeTowers[i].Init();
         }
-        
     }
 
-    private void Refresh()
+    public void Refresh(int idx, TowerInstance p_towerInstance)
+    {
+        storeTowers[idx].InitTower(p_towerInstance);
+    }
+
+    public void LevelUp()
     {
         
     }
 
-    private void LevelUp()
-    {
-        
-    }
-
-    private void BuyTower()
+    public void BuyTower()
     {
         
     }

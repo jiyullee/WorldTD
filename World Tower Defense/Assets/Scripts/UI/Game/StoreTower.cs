@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class StoreTower : MonoBehaviourSubUI
 {
-    private Tower tower;
+    private TowerInstance towerInstance;
 
     private Button btn_store;
     private Text text_towerName;
@@ -19,9 +19,12 @@ public class StoreTower : MonoBehaviourSubUI
         
     }
 
-    public void InitTower(Tower p_tower)
+    public void InitTower(TowerInstance p_towerInstance)
     {
-       
+        towerInstance = p_towerInstance;
+        text_towerName.text = towerInstance.GetTowerData().TowerName;
+        text_cost.text = towerInstance.GetTowerData().Cost.ToString();
+        
     }
 
     private void BuyTower()
