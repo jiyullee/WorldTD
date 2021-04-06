@@ -8,6 +8,15 @@ namespace GameData
 {
     public static class SystemConfig
     {
+
+        #region CodeSymbol
+
+        /// <summary>
+        /// 리스트의 Element를 Parsing하는 단위 심볼
+        /// </summary>
+        private const char ListRecordParser = ',';
+
+        #endregion
         private static Dictionary<Type, Func<string, object>> DecodeByBaseCollection =
             new Dictionary<Type, Func<string, object>>
             {
@@ -39,7 +48,30 @@ namespace GameData
             if (DecodeByBaseCollection.ContainsKey(type))
                 return DecodeByBaseCollection[type](value);
             else
-                return null;
+            {
+                if (type.IsGenericType)
+                {
+                    if (type.GetGenericTypeDefinition() == typeof(List<>))
+                        return DecodeListType(type, value);
+                }
+                
+            }
+            return null;
+        }
+
+        private static object DecodeListType(Type listType, string valueString)
+        {
+            var parsedStringValue = valueString.Split(ListRecordParser);
+            var result = parsedStringValue.Length > 0 ? listType.GetConstructor(Type.EmptyTypes).Invoke(null) : null;
+            var genericType = listType.GetGenericArguments()[0];
+            for (int i = 0; i < parsedStringValue.Length; i++)
+            {
+                var parsedString = parsedStringValue[i];
+                result.GetType().GetMethod("Add").Invoke(result, new object[] {parsedString.DecodeType(genericType)});
+
+            }
+
+            return result;
         }
     }
 
