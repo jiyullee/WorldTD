@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class StoreTower : MonoBehaviourSubUI
 {
     private TowerInstance towerInstance;
-
-    private Button btn_store;
     private Text text_towerName;
     private Text text_cost;
     private Image img_cost;
@@ -29,7 +27,7 @@ public class StoreTower : MonoBehaviourSubUI
 
     private void BuyTower()
     {
-        
+        TowerManager.Instance.CreateTower(towerInstance);
     }
 
 }

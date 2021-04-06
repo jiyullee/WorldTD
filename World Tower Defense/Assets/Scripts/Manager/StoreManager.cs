@@ -18,6 +18,7 @@ public class StoreManager : UnitySingleton<StoreManager>
             list_all_towers[i] = new List<TowerInstance>();
         }
         AddList();
+        RefreshStore();
     }
 
     public override void OnInitiate()
@@ -63,6 +64,16 @@ public class StoreManager : UnitySingleton<StoreManager>
             int cost = SelectRand();
             StoreUI.Instance.Refresh(i, list_all_towers[cost][Random.Range(0, list_all_towers[cost].Count)]);
         }
+    }
+
+    public void BuyTower()
+    {
+        
+    }
+
+    private void CreateTower()
+    {
+        
     }
 
 }
