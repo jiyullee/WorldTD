@@ -9,9 +9,9 @@ namespace GameData
         public class TowerDataClass : DataClass
         {
             public string TowerName;
-            public string SynergyName;
+            public List<string> SynergyName;
             public int Cost;
-            public float Attack;
+            public List<float> Attack;
             public float Speed;
             public float Range;
         }
