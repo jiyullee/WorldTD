@@ -6,6 +6,12 @@ namespace GameData
 {
     public class TowerData : DataSets<TowerData, TowerData.TowerDataClass>
     {
+        public override void OnCreated()
+        {
+            base.OnCreated();
+            fileName = ParsingDataSet.TowerData;
+        }
+
         public class TowerDataClass : DataClass
         {
             public string TowerName;
@@ -15,5 +21,7 @@ namespace GameData
             public float Speed;
             public float Range;
         }
+        
+        
     }
 }

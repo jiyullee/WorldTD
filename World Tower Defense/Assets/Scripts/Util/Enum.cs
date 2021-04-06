@@ -30,6 +30,7 @@ public enum ParsingDataSet : int
 {
     MonsterData,
     TowerData,
+    StoreTowerData,
     ShopData,
     END,
 

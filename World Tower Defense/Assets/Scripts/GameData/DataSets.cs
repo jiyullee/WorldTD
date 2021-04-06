@@ -79,7 +79,7 @@ namespace GameData
             }
 
             Dictionary<int, Dictionary<string, string>> list = new Dictionary<int, Dictionary<string, string>>();
-            TextAsset data = Resources.Load(fileName) as TextAsset;
+            TextAsset data = Resources.Load("GameData/" + fileName) as TextAsset;
 
             var lines = Regex.Split(data.text, LINE_SPLIT_RE);
             if (lines.Length <= 1) return list;

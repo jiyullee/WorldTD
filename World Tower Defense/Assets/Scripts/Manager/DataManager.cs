@@ -70,12 +70,13 @@ public class DataManager : UnitySingleton<DataManager>
     {
         DontDestroyOnLoad(gameObject);
         
-        if(MonsterData.Instance != null)
-            MonsterData.Instance.ReadTable();
     }
 
     public override void OnInitiate()
     {
-
+        // 모든 데이터를 로비에서 미리 불러온다.
+        MonsterData.Instance.ReadTable();
+        TowerData.Instance.ReadTable();
+        StoreTowerData.Instance.ReadTable();
     }
 }

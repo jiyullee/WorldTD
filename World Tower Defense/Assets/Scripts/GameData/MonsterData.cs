@@ -6,6 +6,12 @@ namespace GameData
 {
     public class MonsterData : DataSets<MonsterData, MonsterData.MonsterDataClass>
     {
+        public override void OnCreated()
+        {
+            base.OnCreated();
+            fileName = ParsingDataSet.MonsterData;
+        }
+        
         public class MonsterDataClass : DataClass
         {
             public int HP;
