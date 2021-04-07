@@ -30,7 +30,7 @@ public class MapUI : MonoBehaviourSubUI
             buttonObject.AddComponent<Image>();
             TowerButtonUI buttonUI = buttonObject.AddComponent<TowerButtonUI>();
             buttonUI.Init();
-            
+
             Vector2 pos = Camera.main.WorldToScreenPoint(pos_towers[i]);
             buttonObject.GetComponent<RectTransform>().SetPositionAndRotation(pos, Quaternion.identity);
             buttonObject.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);

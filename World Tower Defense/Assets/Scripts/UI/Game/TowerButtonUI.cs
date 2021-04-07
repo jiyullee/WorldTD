@@ -17,7 +17,6 @@ public class TowerButtonUI : MonoBehaviourSubUI
         SetView(false);
         image.color = Color.blue;
     }
-
     public void SetView()
     {
         //타워 배치 중이면 미배치된 타워 버튼 ON

@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameData;
 
-public class MonsterSponer : MonoBehaviour
+public class MonsterSponer : UnitySingleton<MonsterSponer>
 {
     [SerializeField] private float stageWaitingTime = 2.0f;
     [SerializeField] private float spawnCycle = 0.5f;
@@ -11,15 +12,24 @@ public class MonsterSponer : MonoBehaviour
     [SerializeField] private Sprite[] monsterImage;
     private GameObject startPoint;
     private Sprite nextSprite;
-    Queue<PollingObject> monsterQueue;
+    public Queue<PollingObject> monsterQueue;
     private int amount;
     private static int stage = 0;
     private bool flag = true;
 
-    private void Awake()
+    public override void OnCreated()
     {
         monsterQueue = new Queue<PollingObject>();
         startPoint = LoadManager.Instance.GetMap()[0].gameObject;
+    }
+
+    public override void OnInitiate()
+    {
+        
+    }
+    
+    private void Start()
+    {
         StartCoroutine("SponnerController");
     }
 

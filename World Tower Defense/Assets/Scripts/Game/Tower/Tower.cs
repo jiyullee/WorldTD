@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameData;
@@ -5,16 +6,29 @@ using UnityEngine;
 
 public class Tower : PollingObject
 {
-    private string towerName;
+    #region Fields
+
+    [SerializeField] private string towerName;
     private string[] synergyName;
-    private int cost;
-    private int grade;
+    [SerializeField] private int cost;
+    [SerializeField] private int grade;
     
-    private float range;
+    [SerializeField] private float range;
     private float speed;
     private float[] attack;
-
     private float cur_attack;
+    
+    private bool canAttack;
+    private TOWER_STATE TowerState;
+    public LayerMask LayerMask_Attack;
+    private Transform target;
+    
+    private Queue<Bullet> list_bullet = new Queue<Bullet>();
+
+    #endregion
+
+    #region Callbacks
+
     public override void OnCreated()
     {
         
@@ -24,6 +38,30 @@ public class Tower : PollingObject
     {
         
     }
+
+    private void Start()
+    {
+        ChangeState(TOWER_STATE.SearchTarget);
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    #endregion
+
+    #region Functions
+
+    public void SpawnBullet()
+    {
+        Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
+        bullet.transform.position = transform.position;
+        bullet.SpawnTo(target);
+        list_bullet.Enqueue(bullet);
+
+    }
+    
     public void SetTowerData(TowerInstance p_towerInstance)
     {
         TowerData.TowerDataClass towerData = p_towerInstance.GetTowerData();
@@ -35,7 +73,65 @@ public class Tower : PollingObject
         attack = towerData.Attack.ToArray();
         grade = 1;
         cur_attack = attack[grade];
+
+        canAttack = true;
+    }
+    
+    private void ChangeState(TOWER_STATE state)
+    {
+        StopCoroutine(TowerState.ToString());
+        TowerState = state;
+        StartCoroutine(state.ToString());
     }
 
-   
+    #endregion
+
+    IEnumerator SearchTarget()
+    {
+        while (true)
+        {
+            float closetDist = Mathf.Infinity;
+            PollingObject[] list_monsters = MonsterSponer.Instance.monsterQueue.ToArray();
+            for (int i = 0; i < list_monsters.Length; i++)
+            {
+                float dist = Vector2.Distance(list_monsters[i].transform.position, transform.position);
+
+                if (dist <= range && dist <= closetDist)
+                {
+                    closetDist = dist;
+                    target = list_monsters[i].transform;
+                }
+            }
+
+            if (target != null)
+            {
+                ChangeState(TOWER_STATE.Attack);
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        while (true)
+        {
+            if (target == null)
+            {
+                ChangeState(TOWER_STATE.SearchTarget);
+                break;
+            }
+
+            float dist = Vector3.Distance(target.position, transform.position);
+            if (dist >= range)
+            {
+                target = null;
+                ChangeState(TOWER_STATE.SearchTarget);
+                break;
+            }
+            SpawnBullet();
+            yield return new WaitForSeconds(1 / speed);
+        }
+    }
+    
 }

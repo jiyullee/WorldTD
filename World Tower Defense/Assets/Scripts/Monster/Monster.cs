@@ -29,6 +29,7 @@ public class Monster : PollingObject
         map = LoadManager.Instance.GetMap();
         difficulty = Gamemanager.Instance.Difficulty;
         maxIndex = map.Length;
+        GetComponent<CircleCollider2D>().radius = 0.06f;
     }
 
     public override void OnInitiate() { }

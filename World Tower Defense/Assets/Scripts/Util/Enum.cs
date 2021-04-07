@@ -42,3 +42,9 @@ public enum TILE_DATA
     ROAD,
     WALL
 }
+
+public enum TOWER_STATE
+{
+    SearchTarget,
+    Attack,
+}
