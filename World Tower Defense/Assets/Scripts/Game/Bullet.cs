@@ -6,10 +6,9 @@ using UnityEngine;
 public class Bullet : PollingObject
 {
     private float speed;
-    private Transform target;
+    private PollingObject target;
     public override void OnCreated()
     {
-        speed = 0.1f;
         gameObject.SetActive(false);
     }
 
@@ -18,26 +17,31 @@ public class Bullet : PollingObject
         
     }
 
-    private void Start()
-    {
-        Invoke("DestroySelf",1f);
-    }
-
     private void DestroySelf()
     {
+        target = null;
+        gameObject.SetActive(false);
         Polling2.ReturnObject(this);
     }
 
-    public void SpawnTo(Transform p_target)
+    public void SpawnTo(PollingObject p_target, float p_speed)
     {
         target = p_target;
+        speed = p_speed;
+        //Invoke("DestroySelf", 1 / speed);
     }
 
     private void Update()
     {
         if (target != null)
         {
-            transform.position = Vector3.Lerp(transform.position, target.position, speed);
+            transform.position = Vector3.Lerp(transform.position, target.transform.position, 5 * Time.deltaTime);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.GetComponent<PollingObject>() == target)
+            DestroySelf();
     }
 }

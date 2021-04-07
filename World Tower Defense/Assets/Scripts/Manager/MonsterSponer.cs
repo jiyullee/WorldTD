@@ -12,7 +12,9 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     [SerializeField] private Sprite[] monsterImage;
     private GameObject startPoint;
     private Sprite nextSprite;
-    public Queue<PollingObject> monsterQueue;
+    private Queue<PollingObject> monsterQueue;
+    //현재 필드에 스폰된 몬스터 리스트
+    public List<PollingObject> spawned_monsters;
     private int amount;
     private static int stage = 0;
     private bool flag = true;
@@ -90,6 +92,7 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
             Monster monster = (Monster)Polling2.GetObject(startPoint, "Monster");
             monster.SetMonsterData(stage, nextSprite);
             monsterQueue.Enqueue(monster);
+            
             amount--;
         }
     }

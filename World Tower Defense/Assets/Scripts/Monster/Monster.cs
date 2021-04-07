@@ -54,6 +54,9 @@ public class Monster : PollingObject
         moveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
         spriteRenderer.sprite = sprite;
         SetDifficulty();
+        //현재 직접 리스트를 추가하고 있지만 MonsterSponer의 함수에서 추가하도록 수정해야함
+        if (spriteRenderer.sprite != null) 
+            MonsterSponer.Instance.spawned_monsters.Add(this);
     }
 
     /// <summary>
@@ -88,6 +91,10 @@ public class Monster : PollingObject
             {
                 index = 0;
                 Polling2.ReturnObject(this);
+                
+                //현재 직접 리스트를 제거하고 있지만 MonsterSponer의 함수에서 제거하도록 수정해야함
+                if(MonsterSponer.Instance.spawned_monsters.Contains(this))
+                    MonsterSponer.Instance.spawned_monsters.Remove(this);
             }
         }
     }
