@@ -81,11 +81,11 @@ public class Monster : PollingObject
     private void Move()
     {
         Vector3 dir = map[index].position - transform.position;
-        Look(dir);
         // thisTransform.position = Vector3.Lerp(thisTransform.position, map[index].position, Time.deltaTime * moveSpeed);
         thisTransform.position += dir.normalized * Time.deltaTime * moveSpeed;
         if ((dir).magnitude < 0.1f)
         {
+            Look(dir);
             index++;
             if (index >= map.Length)
             {
@@ -106,7 +106,6 @@ public class Monster : PollingObject
     {
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
     }
     #endregion
 
