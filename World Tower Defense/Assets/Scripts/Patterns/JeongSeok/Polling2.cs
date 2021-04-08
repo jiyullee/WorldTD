@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+class Spownclass
+{
+    public int count;
+    public PollingObject pollingObject;
+}
 
 public class Polling2 : UnitySingleton<Polling2>
 {
     [SerializeField]
-    [Tooltip("초기 객체를 얼마나 생성할지")]
-    private int initiaCount = 10;
-    [SerializeField]
-    [Tooltip("풀링할 객체 프리팹")]
-    private PollingObject[] poolingGameObject;
+    private Spownclass[] spown;
 
     private Dictionary<string, Queue<PollingObject>> pollingQueueDictionary = new Dictionary<string, Queue<PollingObject>>();
     private Dictionary<string, PollingObject> pollingObjectDictionary = new Dictionary<string, PollingObject>();
@@ -18,25 +20,25 @@ public class Polling2 : UnitySingleton<Polling2>
     //생성
     public override void OnCreated()
     {
-        if (poolingGameObject.Length == 0)
+
+        if (spown.Length == 0)
         {
             Debug.Log("풀링할 객체가 없습니다. 할당해 주세요");
         }
-        for (int j = 0; j < poolingGameObject.Length; j++)
+        for (int j = 0; j < spown.Length; j++)
         {
-            pollingObjectDictionary.Add(poolingGameObject[j].PrefabName, poolingGameObject[j]);
-            pollingQueueDictionary.Add(poolingGameObject[j].PrefabName, new Queue<PollingObject>());
+            pollingObjectDictionary.Add(spown[j].pollingObject.PrefabName, spown[j].pollingObject);
+            pollingQueueDictionary.Add(spown[j].pollingObject.PrefabName, new Queue<PollingObject>());
         }
     }
 
     //초기화
     public override void OnInitiate()
     {
-        foreach (var i in pollingObjectDictionary)
-        {
-            for (int j = 0; j < initiaCount; j++)
-                pollingQueueDictionary[i.Key].Enqueue(CreateNewObject(i.Key));
-        }
+
+        for (int i = 0; i < spown.Length; i++)
+            for (int j = 0; j < spown[i].count; j++)
+                pollingQueueDictionary[spown[i].pollingObject.name].Enqueue(CreateNewObject(spown[i].pollingObject.name));
     }
 
     //새로 만드는 함수
@@ -52,12 +54,12 @@ public class Polling2 : UnitySingleton<Polling2>
     /// </summary>
     public static PollingObject GetObject(GameObject callObject, string name)
     {
-        PollingObject obj;
         if (Instance.pollingQueueDictionary.ContainsKey(name) == false)
         {
             Debug.Log("is not PollingObjectName");
             return null;
         }
+        PollingObject obj;
 
         //없으면 생성, 있으면 큐 꺼내서 반환
         if (Instance.pollingQueueDictionary[name].Count > 0)
