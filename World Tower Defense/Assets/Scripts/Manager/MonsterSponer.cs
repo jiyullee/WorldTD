@@ -10,7 +10,7 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     [SerializeField] private float spawnCycle = 0.5f;
     [SerializeField] private int maxStage = 30;
     [SerializeField] private Sprite[] monsterImage;
-    private GameObject startPoint;
+    [SerializeField] private GameObject monsterContainer;
     private Sprite nextSprite;
     private Queue<PollingObject> monsterQueue;
     //현재 필드에 스폰된 몬스터 리스트
@@ -21,7 +21,15 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
 
     public override void OnCreated()
     {
+        Transform startTransfrom = LoadManager.Instance.GetMap()[0].gameObject.transform;
+
+        // monsterContainer = Instantiate(new GameObject(), startTransfrom.position, startTransfrom.rotation); 아래 코드와 동일
+        if (monsterContainer == null)
+            monsterContainer = new GameObject();
+        monsterContainer.transform.position = startTransfrom.transform.position;
+        monsterContainer.gameObject.name = "monsterContainer";
         monsterQueue = new Queue<PollingObject>();
+<<<<<<< Updated upstream
         startPoint = LoadManager.Instance.GetMap()[0].gameObject;
     }
 
@@ -32,6 +40,9 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     
     private void Start()
     {
+=======
+        monsterContainer.transform.position = startTransfrom.position;
+>>>>>>> Stashed changes
         StartCoroutine("SponnerController");
     }
 
@@ -63,23 +74,6 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
         //게임 클리어 코드
         Gamemanager.Instance.GameClear();
     }
-
-    /*
-        /// <summary>
-        /// 몬스터의 소환 혹은 대기 상태를 결정해줌
-        /// 몬스터 소환하고 다 잡을때 까지 대기할 경우 (FSM으로 사용)
-        /// </summary>
-        private void State()
-        {
-            if (monsterQueue.Count > 0 && flag == true)
-            {
-            }
-            else if (flag == false)
-            {
-                StartCoroutine("SponMonster");
-            }
-        }
-    */
 
     /// <summary>
     /// 몬스터를 amount개 소환하는 sponer
