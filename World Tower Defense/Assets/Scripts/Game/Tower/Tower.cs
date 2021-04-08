@@ -47,7 +47,7 @@ public class Tower : PollingObject
     {
         Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
         bullet.transform.position = transform.position;
-        bullet.SpawnTo(target, speed, cur_attack);
+        bullet.SpawnTo(target, cur_attack);
         list_bullet.Enqueue(bullet);
 
     }
