@@ -14,7 +14,7 @@ public class Bullet : PollingObject
 
     public override void OnInitiate()
     {
-        
+
     }
 
     private void DestroySelf()
@@ -35,13 +35,15 @@ public class Bullet : PollingObject
     {
         if (target != null)
         {
-            transform.position = Vector3.Lerp(transform.position, target.transform.position, 5 * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, target.transform.position, speed * Time.deltaTime);
         }
+        if (target.gameObject.activeSelf == false)
+            DestroySelf();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.GetComponent<PollingObject>() == target)
+        if (other.gameObject.GetComponent<PollingObject>() == target)
             DestroySelf();
     }
 }
