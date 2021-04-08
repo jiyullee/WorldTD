@@ -12,6 +12,8 @@ public class Monster : PollingObject
     private Difficulty difficulty;
     [SerializeField] [Range(1, 5)] private float moveSpeed = 1;
     protected float[] weight = { 1f, 1.25f, 1.5f };
+    protected Color color;
+    protected Color hitColor;
     private int hp;
     private int amor;
     private int index = 1;
@@ -30,6 +32,9 @@ public class Monster : PollingObject
         difficulty = Gamemanager.Instance.Difficulty;
         maxIndex = map.Length;
         GetComponent<CircleCollider2D>().radius = 0.06f;
+        color = spriteRenderer.color;
+        hitColor = color;
+        hitColor.a = 0.5f;
     }
 
     public override void OnInitiate() { }
@@ -55,7 +60,7 @@ public class Monster : PollingObject
         spriteRenderer.sprite = sprite;
         SetDifficulty();
         //현재 직접 리스트를 추가하고 있지만 MonsterSponer의 함수에서 추가하도록 수정해야함
-        if (spriteRenderer.sprite != null) 
+        if (spriteRenderer.sprite != null)
             MonsterSponer.Instance.spawned_monsters.Add(this);
     }
 
@@ -91,9 +96,9 @@ public class Monster : PollingObject
             {
                 index = 0;
                 Polling2.ReturnObject(this);
-                
+
                 //현재 직접 리스트를 제거하고 있지만 MonsterSponer의 함수에서 제거하도록 수정해야함
-                if(MonsterSponer.Instance.spawned_monsters.Contains(this))
+                if (MonsterSponer.Instance.spawned_monsters.Contains(this))
                     MonsterSponer.Instance.spawned_monsters.Remove(this);
             }
         }
@@ -123,27 +128,18 @@ public class Monster : PollingObject
             index = 0;
             Polling2.ReturnObject(this);
         }
+        StartCoroutine("ChangeColor");
     }
 
     /// <summary>
     /// 알파값을 낮춰서 색을 바꿔주는 함수.
     /// 시간값을 주어야 하기 때문에 코루틴 사용
-    /// 하지만 아마 안쓸 예정...
     /// </summary>
-    public void changeColor()
+    IEnumerator ChangeColor()
     {
-        StartCoroutine("IGetDamage");
-    }
-
-    IEnumerator IGetDamage()
-    {
-        Color tmp = spriteRenderer.color;
-        tmp.a = 0.5f;
-        spriteRenderer.color = tmp;
+        spriteRenderer.color = hitColor;
         yield return new WaitForSeconds(0.5f);
-        tmp.a = 1f;
-        spriteRenderer.color = tmp;
-
+        spriteRenderer.color = color;
     }
 
     #endregion
