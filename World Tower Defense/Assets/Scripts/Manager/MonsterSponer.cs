@@ -29,20 +29,7 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
         monsterContainer.transform.position = startTransfrom.transform.position;
         monsterContainer.gameObject.name = "monsterContainer";
         monsterQueue = new Queue<PollingObject>();
-<<<<<<< Updated upstream
-        startPoint = LoadManager.Instance.GetMap()[0].gameObject;
-    }
-
-    public override void OnInitiate()
-    {
-        
-    }
-    
-    private void Start()
-    {
-=======
         monsterContainer.transform.position = startTransfrom.position;
->>>>>>> Stashed changes
         StartCoroutine("SponnerController");
     }
 
@@ -83,11 +70,15 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
         while (amount > 0)
         {
             yield return new WaitForSeconds(spawnCycle);
-            Monster monster = (Monster)Polling2.GetObject(startPoint, "Monster");
+            Monster monster = (Monster)Polling2.GetObject(monsterContainer, "Monster");
             monster.SetMonsterData(stage, nextSprite);
             monsterQueue.Enqueue(monster);
-            
+
             amount--;
         }
+    }
+
+    public override void OnInitiate()
+    {
     }
 }
