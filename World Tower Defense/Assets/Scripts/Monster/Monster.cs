@@ -43,6 +43,10 @@ public class Monster : PollingObject
     {
         Move();
     }
+    private void OnEnable()
+    {
+        ResetColor();
+    }
 
     #endregion
 
@@ -128,17 +132,21 @@ public class Monster : PollingObject
             index = 0;
             Polling2.ReturnObject(this);
         }
-        StartCoroutine("ChangeColor");
+        ChangeColor();
     }
 
     /// <summary>
     /// 알파값을 낮춰서 색을 바꿔주는 함수.
-    /// 시간값을 주어야 하기 때문에 코루틴 사용
+    /// 중간에 꺼지면 코루틴 오류가 나기 떄문에 invoke사용
     /// </summary>
-    IEnumerator ChangeColor()
+    void ChangeColor()
     {
         spriteRenderer.color = hitColor;
-        yield return new WaitForSeconds(0.5f);
+        Invoke("ResetColor", 0.5f);
+    }
+
+    void ResetColor()
+    {
         spriteRenderer.color = color;
     }
 
