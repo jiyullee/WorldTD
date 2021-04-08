@@ -1424,6 +1424,7 @@ Transform:
   - {fileID: 1423593961245890228}
   - {fileID: 1727606712}
   - {fileID: 1691696806}
+  - {fileID: 1579435440}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4548,6 +4549,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562932881}
   m_CullTransparentMesh: 1
+--- !u!1 &1579435439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579435440}
+  - component: {fileID: 1579435441}
+  m_Layer: 0
+  m_Name: MonsterSponer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579435440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579435439}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 643551305}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579435441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579435439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c765fea94a4fe6459fa462985c11bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageWaitingTime: 2
+  spawnCycle: 0.5
+  maxStage: 30
+  monsterImage:
+  - {fileID: 21300000, guid: 4c877bf4490f2c240b4a98a7a1ed975f, type: 3}
+  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
+  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
+  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
+  monsterContainer: {fileID: 0}
+  spawned_monsters: []
 --- !u!1 &1584490716
 GameObject:
   m_ObjectHideFlags: 0
@@ -8279,7 +8333,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1423593961245890228}
   - component: {fileID: 1423593961245890226}
-  - component: {fileID: 1423593961245890227}
   - component: {fileID: 1423593961245890229}
   - component: {fileID: 1423593961245890231}
   - component: {fileID: 1423593961245890230}
@@ -8302,26 +8355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bea7229a4b99d4e979c9839c180945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1423593961245890227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423593961245890225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c765fea94a4fe6459fa462985c11bea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stageWaitingTime: 2
-  spawnCycle: 0.5
-  maxStage: 30
-  monsterImage:
-  - {fileID: 21300000, guid: 4c877bf4490f2c240b4a98a7a1ed975f, type: 3}
-  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
-  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
-  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
 --- !u!4 &1423593961245890228
 Transform:
   m_ObjectHideFlags: 0
@@ -8361,11 +8394,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95bcbcc6d2a4d7f408e629d8de7be49a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initiaCount: 10
-  poolingGameObject:
-  - {fileID: 7252555372345088209, guid: 7ed480c8ca1ef184d85465c3c88310e6, type: 3}
-  - {fileID: 5919826869327541493, guid: a7d54a9682f33304eb64bf0877c5d909, type: 3}
-  - {fileID: 9075845500042128780, guid: b155685b6ad39c14d9325f14da2330cd, type: 3}
+  spown:
+  - count: 20
+    pollingObject: {fileID: 7252555372345088209, guid: 7ed480c8ca1ef184d85465c3c88310e6, type: 3}
+  - count: 50
+    pollingObject: {fileID: 9075845500042128780, guid: b155685b6ad39c14d9325f14da2330cd, type: 3}
+  - count: 10
+    pollingObject: {fileID: 5919826869327541493, guid: a7d54a9682f33304eb64bf0877c5d909, type: 3}
 --- !u!114 &1423593961245890231
 MonoBehaviour:
   m_ObjectHideFlags: 0
