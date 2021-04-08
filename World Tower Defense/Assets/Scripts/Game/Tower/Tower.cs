@@ -12,12 +12,12 @@ public class Tower : PollingObject
     private string[] synergyName;
     [SerializeField] private int cost;
     [SerializeField] private int grade;
-
+    
     [SerializeField] private float range;
     private float speed;
     private float[] attack;
     private float cur_attack;
-
+    
     private bool canAttack;
     private TOWER_STATE TowerState;
     public LayerMask LayerMask_Attack;
@@ -36,7 +36,7 @@ public class Tower : PollingObject
 
     public override void OnInitiate()
     {
-
+        
     }
 
     #endregion
@@ -47,11 +47,11 @@ public class Tower : PollingObject
     {
         Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
         bullet.transform.position = transform.position;
-        bullet.SpawnTo(target, speed, cur_attack);
+        bullet.SpawnTo(target, speed);
         list_bullet.Enqueue(bullet);
 
     }
-
+    
     public void SetTowerData(TowerInstance p_towerInstance)
     {
         TowerData.TowerDataClass towerData = p_towerInstance.GetTowerData();
@@ -68,7 +68,7 @@ public class Tower : PollingObject
         ChangeState(TOWER_STATE.SearchTarget);
         StartCoroutine(SearchTarget());
     }
-
+    
     private void ChangeState(TOWER_STATE state)
     {
         TowerState = state;
@@ -81,7 +81,7 @@ public class Tower : PollingObject
         while (true)
         {
             yield return null;
-
+            
             float closetDist = Mathf.Infinity;
             List<PollingObject> list_monsters = MonsterSponer.Instance.spawned_monsters;
             for (int i = 0; i < list_monsters.Count; i++)
@@ -100,7 +100,7 @@ public class Tower : PollingObject
                 StartCoroutine(Attack());
                 break;
             }
-
+            
         }
     }
 
@@ -127,5 +127,5 @@ public class Tower : PollingObject
             yield return new WaitForSeconds(1 / speed);
         }
     }
-
+    
 }
