@@ -14,11 +14,12 @@ public class Monster : PollingObject
     protected float[] weight = { 1f, 1.25f, 1.5f };
     protected Color color;
     protected Color hitColor;
-    private int hp;
-    private int amor;
+    private float hp;
+    private float amor;
     private int index = 1;
     private int maxIndex;
 
+    private bool IsTarget => spriteRenderer.sprite != null;
     #endregion
 
     #region UnityCircle
@@ -41,7 +42,8 @@ public class Monster : PollingObject
 
     private void Update()
     {
-        Move();
+        if (IsTarget)
+            Move();
     }
     private void OnEnable()
     {
@@ -64,8 +66,8 @@ public class Monster : PollingObject
         spriteRenderer.sprite = sprite;
         SetDifficulty();
         //현재 직접 리스트를 추가하고 있지만 MonsterSponer의 함수에서 추가하도록 수정해야함
-        if (spriteRenderer.sprite != null)
-            MonsterSponer.Instance.spawned_monsters.Add(this);
+        if (IsTarget)
+            MonsterSponer.spawned_monsters.Add(this);
     }
 
     /// <summary>
@@ -102,8 +104,8 @@ public class Monster : PollingObject
                 Polling2.ReturnObject(this);
 
                 //현재 직접 리스트를 제거하고 있지만 MonsterSponer의 함수에서 제거하도록 수정해야함
-                if (MonsterSponer.Instance.spawned_monsters.Contains(this))
-                    MonsterSponer.Instance.spawned_monsters.Remove(this);
+                if (MonsterSponer.spawned_monsters.Contains(this))
+                    MonsterSponer.spawned_monsters.Remove(this);
             }
         }
     }
@@ -124,7 +126,7 @@ public class Monster : PollingObject
     /// 데미지를 받는 함수
     /// 체력이 0이하로 내려가게 되면 풀링풀에 반환해줌
     /// </summary>
-    public void GetDamage(int dmg)
+    public void GetDamage(float dmg)
     {
         hp -= dmg;
         if (hp <= 0)

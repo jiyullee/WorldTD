@@ -14,7 +14,7 @@ public class Tower : PollingObject
     [SerializeField] private int grade;
 
     [SerializeField] private float range;
-    private float speed;
+    [SerializeField] private float speed;
     private float[] attack;
     private float cur_attack;
 
@@ -38,7 +38,7 @@ public class Tower : PollingObject
     {
 
     }
-
+    
     #endregion
 
     #region Functions
@@ -47,7 +47,7 @@ public class Tower : PollingObject
     {
         Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
         bullet.transform.position = transform.position;
-        bullet.SpawnTo(target, cur_attack);
+        bullet.Init(target, cur_attack);
         list_bullet.Enqueue(bullet);
 
     }
@@ -58,7 +58,7 @@ public class Tower : PollingObject
         towerName = towerData.TowerName;
         synergyName = towerData.SynergyName.ToArray();
         cost = towerData.Cost;
-        range = towerData.Range * 0.65f;
+        range = towerData.Range * 0.6f; // 범위 보정
         speed = towerData.Speed;
         attack = towerData.Attack.ToArray();
         grade = 1;
@@ -83,10 +83,11 @@ public class Tower : PollingObject
             yield return null;
 
             float closetDist = Mathf.Infinity;
-            List<PollingObject> list_monsters = MonsterSponer.Instance.spawned_monsters;
+            List<PollingObject> list_monsters = MonsterSponer.spawned_monsters;
             for (int i = 0; i < list_monsters.Count; i++)
             {
                 float dist = Vector2.Distance(list_monsters[i].transform.position, transform.position);
+ 
                 if (dist <= range && dist <= closetDist)
                 {
                     closetDist = dist;
@@ -123,6 +124,7 @@ public class Tower : PollingObject
                 StartCoroutine(SearchTarget());
                 break;
             }
+
             SpawnBullet();
             yield return new WaitForSeconds(1 / speed);
         }

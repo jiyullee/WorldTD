@@ -13,12 +13,13 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     [SerializeField] private GameObject monsterContainer;
     private Sprite nextSprite;
     private Queue<PollingObject> monsterQueue;
-    //현재 필드에 스폰된 몬스터 리스트
-    public List<PollingObject> spawned_monsters;
+    //현재 필드에 스폰된 몬스터 리스트s
+    public static List<PollingObject> spawned_monsters = new List<PollingObject>();
     private int amount;
     private static int stage = 0;
     private bool flag = true;
 
+    public static bool IsPoolingObject(PollingObject pollingObject) => spawned_monsters.Contains(pollingObject);
     public override void OnCreated()
     {
         Transform startTransfrom = LoadManager.Instance.GetMap()[0].gameObject.transform;
@@ -33,6 +34,10 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
         StartCoroutine("SponnerController");
     }
 
+    public override void OnInitiate()
+    {
+    }
+    
     /// <summary>
     /// 몬스터의 데이터를 세팅해줌.
     /// 이미지가 생길 경우 이미지 스크립트로 해줄것.
@@ -76,9 +81,5 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
 
             amount--;
         }
-    }
-
-    public override void OnInitiate()
-    {
     }
 }
