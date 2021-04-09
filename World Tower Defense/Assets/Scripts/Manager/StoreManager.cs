@@ -8,8 +8,14 @@ public class StoreManager : UnitySingleton<StoreManager>
     public List<TowerInstance>[] list_all_towers;
     private List<TowerInstance> list_remain_towers;
     private int max_country;
-    private int[] weight = {30, 20, 20, 20, 10};
-    private int max_store = 5;
+    private int gold;
+    private int interest;
+    private int level;
+    private int max_level;
+    private int exp;
+    private int max_exp;
+    private float[] rarity = {0};
+    private int max_store; // 상점 구매 칸 수
     public static TowerInstance selectedTowerInstance;
     public static bool isSelecting;
     
@@ -26,7 +32,7 @@ public class StoreManager : UnitySingleton<StoreManager>
 
     public override void OnInitiate()
     {
-
+        InitState();
     }
 
     private void AddList()
@@ -48,31 +54,50 @@ public class StoreManager : UnitySingleton<StoreManager>
     /// <returns></returns>
     private int SelectRand()
     {
-        float rand = Random.Range(0, 100);
+        float rand = Random.Range(0f, 1f);
         int cost = 0;
-        float sum = weight[cost];
+        float sum = rarity[cost];
         while (true)
         {
             if (rand <= sum)
             {
                 return cost + 1;
             }
-            sum += weight[++cost];
+            sum += rarity[++cost];
         }
     }
     public void RefreshStore()
     {
+        if (gold < 1)
+            return;
+
+        gold -= 1;
+        SetGoldUI();
+        
         for (int i = 0; i < max_store; i++)
         {
             int cost = SelectRand();
             StoreUI.Instance.Refresh(i, list_all_towers[cost][Random.Range(0, list_all_towers[cost].Count)]);
         }
     }
-
+    
     public void SetSelectedInstance(TowerInstance p_towerInstance)
     {
         selectedTowerInstance = p_towerInstance;
         isSelecting = true;
+    }
+    
+    public void BuyTower()
+    {
+        if (selectedTowerInstance == null) return;
+
+        int cost = selectedTowerInstance.GetTowerData().Cost;
+        
+        if (gold < cost)
+            return;
+        
+        gold -= cost;
+        SetGoldUI();
     }
 
     public void SetNullInstance()
@@ -89,4 +114,69 @@ public class StoreManager : UnitySingleton<StoreManager>
         MapUI.Instance.SetViewSelectableButtons(false);
         StoreUI.Instance.SetActiveButtons(true);
     }
+
+    private void InitState()
+    {
+        max_store = 5;
+        gold = 300;
+        interest = 0;
+        
+        level = 1;
+        max_level = 8;
+        rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
+        exp = 0;
+        max_exp = StoreData.Instance.GetTableData(level).MaxExp;
+        
+        SetLevelUI();
+        SetExpUI();
+        SetGoldUI();
+    }
+
+    public void ExpUp(int increase)
+    {
+        //골드 부족
+        if (gold < 5)
+            return;
+
+        gold -= 5;
+        
+        if (exp + increase < max_exp)
+            exp += increase;
+        else if(exp + increase >= max_exp)
+        {
+            exp = exp + increase - max_exp;
+            LevelUp();
+        }
+
+        //경험치, 골드 UI 적용
+        SetExpUI();
+        SetGoldUI();
+        
+    }
+    
+    public void LevelUp()
+    {
+        level = level + 1 <= max_level ? level + 1 : max_level;
+        rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
+        max_exp = StoreData.Instance.GetTableData(level).MaxExp;
+        
+        //레벨 UI 적용
+        SetLevelUI();
+    }
+
+    private void SetExpUI()
+    {
+        StoreUI.Instance.SetExpUI(exp, max_exp, level == max_level);
+    }
+
+    private void SetLevelUI()
+    {
+        StoreUI.Instance.SetLevelUI(level);
+    }
+
+    private void SetGoldUI()
+    {
+        StoreUI.Instance.SetGoldUI(gold, interest);
+    }
+    
 }

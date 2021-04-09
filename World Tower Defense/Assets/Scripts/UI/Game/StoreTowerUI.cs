@@ -46,6 +46,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
         
         //StoreManager에 타워 정보 전달 -> 타워 배치 가능한 버튼들 ON & 기물 구매 OFF
         StoreManager.Instance.SetSelectedInstance(towerInstance);
+        StoreManager.Instance.BuyTower();
         MapUI.Instance.SetViewSelectableButtons();
         StoreUI.Instance.SetActiveButtons(false);
         InitTower();

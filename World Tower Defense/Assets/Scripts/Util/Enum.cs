@@ -32,8 +32,7 @@ public enum ParsingDataSet : int
     MonsterData,
     TowerData,
     StoreTowerData,
-    ShopData,
-    END,
+    StoreData,
 
 }
 public enum TILE_DATA
