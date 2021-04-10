@@ -15,6 +15,9 @@ public abstract class PollingObject : MonoBehaviour, ISPollingObject
 {
     [SerializeField]
     protected string prefabName;
+
+    protected List<Synergy> list_synergy;
+    
     public abstract void OnCreated();
     public abstract void OnInitiate();
     public virtual void SetName()

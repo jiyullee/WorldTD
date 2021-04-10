@@ -152,5 +152,10 @@ public class Monster : PollingObject
         spriteRenderer.color = color;
     }
 
+    public void DecreaseSpeed(float p_decrease)
+    {
+        moveSpeed = moveSpeed * p_decrease;
+    }
+
     #endregion
 }

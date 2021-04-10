@@ -8,8 +8,8 @@ public class Tower : PollingObject
 {
     #region Fields
 
-    [SerializeField] private string towerName;
-    private string[] synergyName;
+    public string towerName { get; private set; }
+    public string[] synergyName { get; private set; }
     [SerializeField] private int cost;
     [SerializeField] private int grade;
 
@@ -25,6 +25,7 @@ public class Tower : PollingObject
     private Coroutine runningRoutine;
     private Queue<Bullet> list_bullet = new Queue<Bullet>();
 
+    private float decreaseMonsterSpeed;
     #endregion
 
     #region Callbacks
@@ -32,11 +33,12 @@ public class Tower : PollingObject
     public override void OnCreated()
     {
         target = null;
+        list_synergy = new List<Synergy>();
     }
 
     public override void OnInitiate()
     {
-
+       
     }
     
     #endregion
@@ -47,7 +49,7 @@ public class Tower : PollingObject
     {
         Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
         bullet.transform.position = transform.position;
-        bullet.Init(target, cur_attack);
+        bullet.Init(target, cur_attack, decreaseMonsterSpeed);
         list_bullet.Enqueue(bullet);
 
     }
@@ -65,16 +67,35 @@ public class Tower : PollingObject
         cur_attack = attack[grade];
 
         canAttack = true;
+        decreaseMonsterSpeed = 1f;
+        
+        for (int i = 0; i < synergyName.Length; i++)
+        {
+            Synergy synergy = gameObject.AddComponent(System.Type.GetType(synergyName[i])) as Synergy;;
+            list_synergy.Add(synergy);
+        }
+        
         ChangeState(TOWER_STATE.SearchTarget);
         StartCoroutine(SearchTarget());
     }
-
+    
+    public void ActiveSynergy()
+    {
+        for (int i = 0; i < list_synergy.Count; i++)
+        {
+            int index = SynergyManager.Instance.GetActivateIndex(synergyName[i]);
+            list_synergy[i].SetSynergy(this, synergyName[i], index);
+        }
+    }
+    
     private void ChangeState(TOWER_STATE state)
     {
         TowerState = state;
     }
 
     #endregion
+
+    #region Coroutine
 
     IEnumerator SearchTarget()
     {
@@ -129,5 +150,16 @@ public class Tower : PollingObject
             yield return new WaitForSeconds(1 / speed);
         }
     }
+
+    #endregion
+
+    #region SynergyFuncs
+
+    public void DecreaseMonsterSpeed(float p)
+    {
+        decreaseMonsterSpeed = p;
+    }
+
+    #endregion
 
 }

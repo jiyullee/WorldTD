@@ -22,7 +22,7 @@ public abstract class Singleton<T> : ISingleton where T : Singleton<T>, new()
 
     public abstract void OnInitiate();
 
-    protected static T _instance;
+    private static T _instance;
 
     public static T Instance => _instance != null ? _instance : GetInstanceObject();
 
@@ -47,7 +47,7 @@ public abstract class UnitySingleton<T> : MonoBehaviour, ISingleton where T : Un
 
     public abstract void OnInitiate();
 
-    protected static T _instance;
+    private static T _instance;
 
     public static T Instance => _instance != null ? _instance : GetInstanceObject();
 

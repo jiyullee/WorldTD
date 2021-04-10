@@ -33,7 +33,7 @@ public enum ParsingDataSet : int
     TowerData,
     StoreTowerData,
     StoreData,
-
+    SynergyData,
 }
 public enum TILE_DATA
 {
@@ -46,4 +46,18 @@ public enum TOWER_STATE
 {
     SearchTarget,
     Attack,
+}
+
+[System.Serializable]
+public enum SYNERGY : int
+{
+    Asia = 0,
+    Africa = 1,
+    NorthAmerica = 2,
+    SouthAmerica = 3,
+    Oceania = 4,
+    Europe = 5,
+    Island = 6,
+    Peninsula = 7,
+    Continent = 8,
 }

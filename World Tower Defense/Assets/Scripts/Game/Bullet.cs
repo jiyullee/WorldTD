@@ -7,8 +7,9 @@ public class Bullet : PollingObject
 {
     private float moveSpeed = 6f;
     private float damage;
+    private float decreaseMonsterSpeed;
     private PollingObject target;
-
+    
     #region CallBacks
 
     public override void OnCreated()
@@ -39,6 +40,7 @@ public class Bullet : PollingObject
         if (monster != null && monster == target)
         {
             monster.GetDamage(damage);
+            monster.DecreaseSpeed(decreaseMonsterSpeed);
             DestroySelf();
         }
     }
@@ -53,10 +55,11 @@ public class Bullet : PollingObject
         Polling2.ReturnObject(this);
     }
 
-    public void Init(PollingObject p_target, float p_damage)
+    public void Init(PollingObject p_target, float p_damage, float p_decrease = 1)
     {
         target = p_target;
         damage = p_damage;
+        decreaseMonsterSpeed = p_decrease;
     }
 
     public void Move()
