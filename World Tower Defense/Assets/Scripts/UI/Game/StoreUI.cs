@@ -11,6 +11,7 @@ public class StoreUI : MonoBehaviourSubUI
     private Text text_level;
     private Image image_expBar;
     private StoreTowerUI[] storeTowers;
+    private Button btn_refresh;
     public override void Init()
     {
         Instance = this;
@@ -19,8 +20,9 @@ public class StoreUI : MonoBehaviourSubUI
         text_level = transform.Find("Bottom/State/LevelText/Text").GetComponent<Text>();
         text_exp = transform.Find("Bottom/State/LevelText/ExpText/Text").GetComponent<Text>();
         image_expBar = transform.Find("Bottom/State/ExpBar/Bar").GetComponent<Image>();
-        
-        AddButtonEvent("Bottom/RefreshBtn", StoreManager.Instance.RefreshStore);
+
+        btn_refresh = transform.Find("Bottom/RefreshBtn").GetComponent<Button>();
+        AddButtonEvent(btn_refresh, StoreManager.Instance.RefreshStore);
         AddButtonEvent("Bottom/LvUpBtn", ExpUp);
         storeTowers = transform.Find("Top/Scroll View/Viewport").GetComponentsInChildren<StoreTowerUI>();
         for (int i = 0; i < storeTowers.Length; i++)
@@ -36,6 +38,7 @@ public class StoreUI : MonoBehaviourSubUI
         {
             storeTowers[i].SetActiveButton(state);
         }
+        btn_refresh.interactable = state;
     }
 
     public void Refresh(int idx, TowerInstance p_towerInstance)
