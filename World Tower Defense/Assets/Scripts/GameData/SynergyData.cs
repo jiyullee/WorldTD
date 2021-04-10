@@ -14,6 +14,7 @@ public class SynergyData : DataSets<SynergyData, SynergyData.SynergyDataClass>
     public class SynergyDataClass : DataClass
     {
         public string SynergyName;
+        public string SynergyName_KR;
         public List<string> TowerList;
         public List<float> Increase;
         public List<int> ActivateNum;

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SynergyManager : UnitySingleton<SynergyManager>
 {
-    private int synergy_count;
+    public int synergy_count { get; private set; }
     //시너지별, 타워 종류별 분류된 테이블
     public Dictionary<string, Dictionary<string, bool>> SynergyTable = new Dictionary<string, Dictionary<string, bool>>();
     
@@ -32,7 +32,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
             SynergyCount[synergyName] = SynergyData.Instance.GetTableData(i).ActivateNum;
             SynergyIndex.Add(synergyName, 0);
         }
-
+        
     }
 
     public override void OnInitiate()
@@ -40,11 +40,28 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         
     }
 
+    private void Start()
+    {
+        SetSynergyUI();
+    }
+
+    private void SetSynergyUI()
+    {
+        for (int i = 0; i < synergy_count; i++)
+        {
+            string synergyName = SynergyData.Instance.GetTableData(i).SynergyName;
+            string synergyName_KR = SynergyData.Instance.GetTableData(i).SynergyName_KR;
+            int idx = SynergyIndex[synergyName];
+            SynergyUI.Instance.InitSynergyUIs(i, synergyName_KR, SynergyCount[synergyName], idx);    
+        }
+        
+    }
     public void SetSynergy()
     {
         CheckSynergy();
         CheckCount();
         ActiveSynergy();
+        SetSynergyUI();
     }
 
     public void CheckSynergy()

@@ -14,9 +14,14 @@ public enum UIState
     StoreUI,
     GameOptionUI,
     MapUI,
+    SynergyUI,
 }
 
-
+public enum SYNERGY_STATE
+{
+    UP,
+    DOWN,
+}
 [System.Serializable]
 public enum Difficulty : int
 {
