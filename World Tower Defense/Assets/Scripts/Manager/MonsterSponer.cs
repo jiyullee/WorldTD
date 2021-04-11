@@ -6,7 +6,6 @@ using GameData;
 
 public class MonsterSponer : UnitySingleton<MonsterSponer>
 {
-    [SerializeField] private float stageWaitingTime = 2.0f;
     [SerializeField] private float spawnCycle = 0.5f;
     [SerializeField] private Sprite[] monsterImage;
     [SerializeField] private GameObject monsterContainer;
@@ -14,6 +13,7 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     private Queue<PollingObject> monsterQueue;
     //현재 필드에 스폰된 몬스터 리스트s
     public static List<PollingObject> spawned_monsters = new List<PollingObject>();
+    public float stageWaitingTime { get; set; }
     private int amount;
     public int stage { get; set; }
     private bool flag = true;
@@ -65,7 +65,6 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
             Monster monster = (Monster)Polling2.GetObject(monsterContainer, "Monster");
             monster.SetMonsterData(stage, nextSprite);
             monsterQueue.Enqueue(monster);
-
             amount--;
         }
         yield return new WaitForSeconds(stageWaitingTime);
