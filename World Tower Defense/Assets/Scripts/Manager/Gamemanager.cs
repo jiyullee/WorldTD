@@ -24,21 +24,30 @@ public class Gamemanager : UnitySingleton<Gamemanager>
         hp = MaxHp;
     }
 
-    //일시정지시 0, 배율시 맞는 배율 삽입
-    public void TimeSetting(float Magnification)
+    public void Damage(int damage)
     {
-        // TimeManager.TimeAcceleration(Magnification);
+        hp -= damage;
+        if (hp <= 0)
+        {
+            GameOver();
+        }
     }
+
     //게임 클리어
     public void GameClear()
     {
+        TimeManager.Instance.Pause();
+        //승리 UI
     }
+
     //게임에서 짐.
     public void GameOver()
     {
         Debug.Log("GameOver");
+        TimeManager.Instance.Pause();
         //게임 오버 UI표기.
     }
+
     public void ExitGame()
     {
 #if UNITY_EDITOR
