@@ -8,7 +8,6 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
 {
     [SerializeField] private float stageWaitingTime = 2.0f;
     [SerializeField] private float spawnCycle = 0.5f;
-    [SerializeField] private int maxStage = 30;
     [SerializeField] private Sprite[] monsterImage;
     [SerializeField] private GameObject monsterContainer;
     private Sprite nextSprite;
@@ -16,10 +15,11 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     //현재 필드에 스폰된 몬스터 리스트s
     public static List<PollingObject> spawned_monsters = new List<PollingObject>();
     private int amount;
-    private static int stage = 0;
+    public int stage { get; set; }
     private bool flag = true;
 
     public static bool IsPoolingObject(PollingObject pollingObject) => spawned_monsters.Contains(pollingObject);
+
     public override void OnCreated()
     {
         Transform startTransfrom = LoadManager.Instance.GetMap()[0].gameObject.transform;
@@ -31,13 +31,13 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
         monsterContainer.gameObject.name = "monsterContainer";
         monsterQueue = new Queue<PollingObject>();
         monsterContainer.transform.position = startTransfrom.position;
-        StartCoroutine("SponnerController");
     }
 
     public override void OnInitiate()
     {
     }
-    
+
+
     /// <summary>
     /// 몬스터의 데이터를 세팅해줌.
     /// 이미지가 생길 경우 이미지 스크립트로 해줄것.
@@ -48,23 +48,9 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
         amount = MonsterData.Instance.GetTableData(stage).Amount;
     }
 
-    /// <summary>
-    /// 몬스터를 스테이지 수만큼 스폰해주는 컨트롤러
-    /// 다음 스테이지 갈 경우 새로 켜줘야함.
-    /// </summary>
-    IEnumerator SponnerController()
+    public void StartSpown()
     {
-        while (true)
-        {
-            if (stage >= maxStage) break;
-            SetMonster();
-            yield return StartCoroutine("SponMonster");
-            yield return new WaitForSeconds(stageWaitingTime);
-            stage++;
-            //몬스터 스폰중;
-        }
-        //게임 클리어 코드
-        Gamemanager.Instance.GameClear();
+        StartCoroutine("SponMonster");
     }
 
     /// <summary>
@@ -72,6 +58,7 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     /// </summary>
     IEnumerator SponMonster()
     {
+        SetMonster();
         while (amount > 0)
         {
             yield return new WaitForSeconds(spawnCycle);
@@ -81,5 +68,8 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
 
             amount--;
         }
+        yield return new WaitForSeconds(stageWaitingTime);
+        StageManager.Instance.EndStage();
     }
+
 }
