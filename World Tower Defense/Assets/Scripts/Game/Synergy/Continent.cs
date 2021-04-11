@@ -6,6 +6,9 @@ public class Continent : Synergy
 {
     public override void ActiveSynergy()
     {
-        
+        if (TargetTower != null)
+        {
+            TargetTower.IncreaseTrueDamage(cur_changeAmount);
+        }
     }
 }

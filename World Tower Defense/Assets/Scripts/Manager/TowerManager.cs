@@ -28,6 +28,20 @@ public class TowerManager : UnitySingleton<TowerManager>
 
         SynergyManager.Instance.SetSynergy();
     }
+
+    public void IncreaseRange(float p)
+    {
+        for (int i = 0; i < list_tower.Count; i++)
+        {
+            list_tower[i].IncreaseRange(p);
+        }
+    }
     
-    
+    public void IncreaseAttack(float p)
+    {
+        for (int i = 0; i < list_tower.Count; i++)
+        {
+            list_tower[i].IncreaseAttack(p);
+        }
+    }
 }

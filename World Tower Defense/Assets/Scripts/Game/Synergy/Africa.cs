@@ -6,6 +6,7 @@ public class Africa : Synergy
 {
     public override void ActiveSynergy()
     {
-        
+        if(TargetTower != null)
+            TargetTower.DamageBuff(cur_changeAmount);
     }
 }

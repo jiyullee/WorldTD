@@ -6,7 +6,6 @@ public class NorthAmerica : Synergy
 {
     public override void ActiveSynergy()
     {
-        
-        
+        TowerManager.Instance.IncreaseRange(cur_changeAmount);
     }
 }

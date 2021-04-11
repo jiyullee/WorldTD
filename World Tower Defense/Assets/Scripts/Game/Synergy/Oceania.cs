@@ -6,7 +6,6 @@ public class Oceania : Synergy
 {
     public override void ActiveSynergy()
     {
-        
-        
+        TowerManager.Instance.IncreaseAttack(cur_changeAmount);
     }
 }
