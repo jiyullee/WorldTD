@@ -7,6 +7,7 @@ public class Asia : Synergy
 {
     public override void ActiveSynergy()
     {
-        TargetTower.DecreaseMonsterSpeed(cur_changeAmount);
+        if(TargetTower != null)
+            TargetTower.DecreaseMonsterSpeed(cur_changeAmount);
     }
 }

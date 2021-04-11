@@ -27,12 +27,9 @@ abstract public class Synergy : MonoBehaviour
         int key = GetKey();
         changeAmount = SynergyData.Instance.GetTableData(key).Increase.ToArray();
         
-        if (cur_idx != idx)
-        {
-            cur_idx = idx;
-            cur_changeAmount = changeAmount[cur_idx];
-            ActiveSynergy();
-        }
+        cur_idx = idx;
+        cur_changeAmount = changeAmount[cur_idx];
+        ActiveSynergy();
     }
     
     private int GetKey()

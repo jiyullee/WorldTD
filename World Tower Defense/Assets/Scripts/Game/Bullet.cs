@@ -8,8 +8,11 @@ public class Bullet : PollingObject
     private float moveSpeed = 6f;
     private float damage;
     private float decreaseMonsterSpeed;
+    private float decreaseArmor;
+    private float aroundDamage;
+    private float trueDamage;
     private PollingObject target;
-    
+    private bool ignoreArmor;
     #region CallBacks
 
     public override void OnCreated()
@@ -39,7 +42,7 @@ public class Bullet : PollingObject
         Monster monster = collider.gameObject.GetComponent<Monster>();
         if (monster != null && monster == target)
         {
-            monster.GetDamage(damage);
+            monster.GetDamage(damage, ignoreArmor, decreaseArmor, aroundDamage, trueDamage);
             monster.DecreaseSpeed(decreaseMonsterSpeed);
             DestroySelf();
         }
@@ -55,11 +58,19 @@ public class Bullet : PollingObject
         Polling2.ReturnObject(this);
     }
 
-    public void Init(PollingObject p_target, float p_damage, float p_decrease = 1)
+    public void Init(PollingObject p_target, float p_damage, float p_decreaseSpeed, float p_decreaseArmor, float p_aroundDamage, float p_trueDamage)
     {
         target = p_target;
         damage = p_damage;
-        decreaseMonsterSpeed = p_decrease;
+        decreaseMonsterSpeed = p_decreaseSpeed;
+        decreaseArmor = p_decreaseArmor;
+        aroundDamage = p_aroundDamage;
+        trueDamage = p_trueDamage;
+    }
+
+    public void IgnoreArmor(bool flag)
+    {
+        ignoreArmor = flag;
     }
 
     public void Move()

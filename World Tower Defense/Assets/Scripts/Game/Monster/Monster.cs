@@ -15,10 +15,11 @@ public class Monster : PollingObject
     protected Color color;
     protected Color hitColor;
     private float hp;
-    private float amor;
+    private float armor;
     private int index = 1;
     private int maxIndex;
 
+    public LayerMask AroundMonsterLayer;
     private bool IsTarget => spriteRenderer.sprite != null;
     #endregion
 
@@ -61,7 +62,7 @@ public class Monster : PollingObject
     public void SetMonsterData(int stage, Sprite sprite)
     {
         hp = MonsterData.Instance.GetTableData(stage).HP;
-        amor = MonsterData.Instance.GetTableData(stage).Armor;
+        armor = MonsterData.Instance.GetTableData(stage).Armor;
         moveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
         spriteRenderer.sprite = sprite;
         SetDifficulty();
@@ -76,7 +77,7 @@ public class Monster : PollingObject
     protected void SetDifficulty()
     {
         hp = (int)(weight[(int)difficulty] * (float)hp);
-        amor = (int)(weight[(int)difficulty] * (float)amor);
+        armor = (int)(weight[(int)difficulty] * (float)armor);
     }
 
 
@@ -126,9 +127,21 @@ public class Monster : PollingObject
     /// 데미지를 받는 함수
     /// 체력이 0이하로 내려가게 되면 풀링풀에 반환해줌
     /// </summary>
-    public void GetDamage(float dmg)
+    public void GetDamage(float dmg, bool ignoreArmor, float decreaseArmor, float aroundDamage, float trueDamage)
     {
-        hp -= dmg;
+        if(!ignoreArmor)
+        {
+            armor -= decreaseArmor;
+            armor = armor - decreaseArmor >= 0 ? armor - decreaseArmor : 0;
+            hp = hp + armor - dmg;
+            hp -= trueDamage;
+        }
+        else
+        {
+            hp -= dmg + trueDamage;
+        }
+
+        DamageAround(aroundDamage);
         if (hp <= 0)
         {
             index = 0;
@@ -136,6 +149,30 @@ public class Monster : PollingObject
         }
         ChangeColor();
     }
+
+    public void GetDamage(float aroundDamage)
+    {
+        hp -= aroundDamage;
+        if (hp <= 0)
+        {
+            index = 0;
+            Polling2.ReturnObject(this);
+        }
+        ChangeColor();
+    }
+    
+    public void DamageAround(float aroundDamage)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, AroundMonsterLayer);
+
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            Monster monster = colliders[i].GetComponent<Monster>();
+            monster.GetDamage(aroundDamage);
+        }
+    }
+
+    
 
     /// <summary>
     /// 알파값을 낮춰서 색을 바꿔주는 함수.
