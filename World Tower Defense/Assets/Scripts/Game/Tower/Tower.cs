@@ -78,6 +78,12 @@ public class Tower : PollingObject
         ChangeState(TOWER_STATE.SearchTarget);
         StartCoroutine(SearchTarget());
     }
+
+    public void SetTowerViewUI()
+    {
+        TowerUI.Instance.SetPosition(transform.position + new Vector3(0,1,0));
+        TowerUI.Instance.SetTexts(towerName, cur_attack, speed, range, grade);
+    }
     
     public void ActiveSynergy()
     {

@@ -16,9 +16,9 @@ public class TowerManager : UnitySingleton<TowerManager>
         
     }
 
-    public void CreateTower(TowerInstance towerInstance, Vector3 p_pos)
+    public Tower CreateTower(TowerInstance towerInstance, Vector3 p_pos)
     {
-        if (towerInstance == null) return;
+        if (towerInstance == null) return null;
 
         Tower tower = (Tower)Polling2.GetObject(gameObject, "Tower");
         Vector2 pos = Camera.main.ScreenToWorldPoint(p_pos);
@@ -27,6 +27,7 @@ public class TowerManager : UnitySingleton<TowerManager>
         list_tower.Add(tower);
 
         SynergyManager.Instance.SetSynergy();
+        return tower;
     }
     
     

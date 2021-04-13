@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviourSubUI
         AddUI(UIState.GameOptionUI, "OptionUI", "GameOptionUI");
         AddUI(UIState.MapUI, "MapUI", "MapUI");
         AddUI(UIState.SynergyUI, "SynergyUI", "SynergyUI");
+        AddUI(UIState.TowerUI, "TowerUI", "TowerUI");
         
         foreach (var data in uiList)
         {
@@ -68,5 +69,13 @@ public class UIManager : MonoBehaviourSubUI
         }
         else
             selectUI = null;
+    }
+
+    public void SetTowerView(bool state)
+    {
+        if (TowerUI.Instance != null && TowerUI.Instance.gameObject.activeSelf)
+        {
+            TowerUI.Instance.SetView(state);
+        }
     }
 }

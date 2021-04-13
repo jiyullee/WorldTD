@@ -106,13 +106,14 @@ public class StoreManager : UnitySingleton<StoreManager>
         isSelecting = false;
     }
 
-    public void CreateTower(Vector3 p_pos)
+    public Tower CreateTower(Vector3 p_pos)
     {
         //타워 생성 후 타워 정보 삭제 -> 배치 가능한 버튼 OFF & 기물 구매 가능 ON
-        TowerManager.Instance.CreateTower(selectedTowerInstance, p_pos);
+        Tower tower = TowerManager.Instance.CreateTower(selectedTowerInstance, p_pos);
         SetNullInstance();
         MapUI.Instance.SetViewSelectableButtons(false);
         StoreUI.Instance.SetActiveButtons(true);
+        return tower;
     }
 
     private void InitState()
