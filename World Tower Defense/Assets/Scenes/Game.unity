@@ -9527,8 +9527,6 @@ MonoBehaviour:
     pollingObject: {fileID: 9075845500042128780, guid: b155685b6ad39c14d9325f14da2330cd, type: 3}
   - count: 60
     pollingObject: {fileID: 5919826869327541493, guid: a7d54a9682f33304eb64bf0877c5d909, type: 3}
-<<<<<<< HEAD
-=======
 --- !u!114 &1423593961245890231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10818,4 +10816,3 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4434313418949101156}
   m_CullTransparentMesh: 1
->>>>>>> feat/UI
