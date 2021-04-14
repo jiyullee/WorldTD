@@ -6,6 +6,10 @@ using UnityEngine;
 public class TowerManager : UnitySingleton<TowerManager>
 {
     public List<Tower> list_tower = new List<Tower>();
+    
+    //타워 이름 별로 저장된 타워 자료구조
+    public Dictionary<string, List<Tower>> dic_tower = new Dictionary<string, List<Tower>>();
+    
     public override void OnCreated()
     {
         
@@ -26,8 +30,32 @@ public class TowerManager : UnitySingleton<TowerManager>
         tower.SetTowerData(towerInstance);
         list_tower.Add(tower);
 
+        if (dic_tower.ContainsKey(tower.TowerName))
+        {
+            if (dic_tower[tower.TowerName] == null)
+            {
+                dic_tower[tower.TowerName] = new List<Tower>();
+            }
+            dic_tower[tower.TowerName].Add(tower);
+        }
+        else
+        {
+            List<Tower> list = new List<Tower>();
+            list.Add(tower);
+            dic_tower.Add(tower.TowerName, list);    
+        }
+        
+        
         SynergyManager.Instance.SetSynergy();
         return tower;
+    }
+
+    public void RemoveTower(Tower p_tower)
+    {
+        if (dic_tower[p_tower.TowerName] != null)
+            dic_tower[p_tower.TowerName].Remove(p_tower);
+
+        list_tower.Remove(p_tower);
     }
 
     public void IncreaseRange(float p)
@@ -44,5 +72,29 @@ public class TowerManager : UnitySingleton<TowerManager>
         {
             list_tower[i].IncreaseAttack(p);
         }
+    }
+
+    public bool CompoundTower(Tower p_tower)
+    {
+        List<Tower> list = dic_tower[p_tower.TowerName];
+        List<Tower> list_new = new List<Tower>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            if(list[i].Grade == p_tower.Grade)
+                list_new.Add(list[i]);
+        }
+
+        if (list_new.Count < 3) return false;
+
+        list_new.Remove(p_tower);
+
+        for (int i = 0; i < 2; i++)
+        {
+            RemoveTower(list_new[i]);
+            list_new[i].ReturnTower();
+        }
+        
+        p_tower.Upgrade();
+        return true;
     }
 }

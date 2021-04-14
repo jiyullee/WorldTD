@@ -26,7 +26,7 @@ public class MapUI : MonoBehaviourSubUI
         for (int i = 0; i < pos_towers.Length; i++)
         {
             GameObject buttonObject = new GameObject("TowerButton");
-            buttonObject.layer = 8;
+            buttonObject.layer = 9;
             buttonObject.AddComponent<Button>();
             buttonObject.AddComponent<Image>();
             TowerButtonUI buttonUI = buttonObject.AddComponent<TowerButtonUI>();

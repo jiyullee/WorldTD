@@ -70,8 +70,8 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         
         for (int i = 0; i < list_tower.Count; i++)
         {
-            string towerName = list_tower[i].towerName;
-            string[] synergyNames = list_tower[i].synergyName;
+            string towerName = list_tower[i].TowerName;
+            string[] synergyNames = list_tower[i].SynergyNames;
 
             for (int j = 0; j < synergyNames.Length; j++)
             {

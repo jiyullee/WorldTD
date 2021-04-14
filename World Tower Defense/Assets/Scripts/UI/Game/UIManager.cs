@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviourSubUI
                 //타워 클릭 시
                 if (results.Count >= 2)
                 {
-                    if(results[1].gameObject.layer == 8)
+                    if(results[1].gameObject.layer == 9)
                         results[1].gameObject.GetComponent<TowerButtonUI>().SetViewTowerUI(); 
                 }
                    

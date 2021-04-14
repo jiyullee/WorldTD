@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class TowerUI : MonoBehaviourSubUI
     private Text text_speed;
     private Text text_range;
     private GameObject[] objs_grade;
+
+    private Tower tower;
     public override void Init()
     {
         Instance = this;
@@ -27,15 +30,21 @@ public class TowerUI : MonoBehaviourSubUI
         AddButtonEvent("CompoundButton", CompoundTower);
         SetView(false);
     }
+    
 
     public void SetPosition(Vector3 p_pos)
     {
         SetView(true);
         transform.position = Camera.main.WorldToScreenPoint(p_pos);
+        if(transform.position.x < 110f)
+            transform.position = new Vector3(120f, transform.position.y, transform.position.z);
+        else if(transform.position.x > 610f)
+            transform.position = new Vector3(620f, transform.position.y, transform.position.z);
     }
 
-    public void SetTexts(string p_name, float p_damage, float p_speed, float p_range, int p_grade)
+    public void SetTexts(Tower p_tower, string p_name, float p_damage, float p_speed, float p_range, int p_grade)
     {
+        tower = p_tower;
         text_towerName.text = p_name;
         text_damage.text = $"공격력 : {p_damage}";
         text_speed.text = $"공격 속도 : {p_speed}";
@@ -58,7 +67,11 @@ public class TowerUI : MonoBehaviourSubUI
 
     public void CompoundTower()
     {
-        Debug.Log("타워 합성");
+        if (tower != null)
+        {
+            TowerManager.Instance.CompoundTower(tower);
+
+        }
     }
     
 }

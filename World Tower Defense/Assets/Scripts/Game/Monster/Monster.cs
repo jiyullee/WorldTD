@@ -11,6 +11,7 @@ public class Monster : PollingObject
     private Transform thisTransform;
     private Difficulty difficulty;
     [SerializeField] [Range(1, 5)] private float moveSpeed = 1;
+    private float initMoveSpeed;
     protected float[] weight = { 1f, 1.25f, 1.5f };
     protected Color color;
     protected Color hitColor;
@@ -39,7 +40,10 @@ public class Monster : PollingObject
         hitColor.a = 0.5f;
     }
 
-    public override void OnInitiate() { }
+    public override void OnInitiate()
+    {
+        initMoveSpeed = moveSpeed;
+    }
 
     private void Update()
     {
@@ -191,7 +195,7 @@ public class Monster : PollingObject
 
     public void DecreaseSpeed(float p_decrease)
     {
-        moveSpeed = moveSpeed * p_decrease;
+        moveSpeed = initMoveSpeed * (1 - p_decrease);
     }
 
     #endregion

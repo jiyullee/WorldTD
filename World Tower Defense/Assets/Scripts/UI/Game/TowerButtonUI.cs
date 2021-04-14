@@ -27,26 +27,14 @@ public class TowerButtonUI : MonoBehaviourSubUI
             gameObject.SetActive(isPlaceTower);
     }
 
-    //타워 구매 시 호출되는 메소드
-    public void SetView()
+    public void InitTower()
     {
-        gameObject.SetActive(true);
-        if (!isPlaceTower)
-        {
-            image.color = new Color(0,0,255,1);
-            button.interactable = true;
-        }
-        else
-        {
-            image.color = new Color(0,0,255,0);
-            button.interactable = false;
-        }
+        tower = null;
+        isPlaceTower = false;
+        image.color = new Color(0,0,255,1);
+        SetView(false);
     }
-
-    public void SetInteratable()
-    {
-        button.interactable = isPlaceTower;
-    }
+    
     private void SelectTower()
     {
         
@@ -56,6 +44,7 @@ public class TowerButtonUI : MonoBehaviourSubUI
             isPlaceTower = true;
             image.color = new Color(0,0,255,0);
             tower = StoreManager.Instance.CreateTower(transform.position);
+            tower.SetButtonUI(this);
         }
         else
         {

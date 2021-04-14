@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,7 @@ public abstract class PollingObject : MonoBehaviour, ISPollingObject
     
     public abstract void OnCreated();
     public abstract void OnInitiate();
+
     public virtual void SetName()
     {
         if (prefabName == "")
@@ -39,4 +41,5 @@ public abstract class PollingObject : MonoBehaviour, ISPollingObject
         OnCreated();
         OnInitiate();
     }
+    
 }

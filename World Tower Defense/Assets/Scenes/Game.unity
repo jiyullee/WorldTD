@@ -1935,7 +1935,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 643551305}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &606267772
 MonoBehaviour:
@@ -2012,7 +2012,6 @@ Transform:
   - {fileID: 1691696806}
   - {fileID: 1579435440}
   - {fileID: 266223214}
-  - {fileID: 188513078}
   - {fileID: 606267771}
   - {fileID: 1704441954}
   m_Father: {fileID: 0}
@@ -2179,6 +2178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04ced70e25a5e74fb4fedc0eba0a5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  btn_event: {fileID: 0}
 --- !u!1 &685459732
 GameObject:
   m_ObjectHideFlags: 0
@@ -5599,7 +5599,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnCycle: 0.5
-  maxStage: 30
   monsterImage:
   - {fileID: 21300000, guid: 4c877bf4490f2c240b4a98a7a1ed975f, type: 3}
   - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
@@ -6125,7 +6124,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 643551305}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1704441955
 MonoBehaviour:
@@ -9574,7 +9573,6 @@ GameObject:
   - component: {fileID: 1423593961245890229}
   - component: {fileID: 1423593961245890231}
   - component: {fileID: 1423593961245890230}
-  - component: {fileID: 1423593961245890231}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -10156,7 +10154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -250, y: 236}
   m_SizeDelta: {x: 220, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4434313417749741486

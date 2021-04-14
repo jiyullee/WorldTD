@@ -9,10 +9,10 @@ public class Tower : PollingObject
 {
     #region Fields
 
-    public string towerName { get; private set; }
-    public string[] synergyName { get; private set; }
+    public string TowerName { get; private set; }
+    public string[] SynergyNames { get; private set; }
     [SerializeField] private int cost;
-    [SerializeField] private int grade;
+    public int Grade { get; private set; }
 
     [SerializeField] private float range;
     [SerializeField] private float speed;
@@ -29,9 +29,10 @@ public class Tower : PollingObject
     private Coroutine runningRoutine;
     private Queue<Bullet> list_bullet = new Queue<Bullet>();
 
-    private float decreaseMonsterSpeed;
-    private float increaseAttack;
-    private float increaseRange;
+    private float decreaseMonsterSpeed = 0f;
+    private float increaseAttack = 1f;
+    private float increaseSpeed = 1f;
+    private float increaseRange = 1f;
     private bool isActiveAfricaSynergy;
     private bool ignoreArmor;
     private float aroundDamage;
@@ -41,6 +42,7 @@ public class Tower : PollingObject
 
     private Collider2D[] colliders;
     public LayerMask AroundTowerLayer;
+    private TowerButtonUI ButtonUI;
     #endregion
 
     #region Callbacks
@@ -55,34 +57,40 @@ public class Tower : PollingObject
     {
        
     }
-    
+
     #endregion
 
     #region Functions
 
+    public void ReturnTower()
+    {
+        ButtonUI.InitTower();
+        Polling2.ReturnObject(this);
+        
+    }
+    
     public void SetTowerData(TowerInstance p_towerInstance)
     {
         TowerData.TowerDataClass towerData = p_towerInstance.GetTowerData();
-        towerName = towerData.TowerName;
-        synergyName = towerData.SynergyName.ToArray();
+        TowerName = towerData.TowerName;
+        SynergyNames = towerData.SynergyName.ToArray();
         cost = towerData.Cost;
         range = towerData.Range * 0.6f; // 범위 보정
         speed = towerData.Speed;
         attack = towerData.Attack.ToArray();
-        grade = 1;
-        cur_attack = attack[grade];
+        Grade = 1;
+        cur_attack = attack[Grade];
 
         canAttack = true;
-        decreaseMonsterSpeed = 1f;
-        
-        for (int i = 0; i < synergyName.Length; i++)
+
+        for (int i = 0; i < SynergyNames.Length; i++)
         {
-            if (synergyName[i] == SYNERGY.Peninsula.ToString())
+            if (SynergyNames[i] == SYNERGY.Peninsula.ToString())
                 isPeninsula = true;
-            if (synergyName[i] == SYNERGY.Continent.ToString())
+            if (SynergyNames[i] == SYNERGY.Continent.ToString())
                 isContinent = true;
             
-            Synergy synergy = gameObject.AddComponent(System.Type.GetType(synergyName[i])) as Synergy;;
+            Synergy synergy = gameObject.AddComponent(System.Type.GetType(SynergyNames[i])) as Synergy;;
             list_synergy.Add(synergy);
         }
         
@@ -104,18 +112,23 @@ public class Tower : PollingObject
 
     }
 
+    public void SetButtonUI(TowerButtonUI p_buttonUI)
+    {
+        ButtonUI = p_buttonUI;
+    }
+
     public void SetTowerViewUI()
     {
         TowerUI.Instance.SetPosition(transform.position + new Vector3(0,1,0));
-        TowerUI.Instance.SetTexts(towerName, cur_attack, speed, range, grade);
+        TowerUI.Instance.SetTexts(this, TowerName, GetCurrentDamage(), GetCurrentSpeed(), GetCurrentRange(), Grade);
     }
     
     public void ActiveSynergy()
     {
         for (int i = 0; i < list_synergy.Count; i++)
         {
-            int index = SynergyManager.Instance.GetActivateIndex(synergyName[i]);
-            list_synergy[i].SetSynergy(this, synergyName[i], index);
+            int index = SynergyManager.Instance.GetActivateIndex(SynergyNames[i]);
+            list_synergy[i].SetSynergy(this, SynergyNames[i], index);
         }
     }
     
@@ -124,18 +137,39 @@ public class Tower : PollingObject
         TowerState = state;
     }
 
+    private float GetCurrentDamage()
+    {
+        return attack[Grade - 1] * (1 + increaseAttack);
+    }
+
+    private float GetCurrentSpeed()
+    {
+        return speed * (1 + increaseSpeed);
+    }
+
+    private float GetCurrentRange()
+    {
+        return range * (1 + increaseRange);
+    }
+    
     //최종 타워 데미지 환산 메소드
     private float GetDamage()
     {
         float rand = Random.Range(0f, 1f);
         if (rand < percent_damageBuff)
-            cur_attack = attack[grade] * increaseAttack * 2;
+            cur_attack = attack[Grade - 1] * (1 + increaseAttack) * 2;
         else
-            cur_attack = attack[grade] * increaseAttack;
+            cur_attack = attack[Grade - 1] * (1 + increaseAttack);
         
         return cur_attack;
     }
 
+    public void Upgrade()
+    {
+        Grade++;
+        SetTowerViewUI();
+    }
+    
     #endregion
 
     #region Coroutine
@@ -152,7 +186,7 @@ public class Tower : PollingObject
             {
                 float dist = Vector2.Distance(list_monsters[i].transform.position, transform.position);
  
-                if (dist <= range + increaseRange && dist <= closetDist)
+                if (dist <= GetCurrentRange() + increaseRange && dist <= closetDist)
                 {
                     closetDist = dist;
                     target = list_monsters[i];
@@ -190,7 +224,7 @@ public class Tower : PollingObject
             }
 
             SpawnBullet();
-            yield return new WaitForSeconds(1 / speed);
+            yield return new WaitForSeconds(1 / GetCurrentSpeed());
         }
     }
 
@@ -218,7 +252,7 @@ public class Tower : PollingObject
     // 아시아
     public void DecreaseMonsterSpeed(float p)
     {
-        decreaseMonsterSpeed = 1 - p;
+        decreaseMonsterSpeed = p;
     }
 
     //아프리카
@@ -242,13 +276,13 @@ public class Tower : PollingObject
     //오세아니아
     public void IncreaseAttack(float p)
     {
-        increaseAttack = 1 + p;
+        increaseAttack = p;
     }
 
     //유럽
     public void IncreaseSpeed(float p)
     {
-        speed *= 1 + p;
+        increaseSpeed = p;
     }
 
     //반도
@@ -269,6 +303,7 @@ public class Tower : PollingObject
             trueDamage = 0;
         }
     }
+    
     #endregion
 
 }
