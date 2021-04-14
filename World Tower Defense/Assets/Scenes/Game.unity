@@ -1906,8 +1906,6 @@ RectTransform:
   m_AnchoredPosition: {x: 230, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0, y: 0.5}
-<<<<<<< Updated upstream
-=======
 --- !u!1 &606267770
 GameObject:
   m_ObjectHideFlags: 0
@@ -1952,7 +1950,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageWaitingTime: 3
->>>>>>> Stashed changes
 --- !u!1 &630902425
 GameObject:
   m_ObjectHideFlags: 0
@@ -2015,12 +2012,9 @@ Transform:
   - {fileID: 1691696806}
   - {fileID: 1579435440}
   - {fileID: 266223214}
-<<<<<<< Updated upstream
-=======
   - {fileID: 188513078}
   - {fileID: 606267771}
   - {fileID: 1704441954}
->>>>>>> Stashed changes
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
