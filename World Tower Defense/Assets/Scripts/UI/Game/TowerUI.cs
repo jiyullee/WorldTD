@@ -10,7 +10,7 @@ public class TowerUI : MonoBehaviourSubUI
     private Text text_damage;
     private Text text_speed;
     private Text text_range;
-    private Image[] images_grade;
+    private GameObject[] objs_grade;
     public override void Init()
     {
         Instance = this;
@@ -18,8 +18,12 @@ public class TowerUI : MonoBehaviourSubUI
         text_damage = transform.Find("TowerInfo/DamageText").GetComponent<Text>();
         text_speed = transform.Find("TowerInfo/SpeedText").GetComponent<Text>();
         text_range = transform.Find("TowerInfo/RangeText").GetComponent<Text>();
-
-        images_grade = transform.Find("Grade").GetComponentsInChildren<Image>();
+        objs_grade = new GameObject[3];
+        for (int i = 0; i < objs_grade.Length; i++)
+        {
+            objs_grade[i] = transform.Find($"Grade/Image{i}").gameObject;     
+        }
+       
         AddButtonEvent("CompoundButton", CompoundTower);
         SetView(false);
     }
@@ -43,7 +47,12 @@ public class TowerUI : MonoBehaviourSubUI
     {
         for (int i = 0; i <= p_grade - 1; i++)
         {
-            images_grade[i].gameObject.SetActive(true);
+            objs_grade[i].SetActive(true);
+        }
+
+        for (int i = p_grade; i < objs_grade.Length; i++)
+        {
+            objs_grade[i].SetActive(false);
         }
     }
 

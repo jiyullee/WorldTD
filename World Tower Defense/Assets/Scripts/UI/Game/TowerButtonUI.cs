@@ -13,7 +13,7 @@ public class TowerButtonUI : MonoBehaviourSubUI
     {
         button = GetComponent<Button>();
         image = GetComponent<Image>();
-        AddButtonEvent(button, Select);
+        AddButtonEvent(button, SelectTower);
         isPlaceTower = false;
         SetView(false);
         image.color = Color.blue;
@@ -21,47 +21,54 @@ public class TowerButtonUI : MonoBehaviourSubUI
 
     public override void SetView(bool state)
     {
+        if(state)
+            gameObject.SetActive(!isPlaceTower);
+        else
+            gameObject.SetActive(isPlaceTower);
+    }
+
+    //타워 구매 시 호출되는 메소드
+    public void SetView()
+    {
+        gameObject.SetActive(true);
         if (!isPlaceTower)
         {
-            gameObject.SetActive(state);
+            image.color = new Color(0,0,255,1);
+            button.interactable = true;
         }
         else
         {
             image.color = new Color(0,0,255,0);
+            button.interactable = false;
         }
     }
 
-    public void SetView()
+    public void SetInteratable()
     {
-        //타워 배치 중이면 미배치된 타워 버튼 ON
-        //타워 배치 중이 아니라면 배치된 타워 버튼 ON
-        if (StoreManager.isSelecting)
-        {
-            
-            gameObject.SetActive(!isPlaceTower);
-        }
-        else
-        {
-            gameObject.SetActive(isPlaceTower);
-        }
-            
+        button.interactable = isPlaceTower;
     }
-    
-    private void Select()
+    private void SelectTower()
     {
+        
         if (!isPlaceTower)
         {
             //타워 생성
             isPlaceTower = true;
-            tower = StoreManager.Instance.CreateTower(transform.position);     
+            image.color = new Color(0,0,255,0);
+            tower = StoreManager.Instance.CreateTower(transform.position);
         }
         else
         {
-            if (tower != null)
-            {
-                tower.SetTowerViewUI();
-            }
+            SetViewTowerUI();
         }
-       
+    }
+
+    public void SetViewTowerUI()
+    {
+        if (tower != null)
+        {
+            tower.SetTowerViewUI();
+            UIManager.Instance.SetEventButton(true);
+        }
     }
 }

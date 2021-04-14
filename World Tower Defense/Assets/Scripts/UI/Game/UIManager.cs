@@ -1,16 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviourSubUI
 {
     public static UIManager Instance;
-    
+
+    public Button btn_event;
     public Dictionary<UIState, MonoBehaviourSubUI> uiList = new Dictionary<UIState, MonoBehaviourSubUI>();
 
     //현재 보여주는 UI
     protected MonoBehaviourSubUI selectUI;
 
+    private GraphicRaycaster graphicRaycaster;
+    private PointerEventData ped;
     void Awake()
     {
         Instance = this;
@@ -19,6 +25,10 @@ public class UIManager : MonoBehaviourSubUI
     public override void Init()
     {
         Instance = this;
+        graphicRaycaster = GetComponent<GraphicRaycaster>();
+        ped = new PointerEventData(null);
+        btn_event = transform.Find("EventButton").GetComponent<Button>();
+        SetEventButton(false);
         
         AddUI(UIState.StateUI,"StateUI", "StateUI");
         AddUI(UIState.StoreUI, "StoreUI", "StoreUI");
@@ -33,7 +43,33 @@ public class UIManager : MonoBehaviourSubUI
                 data.Value.Init();
         }
     }
-    
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            ped.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>();
+            graphicRaycaster.Raycast(ped, results);
+            if (results.Count > 0){
+                //타워 UI Off
+                if(results[0].gameObject.layer != 8)
+                    SetTowerView();
+                
+                //타워 클릭 시
+                if (results.Count >= 2)
+                {
+                    if(results[1].gameObject.layer == 8)
+                        results[1].gameObject.GetComponent<TowerButtonUI>().SetViewTowerUI(); 
+                }
+                   
+            }
+            
+        }
+        
+        
+    }
+
     /// <summary>
     /// 해당 UI를 등록하는 메소드
     /// </summary>
@@ -71,11 +107,19 @@ public class UIManager : MonoBehaviourSubUI
             selectUI = null;
     }
 
-    public void SetTowerView(bool state)
+    public void SetTowerView()
     {
-        if (TowerUI.Instance != null && TowerUI.Instance.gameObject.activeSelf)
+        bool state = TowerUI.Instance.gameObject.activeSelf;
+        if (state)
         {
-            TowerUI.Instance.SetView(state);
+            TowerUI.Instance.SetView(false);
+            SetEventButton(false);
         }
+    }
+
+    public void SetEventButton(bool state)
+    {
+        btn_event.interactable = state;
+        btn_event.targetGraphic.raycastTarget = state;
     }
 }
