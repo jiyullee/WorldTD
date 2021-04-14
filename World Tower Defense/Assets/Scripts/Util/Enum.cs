@@ -15,6 +15,7 @@ public enum UIState
     GameOptionUI,
     MapUI,
     SynergyUI,
+    TowerUI,
 }
 
 public enum SYNERGY_STATE

@@ -5,37 +5,70 @@ using UnityEngine.UI;
 
 public class TowerButtonUI : MonoBehaviourSubUI
 {
-    private bool placeTower;
+    private bool isPlaceTower;
     private Button button;
     private Image image;
+    private Tower tower;
     public override void Init()
     {
         button = GetComponent<Button>();
         image = GetComponent<Image>();
-        AddButtonEvent(button, Select);
-        placeTower = false;
+        AddButtonEvent(button, SelectTower);
+        isPlaceTower = false;
         SetView(false);
         image.color = Color.blue;
     }
+
+    public override void SetView(bool state)
+    {
+        if(state)
+            gameObject.SetActive(!isPlaceTower);
+        else
+            gameObject.SetActive(isPlaceTower);
+    }
+
+    //타워 구매 시 호출되는 메소드
     public void SetView()
     {
-        //타워 배치 중이면 미배치된 타워 버튼 ON
-        //타워 배치 중이 아니라면 배치된 타워 버튼 ON
-        if (StoreManager.isSelecting)
+        gameObject.SetActive(true);
+        if (!isPlaceTower)
         {
-            gameObject.SetActive(!placeTower);
+            image.color = new Color(0,0,255,1);
+            button.interactable = true;
         }
         else
         {
-            gameObject.SetActive(placeTower);
+            image.color = new Color(0,0,255,0);
+            button.interactable = false;
         }
-            
     }
-    
-    private void Select()
+
+    public void SetInteratable()
     {
-        //타워 생성
-        placeTower = true;
-        StoreManager.Instance.CreateTower(transform.position);
+        button.interactable = isPlaceTower;
+    }
+    private void SelectTower()
+    {
+        
+        if (!isPlaceTower)
+        {
+            //타워 생성
+            isPlaceTower = true;
+            image.color = new Color(0,0,255,0);
+            tower = StoreManager.Instance.CreateTower(transform.position);
+        }
+        else
+        {
+            SetViewTowerUI();
+        }
+    }
+
+    public void SetViewTowerUI()
+    {
+        if (tower != null)
+        {
+            tower.SetTowerViewUI();
+            UIManager.Instance.SetEventButton(true);
+        }
     }
 }
