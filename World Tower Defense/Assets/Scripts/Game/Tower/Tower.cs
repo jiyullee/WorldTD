@@ -42,7 +42,7 @@ public class Tower : PollingObject
 
     private Collider2D[] colliders;
     public LayerMask AroundTowerLayer;
-    private TowerButtonUI ButtonUI;
+    public TowerButtonUI ButtonUI { get; private set; }
     #endregion
 
     #region Callbacks

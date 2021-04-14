@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GameData;
 using UnityEngine;
 
 public class TowerManager : UnitySingleton<TowerManager>
 {
     public List<Tower> list_tower = new List<Tower>();
-    
+    List<Tower> list_compound = new List<Tower>();
     //타워 이름 별로 저장된 타워 자료구조
     public Dictionary<string, List<Tower>> dic_tower = new Dictionary<string, List<Tower>>();
     
+    private List<TowerButtonUI> list_swap = new List<TowerButtonUI>();
     public override void OnCreated()
     {
         
@@ -17,7 +19,7 @@ public class TowerManager : UnitySingleton<TowerManager>
 
     public override void OnInitiate()
     {
-        
+
     }
 
     public Tower CreateTower(TowerInstance towerInstance, Vector3 p_pos)
@@ -74,27 +76,61 @@ public class TowerManager : UnitySingleton<TowerManager>
         }
     }
 
-    public bool CompoundTower(Tower p_tower)
+    public bool CanCompound(Tower p_tower)
     {
         List<Tower> list = dic_tower[p_tower.TowerName];
-        List<Tower> list_new = new List<Tower>();
+        list_compound.Clear();
         for (int i = 0; i < list.Count; i++)
         {
             if(list[i].Grade == p_tower.Grade)
-                list_new.Add(list[i]);
+                list_compound.Add(list[i]);
         }
 
-        if (list_new.Count < 3) return false;
-
-        list_new.Remove(p_tower);
+        if (list_compound.Count < 3) return false;
+        else return true;
+    }
+    public void CompoundTower(Tower p_tower)
+    {
+        list_compound.Remove(p_tower);
 
         for (int i = 0; i < 2; i++)
         {
-            RemoveTower(list_new[i]);
-            list_new[i].ReturnTower();
+            RemoveTower(list_compound[i]);
+            list_compound[i].ReturnTower();
         }
         
         p_tower.Upgrade();
-        return true;
+    }
+
+    public void AddTower_Swap(TowerButtonUI buttonUI)
+    {
+        list_swap.Add(buttonUI);
+    }
+
+    public void SwapPos()
+    {
+        TowerButtonUI buttonA = list_swap[0];
+        TowerButtonUI buttonB = list_swap[1];
+
+        Tower towerA = buttonA.tower;
+        Tower towerB = buttonB.tower;
+        
+        if (towerB == null)
+        {
+            Vector2 pos = Camera.main.ScreenToWorldPoint(buttonB.transform.position);
+            towerA.transform.position = new Vector3(pos.x,pos.y,0);
+        }
+        else
+        {
+            Vector3 tempTowerPos = towerA.transform.position;
+            towerA.transform.position = towerB.transform.position;
+            towerB.transform.position = tempTowerPos;
+
+        }
+        Vector3 tempPos = buttonA.transform.position;
+        buttonA.transform.position = buttonB.transform.position;
+        buttonB.transform.position = tempPos;
+
+        list_swap.Clear();
     }
 }

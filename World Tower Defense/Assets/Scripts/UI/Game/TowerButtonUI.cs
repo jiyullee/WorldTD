@@ -8,7 +8,7 @@ public class TowerButtonUI : MonoBehaviourSubUI
     private bool isPlaceTower;
     private Button button;
     private Image image;
-    private Tower tower;
+    public Tower tower { get; private set; }
     public override void Init()
     {
         button = GetComponent<Button>();
@@ -21,6 +21,12 @@ public class TowerButtonUI : MonoBehaviourSubUI
 
     public override void SetView(bool state)
     {
+        if(TowerUI.IsMoving)
+        {
+            gameObject.SetActive(true);
+            return;
+        }
+        
         if(state)
             gameObject.SetActive(!isPlaceTower);
         else
@@ -37,6 +43,14 @@ public class TowerButtonUI : MonoBehaviourSubUI
     
     private void SelectTower()
     {
+        if (TowerUI.IsMoving)
+        {
+            TowerUI.IsMoving = false;
+            TowerManager.Instance.AddTower_Swap(this);
+            MapUI.Instance.SetViewSelectableButtons(false);
+            TowerManager.Instance.SwapPos();
+            return;
+        }
         
         if (!isPlaceTower)
         {
@@ -48,6 +62,7 @@ public class TowerButtonUI : MonoBehaviourSubUI
         }
         else
         {
+            //타워 UI 띄우기
             SetViewTowerUI();
         }
     }
