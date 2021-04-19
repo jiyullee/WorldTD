@@ -22,7 +22,7 @@ public class Tower : PollingObject
     private bool canAttack;
     private bool isPeninsula;
     private bool isContinent;
-    
+
     private TOWER_STATE TowerState;
     public LayerMask LayerMask_Attack;
     public PollingObject target;
@@ -55,7 +55,7 @@ public class Tower : PollingObject
 
     public override void OnInitiate()
     {
-       
+
     }
 
     #endregion
@@ -66,9 +66,9 @@ public class Tower : PollingObject
     {
         ButtonUI.InitTower();
         Polling2.ReturnObject(this);
-        
+
     }
-    
+
     public void SetTowerData(TowerInstance p_towerInstance)
     {
         TowerData.TowerDataClass towerData = p_towerInstance.GetTowerData();
@@ -89,19 +89,19 @@ public class Tower : PollingObject
                 isPeninsula = true;
             if (SynergyNames[i] == SYNERGY.Continent.ToString())
                 isContinent = true;
-            
-            Synergy synergy = gameObject.AddComponent(System.Type.GetType(SynergyNames[i])) as Synergy;;
+
+            Synergy synergy = gameObject.AddComponent(System.Type.GetType(SynergyNames[i])) as Synergy; ;
             list_synergy.Add(synergy);
         }
-        
+
         ChangeState(TOWER_STATE.SearchTarget);
         StartCoroutine(SearchTarget());
-        if(isPeninsula)
+        if (isPeninsula)
             StartCoroutine(SearchAround(1.2f));
-        if(isContinent)
+        if (isContinent)
             StartCoroutine(SearchAround(0.6f));
     }
-    
+
     public void SpawnBullet()
     {
         Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
@@ -119,10 +119,10 @@ public class Tower : PollingObject
 
     public void SetTowerViewUI()
     {
-        TowerUI.Instance.SetPosition(transform.position + new Vector3(0,1,0));
+        TowerUI.Instance.SetPosition(transform.position + new Vector3(0, 1, 0));
         TowerUI.Instance.SetTexts(this, TowerName, GetCurrentDamage(), GetCurrentSpeed(), GetCurrentRange(), Grade);
     }
-    
+
     public void ActiveSynergy()
     {
         for (int i = 0; i < list_synergy.Count; i++)
@@ -131,7 +131,7 @@ public class Tower : PollingObject
             list_synergy[i].SetSynergy(this, SynergyNames[i], index);
         }
     }
-    
+
     private void ChangeState(TOWER_STATE state)
     {
         TowerState = state;
@@ -151,7 +151,7 @@ public class Tower : PollingObject
     {
         return range * (1 + increaseRange);
     }
-    
+
     //최종 타워 데미지 환산 메소드
     private float GetDamage()
     {
@@ -160,7 +160,7 @@ public class Tower : PollingObject
             cur_attack = attack[Grade - 1] * (1 + increaseAttack) * 2;
         else
             cur_attack = attack[Grade - 1] * (1 + increaseAttack);
-        
+
         return cur_attack;
     }
 
@@ -169,7 +169,7 @@ public class Tower : PollingObject
         Grade++;
         SetTowerViewUI();
     }
-    
+
     #endregion
 
     #region Coroutine
@@ -181,11 +181,11 @@ public class Tower : PollingObject
             yield return null;
 
             float closetDist = Mathf.Infinity;
-            List<PollingObject> list_monsters = MonsterSponer.spawned_monsters;
+            List<PollingObject> list_monsters = MonsterSpawner.spawned_monsters;
             for (int i = 0; i < list_monsters.Count; i++)
             {
                 float dist = Vector2.Distance(list_monsters[i].transform.position, transform.position);
- 
+
                 if (dist <= GetCurrentRange() + increaseRange && dist <= closetDist)
                 {
                     closetDist = dist;
@@ -296,14 +296,14 @@ public class Tower : PollingObject
     {
         if (colliders != null)
         {
-            trueDamage = p_damage * colliders.Length;    
+            trueDamage = p_damage * colliders.Length;
         }
         else
         {
             trueDamage = 0;
         }
     }
-    
+
     #endregion
 
 }
