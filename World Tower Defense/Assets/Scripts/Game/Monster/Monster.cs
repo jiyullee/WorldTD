@@ -9,10 +9,8 @@ public class Monster : PollingObject
     // public AnimationCurve moveCurve;
     private Transform[] map;
     private Transform thisTransform;
-    private Difficulty difficulty;
     [SerializeField] [Range(1, 5)] private float moveSpeed = 1;
     private float initMoveSpeed;
-    protected float[] weight = { 1f, 1.25f, 1.5f };
     protected Color color;
     protected Color hitColor;
     private float hp;
@@ -32,7 +30,6 @@ public class Monster : PollingObject
             spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         thisTransform = this.gameObject.transform;
         map = LoadManager.Instance.GetMap();
-        difficulty = Gamemanager.Instance.Difficulty;
         maxIndex = map.Length;
         GetComponent<CircleCollider2D>().radius = 0.06f;
         color = spriteRenderer.color;
@@ -42,7 +39,6 @@ public class Monster : PollingObject
 
     public override void OnInitiate()
     {
-        initMoveSpeed = moveSpeed;
     }
 
     private void Update()
@@ -67,12 +63,13 @@ public class Monster : PollingObject
     {
         hp = MonsterData.Instance.GetTableData(stage).HP;
         armor = MonsterData.Instance.GetTableData(stage).Armor;
-        moveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
+        initMoveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
         spriteRenderer.sprite = sprite;
         SetDifficulty();
-        //현재 직접 리스트를 추가하고 있지만 MonsterSponer의 함수에서 추가하도록 수정해야함
+        moveSpeed = initMoveSpeed;
+        //현재 직접 리스트를 추가하고 있지만 MonsterSpawner 함수에서 추가하도록 수정해야함
         if (IsTarget)
-            MonsterSponer.spawned_monsters.Add(this);
+            MonsterSpawner.spawned_monsters.Add(this);
     }
 
     /// <summary>
@@ -80,8 +77,8 @@ public class Monster : PollingObject
     /// </summary>
     protected void SetDifficulty()
     {
-        hp = (int)(weight[(int)difficulty] * (float)hp);
-        armor = (int)(weight[(int)difficulty] * (float)armor);
+        hp = LevelManager.Instance.SetHpWeight(hp);
+        initMoveSpeed = LevelManager.Instance.SetSpeedWeight(initMoveSpeed);
     }
 
 
@@ -108,9 +105,9 @@ public class Monster : PollingObject
                 index = 0;
                 Polling2.ReturnObject(this);
 
-                //현재 직접 리스트를 제거하고 있지만 MonsterSponer의 함수에서 제거하도록 수정해야함
-                if (MonsterSponer.spawned_monsters.Contains(this))
-                    MonsterSponer.spawned_monsters.Remove(this);
+                //현재 직접 리스트를 제거하고 있지만 MonsterSpawner 함수에서 제거하도록 수정해야함
+                if (MonsterSpawner.spawned_monsters.Contains(this))
+                    MonsterSpawner.spawned_monsters.Remove(this);
             }
         }
     }
@@ -133,7 +130,7 @@ public class Monster : PollingObject
     /// </summary>
     public void GetDamage(float dmg, bool ignoreArmor, float decreaseArmor, float aroundDamage, float trueDamage)
     {
-        if(!ignoreArmor)
+        if (!ignoreArmor)
         {
             armor -= decreaseArmor;
             armor = armor - decreaseArmor >= 0 ? armor - decreaseArmor : 0;
@@ -164,7 +161,7 @@ public class Monster : PollingObject
         }
         ChangeColor();
     }
-    
+
     public void DamageAround(float aroundDamage)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, AroundMonsterLayer);
@@ -176,7 +173,7 @@ public class Monster : PollingObject
         }
     }
 
-    
+
 
     /// <summary>
     /// 알파값을 낮춰서 색을 바꿔주는 함수.

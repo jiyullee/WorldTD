@@ -8,12 +8,6 @@ public class Gamemanager : UnitySingleton<Gamemanager>
     [SerializeField]
     private const int MaxHp = 30;
     private int hp;
-    /// 차후 게임 시작 창에서 setting해줄것.
-    [SerializeField] private Difficulty difficulty;
-    public Difficulty Difficulty
-    {
-        get => difficulty;
-    }
     public override void OnCreated()
     {
     }
