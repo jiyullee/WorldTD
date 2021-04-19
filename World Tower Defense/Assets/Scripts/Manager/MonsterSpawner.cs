@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameData;
 
-public class MonsterSponer : UnitySingleton<MonsterSponer>
+public class MonsterSpawner : UnitySingleton<MonsterSpawner>
 {
     [SerializeField] private float spawnCycle = 0.5f;
     [SerializeField] private Sprite[] monsterImage;
-    [SerializeField] private GameObject monsterContainer;
+    private GameObject monsterContainer;
     private Sprite nextSprite;
     private Queue<PollingObject> monsterQueue;
     //현재 필드에 스폰된 몬스터 리스트s
@@ -46,6 +46,7 @@ public class MonsterSponer : UnitySingleton<MonsterSponer>
     {
         nextSprite = monsterImage[MonsterData.Instance.GetTableData(stage).spriteIndex];
         amount = MonsterData.Instance.GetTableData(stage).Amount;
+        amount = LevelManager.Instance.SetamountWeight(amount);
     }
 
     public void StartSpown()

@@ -21,8 +21,8 @@ public class StageManager : UnitySingleton<StageManager>
     // Start is called before the first frame update
     private void Start()
     {
-        MonsterSponer.Instance.stage = 0;
-        MonsterSponer.Instance.stageWaitingTime = this.stageWaitingTime;
+        MonsterSpawner.Instance.stage = 0;
+        MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
         StartStage();
     }
 
@@ -33,20 +33,20 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void StartStage()
     {
-        stage = MonsterSponer.Instance.stage;
+        stage = MonsterSpawner.Instance.stage;
         if (stage > MaxStage)
         {
             StartCoroutine("CheckGameClear");
             return;
         }
-        MonsterSponer.Instance.StartSpown();
+        MonsterSpawner.Instance.StartSpown();
     }
     /// <summary>
     /// 다음 스테이지를 켜주는 함수
     /// </summary>
     public void NextStage()
     {
-        MonsterSponer.Instance.stage++;
+        MonsterSpawner.Instance.stage++;
         StartStage();
     }
 
@@ -65,7 +65,7 @@ public class StageManager : UnitySingleton<StageManager>
     {
         while (true)
         {
-            if (MonsterSponer.spawned_monsters.Count == 0)
+            if (MonsterSpawner.spawned_monsters.Count == 0)
                 Gamemanager.Instance.GameClear();
             yield return new WaitForEndOfFrame();
         }

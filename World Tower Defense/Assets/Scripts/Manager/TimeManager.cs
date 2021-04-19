@@ -31,7 +31,7 @@ public class TimeManager : UnitySingleton<TimeManager>
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
     }
 
-    public void startTime()
+    public void StartTime()
     {
         Time.timeScale = tempTime;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
