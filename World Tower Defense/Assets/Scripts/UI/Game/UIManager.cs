@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviourSubUI
 
     private GraphicRaycaster graphicRaycaster;
     private PointerEventData ped;
+    public static Canvas canvas { get; private set; }
     void Awake()
     {
         Instance = this;
@@ -25,6 +26,7 @@ public class UIManager : MonoBehaviourSubUI
     public override void Init()
     {
         Instance = this;
+        canvas = GetComponent<Canvas>();
         graphicRaycaster = GetComponent<GraphicRaycaster>();
         ped = new PointerEventData(null);
         btn_event = transform.Find("EventButton").GetComponent<Button>();
