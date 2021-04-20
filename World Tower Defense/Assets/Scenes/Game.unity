@@ -6112,16 +6112,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1579435439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c765fea94a4fe6459fa462985c11bea, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c54289dfeda4894f95aacb26bd75c9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnCycle: 0.5
   monsterImage:
   - {fileID: 21300000, guid: 4c877bf4490f2c240b4a98a7a1ed975f, type: 3}
-  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
-  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
-  - {fileID: 21300000, guid: 2a93123463da88247abd245dd47aa21d, type: 3}
-  monsterContainer: {fileID: 0}
+  - {fileID: 21300000, guid: fe77c3d2a3712934980c1ae7a102491f, type: 3}
 --- !u!1 &1584490716
 GameObject:
   m_ObjectHideFlags: 0
@@ -6623,7 +6620,7 @@ GameObject:
   - component: {fileID: 1704441954}
   - component: {fileID: 1704441955}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6652,9 +6649,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1704441953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 594d32833a380f349bbc77260b5a5a80, type: 3}
+  m_Script: {fileID: 11500000, guid: 92de099b4e35ed043ade9a33be7bd376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficulty: 1
+  isSetWeight:
+    isSetHpWeight: 1
+    isSetAmountWeight: 1
+    isSetSpeedWeight: 1
 --- !u!1 &1727606710
 GameObject:
   m_ObjectHideFlags: 0
@@ -10135,7 +10137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16661de0163f80c40935a19bbfc98172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
 --- !u!114 &1423593961245890230
 MonoBehaviour:
   m_ObjectHideFlags: 0

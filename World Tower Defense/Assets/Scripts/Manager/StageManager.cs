@@ -12,6 +12,8 @@ public class StageManager : UnitySingleton<StageManager>
     private int stage;
     public override void OnCreated()
     {
+        MonsterSpawner.Instance.stage = 0;
+        MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
     }
 
     public override void OnInitiate()
@@ -21,8 +23,7 @@ public class StageManager : UnitySingleton<StageManager>
     // Start is called before the first frame update
     private void Start()
     {
-        MonsterSpawner.Instance.stage = 0;
-        MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
+        
         StartStage();
     }
 
