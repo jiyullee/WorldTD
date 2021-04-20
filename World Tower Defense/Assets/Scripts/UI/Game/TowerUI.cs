@@ -79,9 +79,10 @@ public class TowerUI : MonoBehaviourSubUI
 
     public void SetPosition(Vector3 p_pos)
     {
-        ShowMenu();
+        gameObject.SetActive(true);
+        obj_info.SetActive(true);
         
-        transform.position = Camera.main.WorldToScreenPoint(p_pos);
+        transform.position = p_pos;
         if(transform.position.x < 110f)
             transform.position = new Vector3(120f, transform.position.y, transform.position.z);
         else if(transform.position.x > 610f)
@@ -89,14 +90,14 @@ public class TowerUI : MonoBehaviourSubUI
         
     }
 
-    public void SetTexts(Tower p_tower, string p_name, float p_damage, float p_speed, float p_range, int p_grade)
+    public void SetTexts(Tower p_tower)
     {
         tower = p_tower;
-        text_towerName.text = p_name;
-        text_damage.text = $"공격력 : {p_damage}";
-        text_speed.text = $"공격 속도 : {p_speed}";
-        text_range.text = $"공격 범위 : {p_range}";
-        SetGrade(p_grade);
+        text_towerName.text = tower.TowerName;
+        text_damage.text = $"공격력 : {tower.GetCurrentDamage()}";
+        text_speed.text = $"공격 속도 : {tower.GetCurrentSpeed()}";
+        text_range.text = $"공격 범위 : {tower.GetCurrentRange()}";
+        SetGrade(tower.Grade);
         btn_compound.interactable = TowerManager.Instance.CanCompound(tower);
     }
 

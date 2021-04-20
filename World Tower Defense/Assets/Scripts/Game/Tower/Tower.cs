@@ -101,11 +101,16 @@ public class Tower : PollingObject
         if(isContinent)
             StartCoroutine(SearchAround(0.6f));
     }
-    
+
+    public void SetPositionFromScreen(Vector2 p_pos)
+    {
+        Vector3 targetPos = Camera.main.ScreenToWorldPoint(p_pos);
+        transform.position = new Vector3(targetPos.x, targetPos.y , 0);
+    }
     public void SpawnBullet()
     {
         Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
-        bullet.transform.position = transform.position;
+        bullet.transform.position = new Vector3(transform.position.x, transform.position.y, 1);
         bullet.Init(target, GetDamage(), decreaseMonsterSpeed, decreaseArmor, aroundDamage, trueDamage);
         bullet.IgnoreArmor(ignoreArmor);
         list_bullet.Enqueue(bullet);
@@ -117,12 +122,6 @@ public class Tower : PollingObject
         ButtonUI = p_buttonUI;
     }
 
-    public void SetTowerViewUI()
-    {
-        TowerUI.Instance.SetPosition(transform.position + new Vector3(0,1,0));
-        TowerUI.Instance.SetTexts(this, TowerName, GetCurrentDamage(), GetCurrentSpeed(), GetCurrentRange(), Grade);
-    }
-    
     public void ActiveSynergy()
     {
         for (int i = 0; i < list_synergy.Count; i++)
@@ -137,17 +136,17 @@ public class Tower : PollingObject
         TowerState = state;
     }
 
-    private float GetCurrentDamage()
+    public float GetCurrentDamage()
     {
         return attack[Grade - 1] * (1 + increaseAttack);
     }
 
-    private float GetCurrentSpeed()
+    public float GetCurrentSpeed()
     {
         return speed * (1 + increaseSpeed);
     }
 
-    private float GetCurrentRange()
+    public float GetCurrentRange()
     {
         return range * (1 + increaseRange);
     }
@@ -167,7 +166,7 @@ public class Tower : PollingObject
     public void Upgrade()
     {
         Grade++;
-        SetTowerViewUI();
+        ButtonUI.SetViewTowerUI();
     }
     
     #endregion

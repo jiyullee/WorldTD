@@ -1,64 +1,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TowerButtonUI : MonoBehaviourSubUI
+public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
 {
-    private bool isPlaceTower;
+    private CanvasGroup canvasGroup;
+
+    public bool isPlaceTower => tower != null;
     private Button button;
     private Image image;
     public Tower tower { get; private set; }
+
+    private TowerButtonUI target;
+    public Vector3 initPos;
+    public bool CanSwap { get; private set; }
     public override void Init()
     {
+        canvasGroup = GetComponent<CanvasGroup>();
         button = GetComponent<Button>();
         image = GetComponent<Image>();
         AddButtonEvent(button, SelectTower);
-        isPlaceTower = false;
+        CanSwap = false;
         SetView(false);
-        image.color = Color.blue;
+        button.interactable = false;
+        initPos = GetComponent<RectTransform>().transform.position;
     }
 
     public override void SetView(bool state)
     {
-        if(TowerUI.IsMoving)
-        {
-            gameObject.SetActive(true);
-            return;
-        }
-        
-        if(state)
-            gameObject.SetActive(!isPlaceTower);
+        if (state)
+            image.color = new Color(0,0,255, 0.3f);
         else
-            gameObject.SetActive(isPlaceTower);
+            image.color = new Color(0,0,255, 0);
     }
 
+    public void SetInteractable(bool state)
+    {
+        button.interactable = state;
+    }
     public void InitTower()
     {
         tower = null;
-        isPlaceTower = false;
-        image.color = new Color(0,0,255,1);
         SetView(false);
     }
     
     private void SelectTower()
     {
-        if (TowerUI.IsMoving)
-        {
-            TowerUI.IsMoving = false;
-            TowerManager.Instance.AddTower_Swap(this);
-            MapUI.Instance.SetViewSelectableButtons(false);
-            TowerManager.Instance.SwapPos();
-            return;
-        }
+        // 버튼을 이용한 이동방식
+        // if (TowerUI.IsMoving)
+        // {
+        //     TowerUI.IsMoving = false;
+        //     TowerManager.Instance.AddTower_Swap(this);
+        //     MapUI.Instance.SetViewSelectableButtons(false);
+        //     TowerManager.Instance.SwapPos();
+        //     return;
+        // }
         
         if (!isPlaceTower)
         {
             //타워 생성
-            isPlaceTower = true;
-            image.color = new Color(0,0,255,0);
             tower = StoreManager.Instance.CreateTower(transform.position);
             tower.SetButtonUI(this);
+            SetView(false);
+            SetInteractable(true);
         }
         else
         {
@@ -71,8 +77,78 @@ public class TowerButtonUI : MonoBehaviourSubUI
     {
         if (tower != null)
         {
-            tower.SetTowerViewUI();
+            TowerUI.Instance.SetPosition(transform.position + new Vector3(0, 100,0));
+            TowerUI.Instance.SetTexts(tower);
             UIManager.Instance.SetEventButton(true);
+        }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!isPlaceTower) return;
+        
+        canvasGroup.blocksRaycasts = false;
+        UIManager.Instance.SetEventButton(false);
+        
+    }
+    
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!isPlaceTower) return;
+
+        transform.position = eventData.position;
+        if(isPlaceTower)
+            tower.SetPositionFromScreen(transform.position);
+    }
+    
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (!isPlaceTower) return;
+
+        canvasGroup.blocksRaycasts = true;
+        if (!CanSwap)
+        {
+            transform.position = initPos;
+            if(isPlaceTower)
+                tower.SetPositionFromScreen(initPos);
+           
+        }
+        CanSwap = false;
+    }
+
+    void Swap(TowerButtonUI p_target)
+    {
+        Vector2 pos1 = initPos;
+        Vector2 pos2 = p_target.initPos;
+        Vector2 tempPos = pos1;
+        
+        transform.position = pos2;
+        p_target.transform.position = tempPos;
+
+        initPos = transform.position;
+
+        if(isPlaceTower)
+            tower.SetPositionFromScreen(pos2);
+        
+        if(p_target.isPlaceTower)
+            p_target.tower.SetPositionFromScreen(tempPos);
+
+        CanSwap = true;
+        
+        SetView(false);
+        SetInteractable(isPlaceTower);
+    }        
+
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag != null)
+        {
+            eventData.pointerDrag.GetComponent<TowerButtonUI>().Swap(this);
+            initPos = transform.position;
+            SetView(false);
+            SetInteractable(isPlaceTower);
         }
     }
 }
