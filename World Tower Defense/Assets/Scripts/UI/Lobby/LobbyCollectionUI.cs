@@ -20,7 +20,7 @@ public class LobbyCollectionUI : MonoBehaviourSubUI
     public override void Init()
     {
         Instance = this;
-        AddButtonEvent("BackBtn", () => LobbyUIManager.Instance.SetUI(UIState.Lobby));
+        AddButtonEvent("BackBtn", () => LobbyUIManager.Instance.SetUI(UIState.CollectionUI, false));
         AddButtonEvent("InfoPanel/CloseBtn", CloseInfoPanel);
         panel_info = transform.Find("InfoPanel").gameObject;
         panel_filter = transform.Find("Filter").gameObject;
