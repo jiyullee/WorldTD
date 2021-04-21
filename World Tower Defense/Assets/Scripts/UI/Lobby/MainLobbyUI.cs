@@ -8,8 +8,8 @@ public class MainLobbyUI : MonoBehaviourSubUI
     {
         AddButtonEvent("MenuUI/StartBtn", StartGame);
         AddButtonEvent("MenuUI/CollectionBtn", 
-            () => LobbyUIManager.Instance.SetUI(UIState.CollectionUI));
-        AddButtonEvent("MenuUI/OptionBtn", () => LobbyUIManager.Instance.SetUI(UIState.OptionUI));
+            () => LobbyUIManager.Instance.SetUI(UIState.CollectionUI, true));
+        AddButtonEvent("MenuUI/OptionBtn", () => LobbyUIManager.Instance.SetUI(UIState.OptionUI, true));
         AddButtonEvent("MenuUI/EndBtn", EndGame);
     }
 

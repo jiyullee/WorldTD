@@ -8,9 +8,6 @@ public class LobbyUIManager : MonoBehaviourSubUI
     
     public Dictionary<UIState, MonoBehaviourSubUI> uiList = new Dictionary<UIState, MonoBehaviourSubUI>();
 
-    //현재 보여주는 UI
-    private MonoBehaviourSubUI selectUI;
-    
     void Awake()
     {
         Instance = this;
@@ -47,17 +44,11 @@ public class LobbyUIManager : MonoBehaviourSubUI
             
     }
 
-    public void SetUI(UIState state)
+    public void SetUI(UIState state, bool active)
     {
         if (uiList.ContainsKey(state))
         {
-            if (selectUI) selectUI.SetView(false);
-
-            selectUI = uiList[state];
-
-            if (selectUI) selectUI.SetView(true);
+            uiList[state].SetView(active);
         }
-        else
-            selectUI = null;
     }
 }
