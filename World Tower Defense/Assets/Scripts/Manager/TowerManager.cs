@@ -101,36 +101,5 @@ public class TowerManager : UnitySingleton<TowerManager>
         
         p_tower.Upgrade();
     }
-
-    public void AddTower_Swap(TowerButtonUI buttonUI)
-    {
-        list_swap.Add(buttonUI);
-    }
-
-    public void SwapPos()
-    {
-        TowerButtonUI buttonA = list_swap[0];
-        TowerButtonUI buttonB = list_swap[1];
-
-        Tower towerA = buttonA.tower;
-        Tower towerB = buttonB.tower;
-        
-        if (towerB == null)
-        {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(buttonB.transform.position);
-            towerA.transform.position = new Vector3(pos.x,pos.y,0);
-        }
-        else
-        {
-            Vector3 tempTowerPos = towerA.transform.position;
-            towerA.transform.position = towerB.transform.position;
-            towerB.transform.position = tempTowerPos;
-
-        }
-        Vector3 tempPos = buttonA.transform.position;
-        buttonA.transform.position = buttonB.transform.position;
-        buttonB.transform.position = tempPos;
-
-        list_swap.Clear();
-    }
+    
 }

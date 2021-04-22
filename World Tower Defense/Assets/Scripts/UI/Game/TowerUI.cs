@@ -9,7 +9,6 @@ public class TowerUI : MonoBehaviourSubUI
     public static TowerUI Instance;
     private GameObject obj_info;
     private GameObject obj_menu;
-    private Button btn_move;
     private Button btn_info;
     private Button btn_compound;
     private Text text_towerName;
@@ -17,8 +16,7 @@ public class TowerUI : MonoBehaviourSubUI
     private Text text_speed;
     private Text text_range;
     private GameObject[] objs_grade;
-
-    public static bool IsMoving;
+    
     private Tower tower;
     
     public override void Init()
@@ -26,10 +24,8 @@ public class TowerUI : MonoBehaviourSubUI
         Instance = this;
         obj_info = transform.Find("InfoUI").gameObject;
         obj_menu = transform.Find("Buttons").gameObject;
-        btn_move = obj_menu.transform.Find("MoveButton").GetComponent<Button>();
         btn_info = obj_menu.transform.Find("InfoButton").GetComponent<Button>();
         
-        AddButtonEvent(btn_move, MoveTower);
         AddButtonEvent(btn_info, ShowInfo);
         
         text_towerName = obj_info.transform.Find("TowerInfo/TowerNameText").GetComponent<Text>();
@@ -55,26 +51,10 @@ public class TowerUI : MonoBehaviourSubUI
         gameObject.SetActive(state);
     }
 
-    private void MoveTower()
-    {
-        SetView(false);
-        UIManager.Instance.SetEventButton(false);
-        IsMoving = true;
-        TowerManager.Instance.AddTower_Swap(tower.ButtonUI);
-        MapUI.Instance.SetViewSelectableButtons(true);
-    }
-
     private void ShowInfo()
     {
         obj_menu.SetActive(false);
         obj_info.SetActive(true);
-    }
-
-    private void ShowMenu()
-    {
-        gameObject.SetActive(true);
-        obj_menu.SetActive(true);
-        obj_info.SetActive(false);
     }
 
     public void SetPosition(Vector3 p_pos)
@@ -92,11 +72,13 @@ public class TowerUI : MonoBehaviourSubUI
 
     public void SetTexts(Tower p_tower)
     {
+        
         tower = p_tower;
         text_towerName.text = tower.TowerName;
-        text_damage.text = $"공격력 : {tower.GetCurrentDamage()}";
-        text_speed.text = $"공격 속도 : {tower.GetCurrentSpeed()}";
-        text_range.text = $"공격 범위 : {tower.GetCurrentRange()}";
+
+        text_damage.text = "공격력 : " + String.Format("{0:0.##}", tower.GetCurrentDamage());
+        text_speed.text = "공격 속도 : " + String.Format("{0:0.##}", tower.GetCurrentSpeed());
+        text_range.text = "공격 범위 : " + String.Format("{0:0.##}", tower.GetCurrentRange());
         SetGrade(tower.Grade);
         btn_compound.interactable = TowerManager.Instance.CanCompound(tower);
     }
