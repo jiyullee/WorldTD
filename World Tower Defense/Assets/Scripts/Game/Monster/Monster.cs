@@ -130,6 +130,7 @@ public class Monster : PollingObject
     /// </summary>
     public void GetDamage(float dmg, bool ignoreArmor, float decreaseArmor, float aroundDamage, float trueDamage)
     {
+        Transform tempPos = transform;
         if (!ignoreArmor)
         {
             armor -= decreaseArmor;
@@ -145,6 +146,9 @@ public class Monster : PollingObject
         DamageAround(aroundDamage);
         if (hp <= 0)
         {
+            ParticleSystem particle = EffectManager.GetParticle(tempPos);
+            EffectManager.ReturnParticle(particle);
+
             index = 0;
             Polling2.ReturnObject(this);
         }
@@ -153,12 +157,19 @@ public class Monster : PollingObject
 
     public void GetDamage(float aroundDamage)
     {
+        Transform tempPos = transform;
         hp -= aroundDamage;
         if (hp <= 0)
         {
+
+            ParticleSystem particle = EffectManager.GetParticle(tempPos);
+
+            EffectManager.ReturnParticle(particle);
+
             index = 0;
             Polling2.ReturnObject(this);
         }
+
         ChangeColor();
     }
 

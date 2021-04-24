@@ -168,6 +168,9 @@ public class Tower : PollingObject
     {
         Grade++;
         ButtonUI.SetViewTowerUI();
+
+        ParticleSystem particle = EffectManager.GetParticle(transform);
+        EffectManager.ReturnParticle(particle);
     }
 
     #endregion
