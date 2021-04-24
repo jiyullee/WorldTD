@@ -48,16 +48,6 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     
     private void SelectTower()
     {
-        // 버튼을 이용한 이동방식
-        // if (TowerUI.IsMoving)
-        // {
-        //     TowerUI.IsMoving = false;
-        //     TowerManager.Instance.AddTower_Swap(this);
-        //     MapUI.Instance.SetViewSelectableButtons(false);
-        //     TowerManager.Instance.SwapPos();
-        //     return;
-        // }
-        
         if (!isPlaceTower)
         {
             //타워 생성
