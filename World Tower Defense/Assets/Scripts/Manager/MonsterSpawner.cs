@@ -51,13 +51,13 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
 
     public void StartSpown()
     {
-        StartCoroutine("SponMonster");
+        StartCoroutine("SpawnMonster");
     }
 
     /// <summary>
     /// 몬스터를 amount개 소환하는 sponer
     /// </summary>
-    IEnumerator SponMonster()
+    IEnumerator SpawnMonster()
     {
         SetMonster();
         while (amount > 0)

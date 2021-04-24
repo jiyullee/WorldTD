@@ -16,15 +16,15 @@ public class Tower : PollingObject
 
     [SerializeField] private float range;
     [SerializeField] private float speed;
-    private float[] attack;
-    private float cur_attack;
+    private float[] damages;
+    private float cur_damage;
 
     private bool canAttack;
     private bool isPeninsula;
     private bool isContinent;
 
     private TOWER_STATE TowerState;
-    public LayerMask LayerMask_Attack;
+
     public PollingObject target;
     private Coroutine runningRoutine;
     private Queue<Bullet> list_bullet = new Queue<Bullet>();
@@ -77,9 +77,9 @@ public class Tower : PollingObject
         cost = towerData.Cost;
         range = towerData.Range * 0.6f; // 범위 보정
         speed = towerData.Speed;
-        attack = towerData.Attack.ToArray();
+        damages = towerData.Damage.ToArray();
         Grade = 1;
-        cur_attack = attack[Grade];
+        cur_damage = damages[Grade];
 
         canAttack = true;
 
@@ -139,7 +139,7 @@ public class Tower : PollingObject
 
     public float GetCurrentDamage()
     {
-        return attack[Grade - 1] * (1 + increaseAttack);
+        return damages[Grade - 1] * (1 + increaseAttack);
     }
 
     public float GetCurrentSpeed()
@@ -157,11 +157,11 @@ public class Tower : PollingObject
     {
         float rand = Random.Range(0f, 1f);
         if (rand < percent_damageBuff)
-            cur_attack = attack[Grade - 1] * (1 + increaseAttack) * 2;
+            cur_damage = damages[Grade - 1] * (1 + increaseAttack) * 2;
         else
-            cur_attack = attack[Grade - 1] * (1 + increaseAttack);
+            cur_damage = damages[Grade - 1] * (1 + increaseAttack);
 
-        return cur_attack;
+        return cur_damage;
     }
 
     public void Upgrade()

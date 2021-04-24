@@ -52,7 +52,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
             string synergyName = SynergyData.Instance.GetTableData(i).SynergyName;
             string synergyName_KR = SynergyData.Instance.GetTableData(i).SynergyName_KR;
             int idx = SynergyIndex[synergyName];
-            SynergyUI.Instance.InitSynergyUIs(i, synergyName_KR, SynergyCount[synergyName], idx);    
+            SynergyUI.Instance.SetSynergyUIs(i, synergyName_KR, SynergyCount[synergyName], idx);    
         }
         
     }
@@ -64,7 +64,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         SetSynergyUI();
     }
 
-    public void CheckSynergy()
+    private void CheckSynergy()
     {
         List<Tower> list_tower = TowerManager.Instance.list_tower;
         
@@ -83,7 +83,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         
     }
 
-    public void CheckCount()
+    private void CheckCount()
     {
         for (int i = 0; i < synergy_count; i++)
         {
@@ -126,7 +126,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         return SynergyIndex[p_synergyName];
     }
 
-    public void ActiveSynergy()
+    private void ActiveSynergy()
     {
         List<Tower> list_tower = TowerManager.Instance.list_tower;
         for (int i = 0; i < list_tower.Count; i++)

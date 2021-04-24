@@ -59,12 +59,12 @@ public class LobbyCollectionUI : MonoBehaviourSubUI
             text_name.fontSize = 31;
         
         string damage = "";
-        for (int i = 0; i < towerDataClass.Attack.Count; i++)
+        for (int i = 0; i < towerDataClass.Damage.Count; i++)
         {
-            if (i != towerDataClass.Attack.Count - 1)
-                damage += $"{towerDataClass.Attack[i]}/";
+            if (i != towerDataClass.Damage.Count - 1)
+                damage += $"{towerDataClass.Damage[i]}/";
             else
-                damage += $"{towerDataClass.Attack[i]} ★";
+                damage += $"{towerDataClass.Damage[i]} ★";
         }
 
         text_damage.text = damage;

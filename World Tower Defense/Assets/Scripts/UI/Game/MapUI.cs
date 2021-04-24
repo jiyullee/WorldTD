@@ -9,9 +9,7 @@ public class MapUI : MonoBehaviourSubUI
     public static MapUI Instance;
     
     private List<TowerButtonUI> list_buttonUI = new List<TowerButtonUI>();
-
-    public TowerButtonUI UI_from;
-    public TowerButtonUI UI_to;
+    
     public override void Init()
     {
         Instance = this;

@@ -1,4 +1,4 @@
-﻿KEY,TowerName,SynergyName,Cost,Attack,Speed,Range
+﻿KEY,TowerName,SynergyName,Cost,Damage,Speed,Range
 0,그리스,"Europe,Peninsula",1,"13,26,52",1,5
 1,베트남,"Asia,Peninsula",1,"4,8,16",0.35,4
 2,스페인,"Europe,Peninsula",1,"28,56,112",2,4

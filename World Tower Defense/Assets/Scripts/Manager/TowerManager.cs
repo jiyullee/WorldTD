@@ -11,7 +11,6 @@ public class TowerManager : UnitySingleton<TowerManager>
     //타워 이름 별로 저장된 타워 자료구조
     public Dictionary<string, List<Tower>> dic_tower = new Dictionary<string, List<Tower>>();
     
-    private List<TowerButtonUI> list_swap = new List<TowerButtonUI>();
     public override void OnCreated()
     {
         

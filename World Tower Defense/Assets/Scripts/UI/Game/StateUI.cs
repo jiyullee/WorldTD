@@ -8,7 +8,6 @@ public class StateUI : MonoBehaviourSubUI
     private Text scoreText;
     private Text roundText;
     private Text heartText;
-    private Text goldText;
 
     public override void Init()
     {

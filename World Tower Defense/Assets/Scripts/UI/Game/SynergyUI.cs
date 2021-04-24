@@ -51,9 +51,9 @@ public class SynergyUI : MonoBehaviourSubUI
         obj_ScrollView.SetActive(state);
     }
 
-    public void InitSynergyUIs(int i, string p_synergyName, List<int> list_activeNums, int idx)
+    public void SetSynergyUIs(int i, string p_synergyName, List<int> list_activeNums, int idx)
     {
-        SynergyViewUis[i].InitTexts(p_synergyName, list_activeNums, idx);
+        SynergyViewUis[i].SetTexts(p_synergyName, list_activeNums, idx);
     }
 
     private void InitState()

@@ -13,7 +13,7 @@ public class SynergyViewUI : MonoBehaviourSubUI
         text_count = transform.Find("Text").GetComponent<Text>();
     }
 
-    public void InitTexts(string p_synergyName, List<int> list_activateNums, int idx)
+    public void SetTexts(string p_synergyName, List<int> list_activateNums, int idx)
     {
         text_synergyName.text = p_synergyName;
 
