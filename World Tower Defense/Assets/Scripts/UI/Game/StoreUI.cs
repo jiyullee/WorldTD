@@ -70,7 +70,7 @@ public class StoreUI : MonoBehaviourSubUI
         }
         else
         {
-            text_exp.text = $"{p_exp} / {p_maxExp}";
+            text_exp.text = $"{p_exp}/{p_maxExp}";
             image_expBar.fillAmount = (float)p_exp / p_maxExp;    
         }
         

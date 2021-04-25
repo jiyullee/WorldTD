@@ -16,6 +16,16 @@ public enum UIState
     MapUI,
     SynergyUI,
     TowerUI,
+    PopUpUI,
+}
+
+public enum POPUP_STATE
+{
+    StageStart,
+    GameWin,
+    GameLose,
+    Option,
+    None,
 }
 
 public enum SYNERGY_STATE

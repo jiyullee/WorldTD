@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviourSubUI
 {
     public static UIManager Instance;
 
-    public Button btn_event;
+    private Button btn_event;
     public Dictionary<UIState, MonoBehaviourSubUI> uiList = new Dictionary<UIState, MonoBehaviourSubUI>();
 
     //현재 보여주는 UI
@@ -34,11 +34,11 @@ public class UIManager : MonoBehaviourSubUI
         
         AddUI(UIState.StateUI,"StateUI", "StateUI");
         AddUI(UIState.StoreUI, "StoreUI", "StoreUI");
-        AddUI(UIState.GameOptionUI, "OptionUI", "GameOptionUI");
         AddUI(UIState.MapUI, "MapUI", "MapUI");
         AddUI(UIState.SynergyUI, "SynergyUI", "SynergyUI");
         AddUI(UIState.TowerUI, "TowerUI", "TowerUI");
-        
+        AddUI(UIState.PopUpUI, "PopUpUI", "PopUpUI");
+
         foreach (var data in uiList)
         {
             if(data.Value)
