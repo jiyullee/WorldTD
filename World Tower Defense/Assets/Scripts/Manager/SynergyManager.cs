@@ -40,19 +40,13 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         
     }
 
-    private void Start()
-    {
-        SetSynergyUI();
-    }
-
     private void SetSynergyUI()
     {
         for (int i = 0; i < synergy_count; i++)
         {
             string synergyName = SynergyData.Instance.GetTableData(i).SynergyName;
-            string synergyName_KR = SynergyData.Instance.GetTableData(i).SynergyName_KR;
             int idx = SynergyIndex[synergyName];
-            SynergyUI.Instance.SetSynergyUIs(i, synergyName_KR, SynergyCount[synergyName], idx);    
+            SynergyUI.Instance.SetSynergyUIs(i, idx);    
         }
         
     }
