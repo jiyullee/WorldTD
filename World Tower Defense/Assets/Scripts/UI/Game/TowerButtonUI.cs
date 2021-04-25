@@ -133,6 +133,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
 
     public void OnDrop(PointerEventData eventData)
     {
+        if (StageManager.IsCombatting) return;
         if (eventData.pointerDrag != null)
         {
             eventData.pointerDrag.GetComponent<TowerButtonUI>().Swap(this);
