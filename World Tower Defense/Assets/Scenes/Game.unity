@@ -2651,7 +2651,7 @@ GameObject:
   m_Component:
   - component: {fileID: 597502694}
   m_Layer: 5
-  m_Name: Heart
+  m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4783,7 +4783,7 @@ GameObject:
   - component: {fileID: 972533264}
   - component: {fileID: 972533266}
   m_Layer: 5
-  m_Name: HeartText
+  m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7351,7 +7351,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100/MAX
+  m_Text: 100
 --- !u!222 &1539039588
 CanvasRenderer:
   m_ObjectHideFlags: 0
