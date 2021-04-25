@@ -23,7 +23,6 @@ public class StageManager : UnitySingleton<StageManager>
     // Start is called before the first frame update
     private void Start()
     {
-        
         StartStage();
     }
 
@@ -51,14 +50,14 @@ public class StageManager : UnitySingleton<StageManager>
         StartStage();
     }
 
-    /// <summary>
-    /// 스테이지가 끝날경우 호출함(start를 호출)
-    /// </summary>
-    public void EndStage()
-    {
-        NextStage();
-    }
 
+    /// <summary>
+    /// 스테이지 보상 주기
+    /// </summary>
+    public void Reward()
+    {
+        //보상 기입 (상점에 돈 , 스코어 올리기 등등.)
+    }
     /// <summary>
     /// 게임이 끝난 경우 남아있는 몹들을 계속 체크해서 끝나면 게임을 종료함.
     /// </summary>
