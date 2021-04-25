@@ -6,14 +6,16 @@ using GameData;
 public class StageManager : UnitySingleton<StageManager>
 {
     [SerializeField]
-    private const int MaxStage = 29;
+    private const int MaxStage = 30;
     [SerializeField]
-    private float stageWaitingTime = 3.0f;
+    private float stageWaitingTime;
+    private float max_waitTime;
     private int stage;
     public override void OnCreated()
     {
         MonsterSpawner.Instance.stage = 0;
         MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
+        max_waitTime = stageWaitingTime;
     }
 
     public override void OnInitiate()
@@ -23,8 +25,8 @@ public class StageManager : UnitySingleton<StageManager>
     // Start is called before the first frame update
     private void Start()
     {
-        
-        StartStage();
+        StoreManager.Instance.RefreshStore();
+        StartCoroutine(Wait());
     }
 
 
@@ -40,6 +42,7 @@ public class StageManager : UnitySingleton<StageManager>
             StartCoroutine("CheckGameClear");
             return;
         }
+        PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
         MonsterSpawner.Instance.StartSpown();
     }
     /// <summary>
@@ -56,7 +59,9 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void EndStage()
     {
-        NextStage();
+        StoreManager.Instance.EarnGold();
+        StoreManager.Instance.RefreshStore();
+        StartCoroutine(Wait());
     }
 
     /// <summary>
@@ -70,6 +75,20 @@ public class StageManager : UnitySingleton<StageManager>
                 Gamemanager.Instance.GameClear();
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    IEnumerator Wait()
+    {
+        while (stageWaitingTime > 0)
+        {
+            TimeUI.Instance.Progress(stageWaitingTime, max_waitTime);
+            stageWaitingTime -= Time.deltaTime;
+            yield return null;
+        }
+        
+        TimeUI.Instance.InitTime();
+        stageWaitingTime = max_waitTime;
+        NextStage();
     }
 }
 

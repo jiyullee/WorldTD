@@ -35,6 +35,7 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
 
     public override void OnInitiate()
     {
+        
     }
 
 
@@ -64,7 +65,7 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
         {
             yield return new WaitForSeconds(spawnCycle);
             Monster monster = (Monster)Polling2.GetObject(monsterContainer, "Monster");
-            monster.SetMonsterData(stage, nextSprite);
+            monster.SetMonsterData(stage - 1, nextSprite);
             monsterQueue.Enqueue(monster);
             amount--;
         }
@@ -72,7 +73,7 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
         {
             yield return new WaitForEndOfFrame();
         }
-        yield return new WaitForSeconds(stageWaitingTime);
+        
         StageManager.Instance.EndStage();
     }
 
