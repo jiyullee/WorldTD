@@ -17,6 +17,7 @@ public class Monster : PollingObject
     private float armor;
     private int index = 1;
     private int maxIndex;
+    private string info;
 
     public LayerMask AroundMonsterLayer;
     private bool IsTarget => spriteRenderer.sprite != null;
@@ -41,13 +42,14 @@ public class Monster : PollingObject
     {
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         if (IsTarget)
             Move();
     }
     private void OnEnable()
     {
+        Look();
         ResetColor();
     }
 
@@ -64,6 +66,7 @@ public class Monster : PollingObject
         hp = MonsterData.Instance.GetTableData(stage).HP;
         armor = MonsterData.Instance.GetTableData(stage).Armor;
         initMoveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
+        info = MonsterData.Instance.GetTableData(stage).info;
         spriteRenderer.sprite = sprite;
         SetDifficulty();
         moveSpeed = initMoveSpeed;
@@ -98,13 +101,14 @@ public class Monster : PollingObject
         thisTransform.position += dir.normalized * Time.deltaTime * moveSpeed;
         if ((dir).magnitude < 0.1f)
         {
-            Look(dir);
             index++;
+            Look();
             if (index >= map.Length)
             {
                 index = 0;
                 Polling2.ReturnObject(this);
-
+                int damage = (info == "Boss") ? 5 : 1;
+                Gamemanager.Instance.Damage(damage);
                 //현재 직접 리스트를 제거하고 있지만 MonsterSpawner 함수에서 제거하도록 수정해야함
                 if (MonsterSpawner.spawned_monsters.Contains(this))
                     MonsterSpawner.spawned_monsters.Remove(this);
@@ -115,9 +119,12 @@ public class Monster : PollingObject
     /// <summary>
     /// 몬스터가 갈 보는 함수
     /// </summary>
-    private void Look(Vector3 dir)
+    private void Look()
     {
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        if (index >= maxIndex)
+            return;
+        Vector3 dir = map[index].position - map[index - 1].position;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
     #endregion
