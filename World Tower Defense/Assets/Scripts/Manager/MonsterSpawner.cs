@@ -68,6 +68,10 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
             monsterQueue.Enqueue(monster);
             amount--;
         }
+        while (MonsterSpawner.spawned_monsters.Count > 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         yield return new WaitForSeconds(stageWaitingTime);
         StageManager.Instance.EndStage();
     }
