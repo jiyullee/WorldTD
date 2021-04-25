@@ -8,16 +8,12 @@ public class StateUI : MonoBehaviourSubUI
     private Text scoreText;
     private Text roundText;
     private Text heartText;
+    
 
     public override void Init()
     {
-        AddButtonEvent("OptionBtn", PauseGame);
+        AddButtonEvent("OptionBtn", () => PopUpUI.Instance.PopUp(POPUP_STATE.Option));
+        transform.Find("TimeUI").gameObject.AddComponent<TimeUI>().Init();
     }
-
-    private void PauseGame()
-    {
-        UIManager.Instance.uiList[UIState.StateUI].SetView(false);
-        UIManager.Instance.uiList[UIState.StoreUI].SetView(false);
-        UIManager.Instance.uiList[UIState.GameOptionUI].SetView(true);
-    }
+    
 }
