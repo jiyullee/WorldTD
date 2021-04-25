@@ -49,6 +49,7 @@ public class Polling2 : UnitySingleton<Polling2>
         newObj.transform.SetParent(Instance.transform);
         return newObj;
     }
+
     /// <summary>
     /// 싱글톤으로 꺼내는 함수, 인수로는 꺼내는 객체와 꺼내는 프리팹 이름을 넣어야함(객체의 부모가 될것)
     /// </summary>
@@ -59,27 +60,27 @@ public class Polling2 : UnitySingleton<Polling2>
             Debug.Log("is not PollingObjectName");
             return null;
         }
-        PollingObject obj;
+        PollingObject Monster;
 
         //없으면 생성, 있으면 큐 꺼내서 반환
         if (Instance.pollingQueueDictionary[name].Count > 0)
         {
-            obj = Instance.pollingQueueDictionary[name].Dequeue();
+            Monster = Instance.pollingQueueDictionary[name].Dequeue();
         }
         else
         {
-            obj = Instance.CreateNewObject(name);
+            Monster = Instance.CreateNewObject(name);
 
         }
-        if (obj == null)
+        if (Monster == null)
         {
             Debug.Log("Polling.GetObject Err");
         }
 
-        obj.transform.position = callObject.transform.position;
-        obj.gameObject.SetActive(true);
-        obj.transform.SetParent(callObject.transform);
-        return obj;
+        Monster.transform.position = callObject.transform.position;
+        Monster.gameObject.SetActive(true);
+        Monster.transform.SetParent(callObject.transform);
+        return Monster;
     }
 
     /// <summary>
