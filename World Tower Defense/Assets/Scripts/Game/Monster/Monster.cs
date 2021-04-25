@@ -157,6 +157,8 @@ public class Monster : PollingObject
             EffectManager.ReturnParticle(particle);
 
             index = 0;
+            if (MonsterSpawner.spawned_monsters.Contains(this))
+                MonsterSpawner.spawned_monsters.Remove(this);
             Polling2.ReturnObject(this);
         }
         ChangeColor();
@@ -168,9 +170,7 @@ public class Monster : PollingObject
         hp -= aroundDamage;
         if (hp <= 0)
         {
-
             ParticleSystem particle = EffectManager.GetParticle(tempPos);
-
             EffectManager.ReturnParticle(particle);
 
             index = 0;
