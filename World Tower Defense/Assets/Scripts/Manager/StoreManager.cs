@@ -102,7 +102,7 @@ public class StoreManager : UnitySingleton<StoreManager>
 
     public void EarnGold()
     {
-        gold += 5;
+        gold += 6;
         gold += interest;
         SetGoldUI();
     }
@@ -126,17 +126,14 @@ public class StoreManager : UnitySingleton<StoreManager>
     private void InitState()
     {
         max_store = 5;
-        gold = 5 + 1;
-
         level = 1;
         max_level = 8;
         rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
         exp = 0;
         max_exp = StoreData.Instance.GetTableData(level).MaxExp;
-        
+        EarnGold();
         SetLevelUI();
         SetExpUI();
-        SetGoldUI();
     }
 
     public void ExpUp(int increase)

@@ -60,6 +60,7 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
     /// </summary>
     IEnumerator SpawnMonster()
     {
+        StageManager.IsCombatting = true;
         SetMonster();
         while (amount > 0)
         {

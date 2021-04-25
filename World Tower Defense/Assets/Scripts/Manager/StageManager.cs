@@ -11,6 +11,7 @@ public class StageManager : UnitySingleton<StageManager>
     private float stageWaitingTime;
     private float max_waitTime;
     private int stage;
+    public static bool IsCombatting;
     public override void OnCreated()
     {
         MonsterSpawner.Instance.stage = 0;
@@ -59,6 +60,7 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void EndStage()
     {
+        IsCombatting = false;
         StoreManager.Instance.EarnGold();
         StoreManager.Instance.RefreshStore();
         StartCoroutine(Wait());

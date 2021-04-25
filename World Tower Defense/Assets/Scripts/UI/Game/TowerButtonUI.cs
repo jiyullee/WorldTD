@@ -76,7 +76,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!isPlaceTower) return;
-        
+        if (StageManager.IsCombatting) return;
         canvasGroup.blocksRaycasts = false;
         UIManager.Instance.SetEventButton(false);
         
@@ -85,7 +85,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         if (!isPlaceTower) return;
-
+        if (StageManager.IsCombatting) return;
         transform.position = eventData.position;
         if(isPlaceTower)
             tower.SetPositionFromScreen(transform.position);
@@ -95,7 +95,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!isPlaceTower) return;
-
+        if (StageManager.IsCombatting) return;
         canvasGroup.blocksRaycasts = true;
         if (!CanSwap)
         {
