@@ -25,7 +25,7 @@ public class TowerManager : UnitySingleton<TowerManager>
     {
         if (towerInstance == null) return null;
 
-        Tower tower = (Tower)Polling2.GetObject(gameObject, "Tower");
+        Tower tower = (Tower)PoolingManager.GetObject(gameObject, "Tower");
         Vector2 pos = Camera.main.ScreenToWorldPoint(p_pos);
         tower.transform.position = new Vector3(pos.x,pos.y,0);
         tower.SetTowerData(towerInstance);

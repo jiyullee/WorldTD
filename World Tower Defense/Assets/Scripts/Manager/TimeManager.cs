@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TimeManager : UnitySingleton<TimeManager>
 {
@@ -35,5 +36,21 @@ public class TimeManager : UnitySingleton<TimeManager>
     {
         Time.timeScale = tempTime;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
+    }
+
+    public void ProgressTime(float p_time, float p_max, UnityAction p_action)
+    {
+        StartCoroutine(Progress(p_time, p_max, p_action));
+    }
+
+    IEnumerator Progress(float p_time, float p_max, UnityAction p_action)
+    {
+        while (p_time > 0)
+        {
+            TimeUI.Instance.Progress(p_time, p_max);
+            p_time -= Time.deltaTime;
+            yield return null;
+        }
+        p_action.Invoke();
     }
 }

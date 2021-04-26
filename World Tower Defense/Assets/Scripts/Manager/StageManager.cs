@@ -19,7 +19,7 @@ public class StageManager : UnitySingleton<StageManager>
     public override void OnCreated()
     {
         stage = 0;
-        MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
+        MonsterManager.Instance.stageWaitingTime = this.stageWaitingTime;
         max_waitTime = stageWaitingTime;
     }
 
@@ -31,7 +31,12 @@ public class StageManager : UnitySingleton<StageManager>
     private void Start()
     {
         StoreManager.Instance.RefreshStore();
-        StartCoroutine(Wait());
+        TimeManager.Instance.ProgressTime(stageWaitingTime, max_waitTime, () =>
+        {
+            TimeUI.Instance.InitTime();
+            stageWaitingTime = max_waitTime;
+            NextStage();
+        });
     }
 
 
@@ -47,7 +52,7 @@ public class StageManager : UnitySingleton<StageManager>
             return;
         }
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
-        MonsterSpawner.Instance.StartSpown();
+        MonsterManager.Instance.StartSpown();
     }
     /// <summary>
     /// 다음 스테이지를 켜주는 함수
@@ -67,7 +72,12 @@ public class StageManager : UnitySingleton<StageManager>
         IsCombatting = false;
         StoreManager.Instance.EarnGold();
         StoreManager.Instance.RefreshStore();
-        StartCoroutine(Wait());
+        TimeManager.Instance.ProgressTime(stageWaitingTime, max_waitTime, () =>
+        {
+            TimeUI.Instance.InitTime();
+            stageWaitingTime = max_waitTime;
+            NextStage();
+        });
     }
     /// <summary>
     /// 게임이 끝난 경우 남아있는 몹들을 계속 체크해서 끝나면 게임을 종료함.
@@ -76,24 +86,11 @@ public class StageManager : UnitySingleton<StageManager>
     {
         while (true)
         {
-            if (MonsterSpawner.spawned_monsters.Count == 0)
+            if (MonsterManager.spawned_monsters.Count == 0)
                 Gamemanager.Instance.GameClear();
             yield return new WaitForEndOfFrame();
         }
     }
-
-    IEnumerator Wait()
-    {
-        while (stageWaitingTime > 0)
-        {
-            TimeUI.Instance.Progress(stageWaitingTime, max_waitTime);
-            stageWaitingTime -= Time.deltaTime;
-            yield return null;
-        }
-
-        TimeUI.Instance.InitTime();
-        stageWaitingTime = max_waitTime;
-        NextStage();
-    }
+    
 }
 
