@@ -75,8 +75,6 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
             yield return new WaitForEndOfFrame();
         }
         StageManager.Instance.Reward();
-        yield return new WaitForSeconds(stageWaitingTime);
-        StageManager.Instance.NextStage();
     }
 
 }
