@@ -55,7 +55,7 @@ public class Bullet : PollingObject
     private void DestroySelf()
     {
         target = null;
-        Polling2.ReturnObject(this);
+        PoolingManager.ReturnObject(this);
     }
 
     public void Init(PollingObject p_target, float p_damage, float p_decreaseSpeed, float p_decreaseArmor, float p_aroundDamage, float p_trueDamage)

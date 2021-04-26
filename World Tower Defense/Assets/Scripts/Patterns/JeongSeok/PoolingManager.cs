@@ -9,7 +9,7 @@ class Spownclass
     public PollingObject pollingObject;
 }
 
-public class Polling2 : UnitySingleton<Polling2>
+public class PoolingManager : UnitySingleton<PoolingManager>
 {
     [SerializeField]
     private Spownclass[] spown;

@@ -65,7 +65,7 @@ public class Tower : PollingObject
     public void ReturnTower()
     {
         ButtonUI.InitTower();
-        Polling2.ReturnObject(this);
+        PoolingManager.ReturnObject(this);
 
     }
 
@@ -110,7 +110,7 @@ public class Tower : PollingObject
 
     public void SpawnBullet()
     {
-        Bullet bullet = (Bullet)Polling2.GetObject(gameObject, "Bullet");
+        Bullet bullet = (Bullet)PoolingManager.GetObject(gameObject, "Bullet");
         bullet.transform.position = new Vector3(transform.position.x, transform.position.y, 1);
         bullet.Init(target, GetDamage(), decreaseMonsterSpeed, decreaseArmor, aroundDamage, trueDamage);
         bullet.IgnoreArmor(ignoreArmor);
@@ -184,7 +184,7 @@ public class Tower : PollingObject
             yield return null;
 
             float closetDist = Mathf.Infinity;
-            List<PollingObject> list_monsters = MonsterSpawner.spawned_monsters;
+            List<PollingObject> list_monsters = MonsterManager.spawned_monsters;
             for (int i = 0; i < list_monsters.Count; i++)
             {
                 float dist = Vector2.Distance(list_monsters[i].transform.position, transform.position);
