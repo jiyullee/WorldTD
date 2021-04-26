@@ -21,6 +21,7 @@ public class Gamemanager : UnitySingleton<Gamemanager>
     public void Damage(int damage)
     {
         hp -= damage;
+        StateUI.Instance.SetHPText(hp);
         if (hp <= 0)
         {
             GameOver();
@@ -30,15 +31,18 @@ public class Gamemanager : UnitySingleton<Gamemanager>
     //게임 클리어
     public void GameClear()
     {
+        PopUpUI.Instance.PopUp(POPUP_STATE.GameWin);
         TimeManager.Instance.Pause();
+        
         //승리 UI
     }
 
     //게임에서 짐.
     public void GameOver()
     {
-        Debug.Log("GameOver");
+        PopUpUI.Instance.PopUp(POPUP_STATE.GameLose);
         TimeManager.Instance.Pause();
+        
         //게임 오버 UI표기.
     }
 

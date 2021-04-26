@@ -12,6 +12,8 @@ public class SynergyUI : MonoBehaviourSubUI
     private int synergy_count;
     private Vector3[] Pos;
     private Button btn_view;
+    private Button btn_info;
+    private Text text_info;
     private Text text_view;
 
     private GameObject obj_background;
@@ -27,17 +29,25 @@ public class SynergyUI : MonoBehaviourSubUI
         Transform content = transform.Find("Scroll View/Viewport/Content");
         for (int i = 0; i < synergy_count; i++)
         {
-            string synergyName = SynergyData.Instance.GetTableData(i).SynergyName;
             GameObject obj = Instantiate(obj_synergy);
             obj.transform.SetParent(content);
             obj.gameObject.SetActive(true);
             SynergyViewUI synergyViewUI = obj.GetComponent<SynergyViewUI>();
             synergyViewUI.Init();
+            synergyViewUI.InitTexts(i);
             SynergyViewUis.Add(synergyViewUI);
         }
 
+        btn_info = transform.Find("InfoPanel").GetComponent<Button>();
         btn_view = transform.Find("ViewButton").GetComponent<Button>();
+        text_info = transform.Find("InfoPanel/Text").GetComponent<Text>();
         text_view = transform.Find("ViewButton/Text").GetComponent<Text>();
+        
+        AddButtonEvent(btn_info, () =>
+        {
+            if(btn_info.gameObject.activeSelf)
+                btn_info.gameObject.SetActive(false);
+        });
         AddButtonEvent(btn_view, ChangeState);
         Pos = new Vector3[2];
         Pos[0] = transform.Find("ViewButton/Pos1").transform.position;
@@ -50,10 +60,10 @@ public class SynergyUI : MonoBehaviourSubUI
         obj_background.SetActive(state);
         obj_ScrollView.SetActive(state);
     }
-
-    public void SetSynergyUIs(int i, string p_synergyName, List<int> list_activeNums, int idx)
+    
+    public void SetSynergyUIs(int i, int idx)
     {
-        SynergyViewUis[i].SetTexts(p_synergyName, list_activeNums, idx);
+        SynergyViewUis[i].SetTexts(idx);
     }
 
     private void InitState()
@@ -77,6 +87,18 @@ public class SynergyUI : MonoBehaviourSubUI
             SetView(false);
             btn_view.transform.position = Pos[1];
         }
+        if(btn_info.gameObject.activeSelf)
+            btn_info.gameObject.SetActive(false);
         text_view.text = SynergyState.ToString();
+    }
+
+    public void SetViewInfo(bool state, int p_index)
+    {
+        List<int> list_activateNums = SynergyData.Instance.GetTableData(p_index).ActivateNum;
+        string text = "";
+        text += SynergyData.Instance.GetTableData(p_index).SynergyName_KR + "\n";
+        text += SynergyData.Instance.GetTableData(p_index).SynergyInfo;
+        text_info.text = text;
+        btn_info.gameObject.SetActive(state);
     }
 }

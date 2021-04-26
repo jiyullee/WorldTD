@@ -9,7 +9,7 @@ public class StoreManager : UnitySingleton<StoreManager>
     private List<TowerInstance> list_remain_towers;
     private int max_country;
     private int gold;
-    private int interest;
+    public int interest => gold / 10;
     private int level;
     private int max_level;
     private int exp;
@@ -100,6 +100,13 @@ public class StoreManager : UnitySingleton<StoreManager>
         SetGoldUI();
     }
 
+    public void EarnGold()
+    {
+        gold += 6;
+        gold += interest;
+        SetGoldUI();
+    }
+
     public void SetNullInstance()
     {
         selectedTowerInstance = null;
@@ -119,18 +126,14 @@ public class StoreManager : UnitySingleton<StoreManager>
     private void InitState()
     {
         max_store = 5;
-        gold = 300;
-        interest = 0;
-        
         level = 1;
         max_level = 8;
         rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
         exp = 0;
         max_exp = StoreData.Instance.GetTableData(level).MaxExp;
-        
+        EarnGold();
         SetLevelUI();
         SetExpUI();
-        SetGoldUI();
     }
 
     public void ExpUp(int increase)

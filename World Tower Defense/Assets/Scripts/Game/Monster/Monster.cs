@@ -160,6 +160,8 @@ public class Monster : PollingObject
             if (MonsterSpawner.spawned_monsters.Contains(this))
                 MonsterSpawner.spawned_monsters.Remove(this);
             Polling2.ReturnObject(this);
+            if (MonsterSpawner.spawned_monsters.Contains(this))
+                MonsterSpawner.spawned_monsters.Remove(this);
         }
         ChangeColor();
     }

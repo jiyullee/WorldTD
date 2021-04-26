@@ -7,17 +7,26 @@ public class SynergyViewUI : MonoBehaviourSubUI
 {
     private Text text_synergyName;
     private Text text_count;
+
+    private int Index;
+    List<int> list_activateNums = new List<int>();
     public override void Init()
     {
-        text_synergyName = transform.Find("SynergyName").GetComponent<Text>();
-        text_count = transform.Find("Text").GetComponent<Text>();
+        text_synergyName = transform.Find("Button/SynergyName").GetComponent<Text>();
+        text_count = transform.Find("Button/Text").GetComponent<Text>();
+        
+        AddButtonEvent("Button",ShowInfo);
     }
 
-    public void SetTexts(string p_synergyName, List<int> list_activateNums, int idx)
+    public void InitTexts(int index)
     {
-        text_synergyName.text = p_synergyName;
-
-        if (p_synergyName == "섬")
+        Index = index;
+        string synergyName_KR = SynergyData.Instance.GetTableData(index).SynergyName_KR;
+        list_activateNums = SynergyData.Instance.GetTableData(index).ActivateNum;
+        
+        text_synergyName.text = synergyName_KR;
+        
+        if (synergyName_KR == "섬")
         {
             text_count.text = "항상 적용";
             return;
@@ -28,8 +37,27 @@ public class SynergyViewUI : MonoBehaviourSubUI
         {
             if (i != list_activateNums.Count - 1)
             {
+                text += $"<color=#808080ff>{list_activateNums[i]}</color> / ";
+                
+            }
+            else
+            {
+                text += $"<color=#808080ff>{list_activateNums[i]}</color>";
+            }
+        }
+
+        text_count.text = text;
+    }
+    
+    public void SetTexts(int idx)
+    {
+        string text = "";
+        for (int i = 1; i < list_activateNums.Count; i++)
+        {
+            if (i != list_activateNums.Count - 1)
+            {
                 if(idx == i)
-                    text += $"<color=#000000ff>{list_activateNums[i]}</color> / ";
+                    text += $"<color=#ffffffff>{list_activateNums[i]}</color> / ";
                 else
                     text += $"<color=#808080ff>{list_activateNums[i]}</color> / ";
                 
@@ -37,12 +65,17 @@ public class SynergyViewUI : MonoBehaviourSubUI
             else
             {
                 if(idx == i)
-                    text += $"<color=#000000ff>{list_activateNums[i]}</color>";
+                    text += $"<color=#ffffffff>{list_activateNums[i]}</color>";
                 else
                     text += $"<color=#808080ff>{list_activateNums[i]}</color>";
             }
         }
 
         text_count.text = text;
+    }
+
+    public void ShowInfo()
+    {
+        SynergyUI.Instance.SetViewInfo(true, Index);
     }
 }

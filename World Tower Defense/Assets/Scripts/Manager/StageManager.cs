@@ -6,14 +6,17 @@ using GameData;
 public class StageManager : UnitySingleton<StageManager>
 {
     [SerializeField]
-    private const int MaxStage = 29;
+    private const int MaxStage = 30;
     [SerializeField]
-    private float stageWaitingTime = 3.0f;
+    private float stageWaitingTime;
+    private float max_waitTime;
     private int stage;
+    public static bool IsCombatting;
     public override void OnCreated()
     {
         MonsterSpawner.Instance.stage = 0;
         MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
+        max_waitTime = stageWaitingTime;
     }
 
     public override void OnInitiate()
@@ -23,7 +26,8 @@ public class StageManager : UnitySingleton<StageManager>
     // Start is called before the first frame update
     private void Start()
     {
-        StartStage();
+        StoreManager.Instance.RefreshStore();
+        StartCoroutine(Wait());
     }
 
 
@@ -39,6 +43,7 @@ public class StageManager : UnitySingleton<StageManager>
             StartCoroutine("CheckGameClear");
             return;
         }
+        PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
         MonsterSpawner.Instance.StartSpown();
     }
     /// <summary>
@@ -56,7 +61,10 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void Reward()
     {
-        //보상 기입 (상점에 돈 , 스코어 올리기 등등.)
+        IsCombatting = false;
+        StoreManager.Instance.EarnGold();
+        StoreManager.Instance.RefreshStore();
+        StartCoroutine(Wait());
     }
     /// <summary>
     /// 게임이 끝난 경우 남아있는 몹들을 계속 체크해서 끝나면 게임을 종료함.
@@ -69,6 +77,20 @@ public class StageManager : UnitySingleton<StageManager>
                 Gamemanager.Instance.GameClear();
             yield return new WaitForEndOfFrame();
         }
+    }
+
+    IEnumerator Wait()
+    {
+        while (stageWaitingTime > 0)
+        {
+            TimeUI.Instance.Progress(stageWaitingTime, max_waitTime);
+            stageWaitingTime -= Time.deltaTime;
+            yield return null;
+        }
+        
+        TimeUI.Instance.InitTime();
+        stageWaitingTime = max_waitTime;
+        NextStage();
     }
 }
 
