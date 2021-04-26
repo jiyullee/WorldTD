@@ -72,7 +72,7 @@ public class Monster : PollingObject
         moveSpeed = initMoveSpeed;
         //현재 직접 리스트를 추가하고 있지만 MonsterSpawner 함수에서 추가하도록 수정해야함
         if (IsTarget)
-            MonsterSpawner.spawned_monsters.Add(this);
+            MonsterManager.spawned_monsters.Add(this);
     }
 
     /// <summary>
@@ -105,13 +105,13 @@ public class Monster : PollingObject
             Look();
             if (index >= map.Length)
             {
-                index = 0;
-                Polling2.ReturnObject(this);
+                index = 1;
+                PoolingManager.ReturnObject(this);
                 int damage = (info == "Boss") ? 5 : 1;
                 Gamemanager.Instance.Damage(damage);
                 //현재 직접 리스트를 제거하고 있지만 MonsterSpawner 함수에서 제거하도록 수정해야함
-                if (MonsterSpawner.spawned_monsters.Contains(this))
-                    MonsterSpawner.spawned_monsters.Remove(this);
+                if (MonsterManager.spawned_monsters.Contains(this))
+                    MonsterManager.spawned_monsters.Remove(this);
             }
         }
     }
@@ -123,6 +123,7 @@ public class Monster : PollingObject
     {
         if (index >= maxIndex)
             return;
+        if (index <= 0) index = 1;
         Vector3 dir = map[index].position - map[index - 1].position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + 90;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -157,11 +158,11 @@ public class Monster : PollingObject
             EffectManager.ReturnParticle(particle);
 
             index = 0;
-            if (MonsterSpawner.spawned_monsters.Contains(this))
-                MonsterSpawner.spawned_monsters.Remove(this);
-            Polling2.ReturnObject(this);
-            if (MonsterSpawner.spawned_monsters.Contains(this))
-                MonsterSpawner.spawned_monsters.Remove(this);
+            if (MonsterManager.spawned_monsters.Contains(this))
+                MonsterManager.spawned_monsters.Remove(this);
+            PoolingManager.ReturnObject(this);
+            if (MonsterManager.spawned_monsters.Contains(this))
+                MonsterManager.spawned_monsters.Remove(this);
         }
         ChangeColor();
     }
@@ -176,7 +177,7 @@ public class Monster : PollingObject
             EffectManager.ReturnParticle(particle);
 
             index = 0;
-            Polling2.ReturnObject(this);
+            PoolingManager.ReturnObject(this);
         }
 
         ChangeColor();

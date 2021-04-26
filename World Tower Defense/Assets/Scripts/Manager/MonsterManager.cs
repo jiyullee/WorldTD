@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameData;
 
-public class MonsterSpawner : UnitySingleton<MonsterSpawner>
+public class MonsterManager : UnitySingleton<MonsterManager>
 {
     [SerializeField] private float spawnCycle = 0.5f;
     [SerializeField] private Sprite[] monsterImage;
@@ -66,12 +66,12 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
         while (amount > 0)
         {
             yield return new WaitForSeconds(spawnCycle);
-            Monster monster = (Monster)Polling2.GetObject(monsterContainer, "Monster");
+            Monster monster = (Monster)PoolingManager.GetObject(monsterContainer, "Monster");
             monster.SetMonsterData(stage - 1, nextSprite);
             monsterQueue.Enqueue(monster);
             amount--;
         }
-        while (MonsterSpawner.spawned_monsters.Count > 0)
+        while (MonsterManager.spawned_monsters.Count > 0)
         {
             yield return new WaitForEndOfFrame();
         }
