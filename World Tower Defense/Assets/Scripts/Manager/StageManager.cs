@@ -11,10 +11,14 @@ public class StageManager : UnitySingleton<StageManager>
     private float stageWaitingTime;
     private float max_waitTime;
     private int stage;
+    public int Stage
+    {
+        get { return stage; }
+    }
     public static bool IsCombatting;
     public override void OnCreated()
     {
-        MonsterSpawner.Instance.stage = 0;
+        stage = 0;
         MonsterSpawner.Instance.stageWaitingTime = this.stageWaitingTime;
         max_waitTime = stageWaitingTime;
     }
@@ -37,7 +41,6 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void StartStage()
     {
-        stage = MonsterSpawner.Instance.stage;
         if (stage > MaxStage)
         {
             StartCoroutine("CheckGameClear");
@@ -51,7 +54,7 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void NextStage()
     {
-        MonsterSpawner.Instance.stage++;
+        stage++;
         StartStage();
     }
 
@@ -87,7 +90,7 @@ public class StageManager : UnitySingleton<StageManager>
             stageWaitingTime -= Time.deltaTime;
             yield return null;
         }
-        
+
         TimeUI.Instance.InitTime();
         stageWaitingTime = max_waitTime;
         NextStage();

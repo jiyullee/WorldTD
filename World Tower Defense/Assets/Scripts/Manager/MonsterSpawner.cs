@@ -15,7 +15,7 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
     public static List<PollingObject> spawned_monsters = new List<PollingObject>();
     public float stageWaitingTime { get; set; }
     private int amount;
-    public int stage { get; set; }
+    private int stage;
     private bool flag = true;
 
     public static bool IsPoolingObject(PollingObject pollingObject) => spawned_monsters.Contains(pollingObject);
@@ -62,6 +62,7 @@ public class MonsterSpawner : UnitySingleton<MonsterSpawner>
     {
         StageManager.IsCombatting = true;
         SetMonster();
+        stage = StageManager.Instance.Stage;
         while (amount > 0)
         {
             yield return new WaitForSeconds(spawnCycle);
