@@ -20,16 +20,16 @@ public class PopUpUI : MonoBehaviourSubUI
     {
         Instance = this;
         selectedUI = POPUP_STATE.None;
-        
+
         dic_PopUp.Add(POPUP_STATE.StageStart, transform.Find("StageStartUI").gameObject);
-        dic_PopUp.Add(POPUP_STATE.GameWin,  transform.Find("GameWinUI").gameObject);
+        dic_PopUp.Add(POPUP_STATE.GameWin, transform.Find("GameWinUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.GameLose, transform.Find("GameLoseUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.Option, transform.Find("OptionUI").gameObject);
-        
+
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
         text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
         text_score_lose = transform.Find("GameLoseUI/ScoreText").GetComponent<Text>();
-        
+
         AddButtonEvent("GameWinUI/ExitButton", LoadLobby);
         AddButtonEvent("GameWinUI/ReGameButton", ReGame);
         AddButtonEvent("GameLoseUI/ExitButton", LoadLobby);
@@ -50,6 +50,9 @@ public class PopUpUI : MonoBehaviourSubUI
         dic_PopUp[p_state].SetActive(true);
         switch (p_state)
         {
+            case POPUP_STATE.Option:
+                TimeManager.Instance.Pause();
+                break;
             case POPUP_STATE.StageStart:
                 SetStageText(p);
                 Invoke("Close", 1.5f);
@@ -58,6 +61,7 @@ public class PopUpUI : MonoBehaviourSubUI
             case POPUP_STATE.GameLose:
                 SetScoreText(p);
                 break;
+
         }
     }
 
@@ -66,12 +70,12 @@ public class PopUpUI : MonoBehaviourSubUI
         dic_PopUp[POPUP_STATE.StageStart].SetActive(false);
         selectedUI = POPUP_STATE.None;
     }
-    
+
     private void SetStageText(int p_stage)
     {
         text_stage.text = $"{p_stage} 스테이지 시작";
     }
-    
+
     private void SetScoreText(int p_score)
     {
         text_score_win.text = $"스코어 : {p_score}";
@@ -85,15 +89,16 @@ public class PopUpUI : MonoBehaviourSubUI
 
     private void ReGame()
     {
-       Debug.Log("ReGame"); 
+        Debug.Log("ReGame");
     }
-    
+
     private void Resume()
     {
-        if(selectedUI != POPUP_STATE.None)
+        if (selectedUI != POPUP_STATE.None)
             dic_PopUp[selectedUI].SetActive(false);
+        TimeManager.Instance.StartTime();
     }
-    
+
     private void ExitGame()
     {
         Application.Quit();
