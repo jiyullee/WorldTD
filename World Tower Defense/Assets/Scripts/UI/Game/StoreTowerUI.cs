@@ -46,8 +46,17 @@ public class StoreTowerUI : MonoBehaviourSubUI
             return;
         }
         
-        //StoreManager에 타워 정보 전달 -> 타워 배치 가능한 버튼들 ON & 기물 구매 OFF
+        
+        //구매 가능 여부 판단
+        if (!StoreManager.Instance.CanBuyTower(towerInstance.GetTowerData().Cost))
+        {
+            PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
+            return;
+        }
+        
+        //StoreManager에 타워 정보 전달 
         StoreManager.Instance.SetSelectedInstance(towerInstance);
+        //타워 배치 가능한 버튼들 ON & 기물 구매 OFF
         StoreManager.Instance.BuyTower();
         MapUI.Instance.SetViewSelectableButtons(true);
         StoreUI.Instance.SetActiveButtons(false);

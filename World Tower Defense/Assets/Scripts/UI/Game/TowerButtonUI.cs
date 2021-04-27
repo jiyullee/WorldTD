@@ -31,9 +31,9 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public override void SetView(bool state)
     {
         if (state)
-            image.color = new Color(0,0,255, 0.3f);
+            image.color = new Color(0,0,0, 0.7f); 
         else
-            image.color = new Color(0,0,255, 0);
+            image.color = new Color(255,255,0, 0);
     }
 
     public void SetInteractable(bool state)

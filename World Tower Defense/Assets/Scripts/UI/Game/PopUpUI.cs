@@ -10,6 +10,7 @@ public class PopUpUI : MonoBehaviourSubUI
     private GameObject obj_StageStart;
     private GameObject obj_GameWin;
     private GameObject obj_GameLose;
+    private GameObject obj_LeakGold;
 
     private Text text_stage;
     private Text text_score_win;
@@ -25,6 +26,7 @@ public class PopUpUI : MonoBehaviourSubUI
         dic_PopUp.Add(POPUP_STATE.GameWin, transform.Find("GameWinUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.GameLose, transform.Find("GameLoseUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.Option, transform.Find("OptionUI").gameObject);
+        dic_PopUp.Add(POPUP_STATE.LackGold, transform.Find("LackGoldUI").gameObject);
 
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
         text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
@@ -55,7 +57,10 @@ public class PopUpUI : MonoBehaviourSubUI
                 break;
             case POPUP_STATE.StageStart:
                 SetStageText(p);
-                Invoke("Close", 1.5f);
+                StartCoroutine(CloseSelf(POPUP_STATE.StageStart, 1.5f));
+                break;
+            case POPUP_STATE.LackGold:
+                StartCoroutine(CloseSelf(POPUP_STATE.LackGold, 1.0f));
                 break;
             case POPUP_STATE.GameWin:
             case POPUP_STATE.GameLose:
@@ -64,10 +69,11 @@ public class PopUpUI : MonoBehaviourSubUI
 
         }
     }
-
-    public void Close()
+    
+    private IEnumerator CloseSelf(POPUP_STATE p_state, float p_time)
     {
-        dic_PopUp[POPUP_STATE.StageStart].SetActive(false);
+        yield return new WaitForSeconds(p_time);
+        dic_PopUp[p_state].SetActive(false);
         selectedUI = POPUP_STATE.None;
     }
 
