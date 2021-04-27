@@ -81,7 +81,6 @@ public class Tower : PollingObject
         Grade = 1;
         cur_damage = damages[Grade];
         canAttack = true;
-        Debug.Log(($"Image/Towers/{TowerName}{Grade}"));
   
             gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/Towers/{TowerName}{Grade}");
         if ((gameObject.GetComponent<SpriteRenderer>().sprite) == null)
