@@ -20,5 +20,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f985a874af490ca4499152c624cf8c29, type: 2}
   - {fileID: 11400000, guid: cb908146c5752104782f520f9b44a0bd, type: 2}
   - {fileID: 11400000, guid: 7f07b517945a60743ab450fead2ec4a8, type: 2}
-  - {fileID: 11400000, guid: 70f51b56c27fbcc4a8335e2ec8a50a43, type: 2}
+  - {fileID: 11400000, guid: f897b096e2a08b24dbf8dc00de3ab9e6, type: 2}
+  - {fileID: 11400000, guid: 04d900fb8f805774a977f96a7a4003fd, type: 2}
+  - {fileID: 11400000, guid: 0717973200f8c984d8d8ae52d254c081, type: 2}
+  - {fileID: 11400000, guid: d5b24fc02be9b18408f21ecb284ae724, type: 2}
+  - {fileID: 11400000, guid: 2921f75585912224b99f465ae1088e31, type: 2}
+  - {fileID: 11400000, guid: 00d601cd3e5d6df4ca65373be16c934d, type: 2}
+  - {fileID: 11400000, guid: f897b096e2a08b24dbf8dc00de3ab9e6, type: 2}
+  - {fileID: 11400000, guid: 26d1df07bb11b5a43ae7890972b6a36e, type: 2}
   tile_data: 2
