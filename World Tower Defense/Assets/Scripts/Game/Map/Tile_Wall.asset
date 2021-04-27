@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tile_Wall
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 11400000, guid: 3c3e4d992467606438d74ed602b35f4a, type: 2}
+  - {fileID: 11400000, guid: 74dab549fdfd261419db02aa403f77f7, type: 2}
   - {fileID: 11400000, guid: db22e9b71d4901744bd4935a39a66c69, type: 2}
   - {fileID: 11400000, guid: c3f4b2a6e1a62c94287d0cb0ca33fe4f, type: 2}
   - {fileID: 11400000, guid: 9577fd4f9e5a7564990173b59423161f, type: 2}
