@@ -11,6 +11,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
     private Text text_cost;
     private Image img_cost;
     private Button button;
+    private Sprite icon;
     public override void Init()
     {
         button = transform.Find("Button").GetComponent<Button>();
@@ -33,7 +34,8 @@ public class StoreTowerUI : MonoBehaviourSubUI
         towerInstance = p_towerInstance;
         text_towerName.text = towerInstance.GetTowerData().TowerName;
         text_cost.text = towerInstance.GetTowerData().Cost.ToString();
-        SetActiveButton(true);
+        button.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Image/Flags/{text_towerName.text}") ;
+        SetActiveButton(true); 
     }
 
     private void SelectTowerPos()
@@ -50,6 +52,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
         MapUI.Instance.SetViewSelectableButtons(true);
         StoreUI.Instance.SetActiveButtons(false);
         InitTower();
+        button.GetComponent<Image>().sprite = null;
     }
 
     public void SetActiveButton(bool state)

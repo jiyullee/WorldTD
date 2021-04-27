@@ -80,8 +80,12 @@ public class Tower : PollingObject
         damages = towerData.Damage.ToArray();
         Grade = 1;
         cur_damage = damages[Grade];
-
         canAttack = true;
+        Debug.Log(($"Image/Towers/{TowerName}{Grade}"));
+  
+            gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/Towers/{TowerName}{Grade}");
+        if ((gameObject.GetComponent<SpriteRenderer>().sprite) == null)
+            gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/TowerSample");
 
         for (int i = 0; i < SynergyNames.Length; i++)
         {
@@ -101,11 +105,11 @@ public class Tower : PollingObject
         if (isContinent)
             StartCoroutine(SearchAround(0.6f));
     }
-    
+
     public void SetPositionFromScreen(Vector2 p_pos)
     {
         Vector3 targetPos = Camera.main.ScreenToWorldPoint(p_pos);
-        transform.position = new Vector3(targetPos.x, targetPos.y , 0);
+        transform.position = new Vector3(targetPos.x, targetPos.y, 0);
     }
 
     public void SpawnBullet()
@@ -122,7 +126,7 @@ public class Tower : PollingObject
     {
         ButtonUI = p_buttonUI;
     }
-    
+
     public void ActiveSynergy()
     {
         for (int i = 0; i < list_synergy.Count; i++)
@@ -168,7 +172,9 @@ public class Tower : PollingObject
     {
         Grade++;
         ButtonUI.SetViewTowerUI();
-
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/Towers/{TowerName}{Grade}");
+        if ((gameObject.GetComponent<SpriteRenderer>().sprite) == null)
+            gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/TowerSample");
         ParticleSystem particle = EffectManager.GetParticle(transform);
         EffectManager.ReturnParticle(particle);
     }
