@@ -96,7 +96,7 @@ public class SynergyUI : MonoBehaviourSubUI
     {
         List<int> list_activateNums = SynergyData.Instance.GetTableData(p_index).ActivateNum;
         string text = "";
-        text += SynergyData.Instance.GetTableData(p_index).SynergyName_KR + "\n";
+        text +=  $"<color=#add8e6ff>{SynergyData.Instance.GetTableData(p_index).SynergyName_KR}</color> \n";
         text += SynergyData.Instance.GetTableData(p_index).SynergyInfo;
         text_info.text = text;
         btn_info.gameObject.SetActive(state);
