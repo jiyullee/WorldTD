@@ -71,7 +71,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
             monsterQueue.Enqueue(monster);
             amount--;
         }
-        while (MonsterManager.spawned_monsters.Count > 0)
+        while (MonsterManager.spawned_monsters.Count > 0 && (monsterContainer.transform.childCount > 0))
         {
             yield return new WaitForEndOfFrame();
         }
