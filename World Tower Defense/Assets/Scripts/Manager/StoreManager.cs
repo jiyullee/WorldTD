@@ -69,7 +69,10 @@ public class StoreManager : UnitySingleton<StoreManager>
     public void RefreshStore()
     {
         if (gold < 1)
+        {
+            PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
             return;
+        }
 
         gold -= 1;
         SetGoldUI();
@@ -86,15 +89,17 @@ public class StoreManager : UnitySingleton<StoreManager>
         selectedTowerInstance = p_towerInstance;
         isSelecting = true;
     }
+
+    public bool CanBuyTower(int p_cost)
+    {
+        return gold >= p_cost;
+    }
     
     public void BuyTower()
     {
         if (selectedTowerInstance == null) return;
 
         int cost = selectedTowerInstance.GetTowerData().Cost;
-        
-        if (gold < cost)
-            return;
         
         gold -= cost;
         SetGoldUI();
@@ -140,7 +145,10 @@ public class StoreManager : UnitySingleton<StoreManager>
     {
         //골드 부족
         if (gold < 5)
+        {
+            PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
             return;
+        }
 
         gold -= 5;
         

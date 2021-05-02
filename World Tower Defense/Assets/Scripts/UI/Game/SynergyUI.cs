@@ -69,7 +69,7 @@ public class SynergyUI : MonoBehaviourSubUI
     private void InitState()
     {
         SynergyState = SYNERGY_STATE.DOWN;
-        SetView(false);
+        SetView(true);
         btn_view.transform.position = Pos[1];
         text_view.text = SynergyState.ToString();
     }

@@ -30,9 +30,9 @@ public class Tower : PollingObject
     private Queue<Bullet> list_bullet = new Queue<Bullet>();
 
     private float decreaseMonsterSpeed = 0f;
-    private float increaseAttack = 1f;
-    private float increaseSpeed = 1f;
-    private float increaseRange = 1f;
+    private float increaseAttack = 0f;
+    private float increaseSpeed = 0f;
+    private float increaseRange = 0f;
     private bool isActiveAfricaSynergy;
     private bool ignoreArmor;
     private float aroundDamage;
@@ -79,7 +79,7 @@ public class Tower : PollingObject
         speed = towerData.Speed;
         damages = towerData.Damage.ToArray();
         Grade = 1;
-        cur_damage = damages[Grade];
+        cur_damage = damages[Grade - 1];
         canAttack = true;
   
             gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/Towers/{TowerName}{Grade}");

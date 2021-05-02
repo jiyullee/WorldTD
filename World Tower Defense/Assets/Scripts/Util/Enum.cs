@@ -23,6 +23,7 @@ public enum POPUP_STATE
     GameWin,
     GameLose,
     Option,
+    LackGold,
     None,
 }
 
