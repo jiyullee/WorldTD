@@ -27,7 +27,7 @@ public class TimeManager : UnitySingleton<TimeManager>
 
     public void Pause()
     {
-        tempTime = Time.timeScale;
+        tempTime = (Time.timeScale == 0) ? tempTime : Time.timeScale;
         Time.timeScale = 0;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
     }
