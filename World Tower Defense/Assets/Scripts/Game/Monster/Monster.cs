@@ -154,15 +154,12 @@ public class Monster : PollingObject
         DamageAround(aroundDamage);
         if (hp <= 0)
         {
+            if (MonsterManager.spawned_monsters.Contains(this))
+                MonsterManager.spawned_monsters.Remove(this);
             ParticleSystem particle = EffectManager.GetParticle(tempPos);
             EffectManager.ReturnParticle(particle);
-
             index = 0;
-            if (MonsterManager.spawned_monsters.Contains(this))
-                MonsterManager.spawned_monsters.Remove(this);
             PoolingManager.ReturnObject(this);
-            if (MonsterManager.spawned_monsters.Contains(this))
-                MonsterManager.spawned_monsters.Remove(this);
         }
         ChangeColor();
     }
@@ -173,9 +170,10 @@ public class Monster : PollingObject
         hp -= aroundDamage;
         if (hp <= 0)
         {
+            if (MonsterManager.spawned_monsters.Contains(this))
+                MonsterManager.spawned_monsters.Remove(this);
             ParticleSystem particle = EffectManager.GetParticle(tempPos);
             EffectManager.ReturnParticle(particle);
-
             index = 0;
             PoolingManager.ReturnObject(this);
         }
