@@ -154,7 +154,7 @@ public class Monster : PollingObject
         DamageAround(aroundDamage);
         if (hp <= 0)
         {
-            ParticleSystem particle = EffectManager.GetParticle(tempPos);
+            ParticleSystem particle = EffectManager.GetParticle(gameObject);
             EffectManager.ReturnParticle(particle);
 
             index = 0;
@@ -173,7 +173,7 @@ public class Monster : PollingObject
         hp -= aroundDamage;
         if (hp <= 0)
         {
-            ParticleSystem particle = EffectManager.GetParticle(tempPos);
+            ParticleSystem particle = EffectManager.GetParticle(gameObject);
             EffectManager.ReturnParticle(particle);
 
             index = 0;
