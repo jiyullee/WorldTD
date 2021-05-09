@@ -11,41 +11,56 @@ using System;
 /// </summary>
 public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
 {
-    //몬스터 종류
-    private int numberOfClusters;
-    private string saveDirectory;
-    private int[] gens;
-
-    /// <summary>
-    /// 다음 유전자를 랜덤으로 더해주고 저장함.
-    /// 유전자들은 개별로 stage유전자를 소유하고 있음.
-    /// </summary>
-    /// <returns> 다음 유전자의 인덱스, 이값을 활용해서 호출</returns>
-    public int addGen()
-    {
-        int random = UnityEngine.Random.Range(0, numberOfClusters + 1);
-        gens[StageManager.Instance.Stage] = gens[StageManager.Instance.Stage] * 10 + random;
-        return random;
-    }
 
     /// <summary>
     /// 유전자를 Json으로 저장
     /// 이때 각각의 객체를 비교해주기 위해 현재시간을 string값으로 저장함
     /// 게임이 끝날때 호출
     /// </summary>
-    public void SaveGen()
+    [ContextMenu("Save Data")]
+    public void SaveData()
     {
+        string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
         Compatibility compatibility = NewLevelManager.Instance.Compatibility;
-        compatibility.gens = gens;
+        compatibility.Count++;
         string jsonData = JsonUtility.ToJson(compatibility);
-        string savePath = Path.Combine(saveDirectory, DateTime.Now.ToString() + "Data.json");
+        string savePath = Path.Combine(saveDirectory, "Data.json");
         File.WriteAllText(savePath, jsonData);
+    }
+
+    /// <summary>
+    /// Json 유전자를 받아오는 것.
+    /// 시작하자 마자 실행
+    /// </summary>
+    [ContextMenu("Load Data")]
+    public Compatibility GetData()
+    {
+        string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
+        string savePath = Path.Combine(saveDirectory, "Data.json");
+        Compatibility compatibility;
+        FileInfo fileInfo = new FileInfo(savePath);
+        if (fileInfo.Exists)
+        {
+            string data = File.ReadAllText(savePath);
+            compatibility = JsonUtility.FromJson<Compatibility>(data);
+            if (compatibility.Count == compatibility.maxCount)
+            {
+                //유전자 조합
+                compatibility.Count = 0;
+                compatibility.isfirst = false;
+            }
+        }
+        else
+        {
+            compatibility = new Compatibility();
+            compatibility.init();
+            compatibility.isfirst = true;
+        }
+        return compatibility;
     }
 
     public override void OnCreated()
     {
-        saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
-        gens = new int[StageManager.Instance.MaxStage];
         //numberOfClusters = 군집수
     }
 
