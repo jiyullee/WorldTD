@@ -47,6 +47,7 @@ public class Tower : PollingObject
     private Collider2D[] colliders;
     public LayerMask AroundTowerLayer;
     public TowerButtonUI ButtonUI { get; private set; }
+    
     #endregion
 
     #region Callbacks
@@ -186,7 +187,7 @@ public class Tower : PollingObject
         Grade++;
         spriteRenderer.sprite = sprites[Grade];
         ButtonUI.SetViewTowerUI();
-        ParticleSystem particle = EffectManager.GetParticle(transform);
+        ParticleSystem particle = EffectManager.GetParticle(gameObject);
         EffectManager.ReturnParticle(particle);
     }
 

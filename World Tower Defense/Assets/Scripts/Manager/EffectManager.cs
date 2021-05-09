@@ -17,18 +17,12 @@ public class EffectManager : MonoBehaviour
             return mInstance;
         }
     }
-    private Monster monster;
 
     [SerializeField] public ParticleSystem enemyDestoryedPrefab;
     [SerializeField] public ParticleSystem upgradePrefab;
 
-
-
      Queue<ParticleSystem> destroyEffectPool = new Queue<ParticleSystem>();
      Queue<ParticleSystem> upgradeEffectPool = new Queue<ParticleSystem>();
-
-
-
 
     void Awake()
     {
@@ -39,9 +33,6 @@ public class EffectManager : MonoBehaviour
     {
         CreateOn();
     }
-
-
-
 
     public void CreateOn()
     {
@@ -58,22 +49,15 @@ public class EffectManager : MonoBehaviour
  
 
     private ParticleSystem CreateDestroyParticle()
-    {
-      
+    {   
        var newParticle = Instantiate(enemyDestoryedPrefab).GetComponent<ParticleSystem>();
-
-       newParticle.transform.SetParent(null); newParticle.Stop();
-
+       newParticle.transform.SetParent(gameObject.transform); newParticle.Stop();
        return newParticle;
-
     }
     private ParticleSystem CreateUpgradeParticle()
     {
-
         var newParticle = Instantiate(upgradePrefab).GetComponent<ParticleSystem>();
-
-        newParticle.transform.SetParent(null); newParticle.Stop();
-
+        newParticle.transform.SetParent(gameObject.transform); newParticle.Stop();
         return newParticle;
 
     }
@@ -82,45 +66,36 @@ public class EffectManager : MonoBehaviour
 
 
 
-    public static ParticleSystem GetParticle(Transform transform)
+    public static ParticleSystem GetParticle(GameObject gameObject)
     {
-
-  
-        if (transform.name == "Tower(Clone)")
+        if (gameObject.transform.name == "Tower(Clone)")
         {
-
             if (instance.upgradeEffectPool.Count > 0)
             {
                 var particle = instance.upgradeEffectPool.Dequeue();
-                particle.transform.SetParent(transform);
-                particle.transform.position = transform.position;
+                particle.transform.SetParent(gameObject.transform);
+                particle.transform.position = gameObject.transform.position;
                 particle.Play();
                 return particle;
-
             }
             else
             {
-
                 var newParticle = instance.CreateUpgradeParticle();
-                newParticle.transform.SetParent(transform);
-                newParticle.transform.position = transform.position;
+                newParticle.transform.SetParent(gameObject.transform);
+                newParticle.transform.position = gameObject.transform.position;
                 newParticle.Play();
                 return newParticle;
-
             }
         }
 
 
         else
         {
-
-           
             if (instance.destroyEffectPool.Count>0)
             {
                 var particle = instance.destroyEffectPool.Dequeue();
-        
-                particle.transform.SetParent(transform);
-                particle.transform.position = transform.position;
+                particle.transform.SetParent(gameObject.transform);
+                particle.transform.position = gameObject.transform.position;
                 particle.Play();
                 return particle;
                
@@ -130,10 +105,8 @@ public class EffectManager : MonoBehaviour
             {
 
                 var newParticle = instance.CreateDestroyParticle();
-             
-                newParticle.transform.SetParent(transform);
-                newParticle.transform.position = transform.position;
-               
+                newParticle.transform.SetParent(gameObject.transform);
+                newParticle.transform.position = gameObject.transform.position;            
                 newParticle.Play();
                 return newParticle;
 
@@ -158,13 +131,7 @@ public class EffectManager : MonoBehaviour
         else
         {
             instance.destroyEffectPool.Enqueue(particle);
-      
-
         }
-
-
-
-
     }
 
 
