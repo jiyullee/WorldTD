@@ -34,7 +34,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
         towerInstance = p_towerInstance;
         text_towerName.text = towerInstance.GetTowerData().TowerName;
         text_cost.text = towerInstance.GetTowerData().Cost.ToString();
-        button.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Image/Flags/{text_towerName.text}") ;
+        button.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Flags/{text_towerName.text}") ;
         SetActiveButton(true); 
     }
 

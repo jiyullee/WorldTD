@@ -67,7 +67,7 @@ public class LobbyCollectionUI : MonoBehaviourSubUI
                 damage += $"{towerDataClass.Damage[i]} ★";
         }
    
-        img_tower.sprite = Resources.Load<Sprite>($"Image/Flags/{text_name.text}");
+        img_tower.sprite = Resources.Load<Sprite>($"Images/Flags/{text_name.text}");
         text_damage.text = damage;
         text_speed.text = towerDataClass.Speed.ToString();
         text_range.text = towerDataClass.Range.ToString();
