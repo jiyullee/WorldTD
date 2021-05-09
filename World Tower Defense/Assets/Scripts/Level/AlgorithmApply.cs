@@ -12,41 +12,134 @@ using GameData;
 /// </summary>
 public class AlgorithmApply : UnitySingleton<AlgorithmApply>
 {
-    Compatibility[] compatibilitys;
-    private float compatibilityFit;
+    //유전자에 포함비율
+    //위는 적합유전자 비율, 아래는 돌연변이 비율, 돌연변이는 각 mutationGenRate * 10 비율로 일어남
+    private float fitnessGenRate = 0.4f;
+    private float mutationGenRate = 0.3f;
+    //몬스터 군집체 수
+    private int monsterSize = 5;
     private float[] MaxClearTimes;
-    private int[] gens;
+
+    //차후에 Compatibility로 대체
+    //Compatibility의 maxCount
+    private int maxCount = 10;
+    private int maxStage;
+    private float[] clearTimeRate;
+
+    private string[][] gens;
+    private float[][] fitnessClearTimes;
+
+    #region QuickSort
+    /// <summary>
+    /// 유전자와 적합도를 퀵솔트 해주는 알고리즘
+    /// </summary>
+    public void QuickSort(int stage, int left, int right)
+    {
+        if (left >= right) return;
+        int mid = (left + right) / 2;
+        partition(stage, left, right);
+        QuickSort(stage, left, mid);
+        QuickSort(stage, mid + 1, right);
+    }
+    public void partition(int stage, int left, int right)
+    {
+        float pivot = fitnessClearTimes[stage][(left + right) / 2];
+        int i = left, j = right;
+        while (i < j)
+        {
+            while (pivot < fitnessClearTimes[stage][j])
+                j--;
+            while (i < j && pivot >= fitnessClearTimes[stage][i])
+                i++;
+            swap(stage, i, j);
+        }
+        fitnessClearTimes[stage][left] = fitnessClearTimes[stage][i]; fitnessClearTimes[stage][i] = pivot;
+    }
+    public void swap(int stage, int i, int j)
+    {
+        string tempGens;
+        float tempFit;
+
+        tempFit = fitnessClearTimes[stage][i];
+        fitnessClearTimes[stage][i] = fitnessClearTimes[stage][j];
+        fitnessClearTimes[stage][j] = tempFit;
+
+        tempGens = gens[stage][i];
+        gens[stage][i] = gens[stage][j];
+        gens[stage][j] = tempGens;
+    }
+
+    #endregion
 
 
     /// <summary>
-    /// 각각 데이터간 적합도를 검사해서 알맞게 배분함.
+    /// 게임 클리어시 저장에서 혹은 신 로드시 count == maxCount일 경우 호출해주는 함수
+    /// 유전자를 섞어서 보존해줌
+    /// </summary>
+    public void GameClear()
+    {
+        //유전자 정렬
+        SetGen();
+        //유전자 혼합
+        MixGen();
+    }
+
+    [ContextMenu("MixGen")]
+    /// <summary>
+    /// 유전자 정렬
     /// </summary>
     public void SetGen()
     {
-        for (int j = 0; j < StageManager.Instance.MaxStage; j++)
+        for (int i = 0; i < maxStage; i++)
         {
-            compatibilityFit = 0;
-            for (int i = 0; i < compatibilitys.Length; i++)
+            QuickSort(i, 0, maxCount);
+        }
+    }
+
+    /// <summary>
+    /// 유전자 섞는 알고리즘
+    /// 돌연변이, 적합유전자 까지 다 한다.
+    /// </summary>
+    public void MixGen()
+    {
+        int fit = (int)Mathf.Floor(fitnessGenRate * maxCount * 100);
+        int mutantionGen = (int)Mathf.Floor(mutationGenRate * maxCount * 100);
+        for (int j = fit; j < maxCount; j++)
+        {
+            for (int i = 0; i < maxStage; i++)
             {
-                if (compatibilityFit > compatibilitys[i].fitnessClearTimes[j])
-                {
-                    compatibilityFit = compatibilitys[i].fitnessClearTimes[j];
-                    gens[j] = compatibilitys[i].gens[j];
-                }
+                int randomIndex = UnityEngine.Random.Range(0, fit / 10);
+                gens[j][i] = gens[randomIndex][i];
+                if (maxCount - mutantionGen > j)
+                    if (UnityEngine.Random.Range(0, mutantionGen / 10) == 0)
+                        Mutent(j, i);
             }
         }
     }
+
+    //돌연변이 유전자
+    public void Mutent(int genIndex, int stage)
+    {
+        int monster = UnityEngine.Random.Range(0, monsterSize + 1);
+        int randomStage = UnityEngine.Random.Range(0, stage + 1);
+        char[] c = new char[stage];
+        c = gens[genIndex][stage].ToCharArray();
+        c[randomStage] = monster.ToString()[0];
+        gens[genIndex][stage] = c.ToString();
+    }
+
+
     public override void OnCreated()
     {
-        //json 데이터들을 불러와서 compatibilitys에 할당
-        MaxClearTimes = new float[StageManager.Instance.MaxStage];
-        for (int i = 0; i < StageManager.Instance.MaxStage; i++)
+        MaxClearTimes = new float[maxStage];
+        for (int i = 0; i < maxStage; i++)
         {
-            MaxClearTimes[i] = MonsterManager.Instance.SpawnTime + MonsterData.Instance.GetTableData(i).Speed;
+            MaxClearTimes[i] = (MonsterManager.Instance.SpawnTime * StageManager.Instance.Stage) + 24;
         }
     }
 
     public override void OnInitiate()
     {
+        maxStage = StageManager.Instance.MaxStage;
     }
 }
