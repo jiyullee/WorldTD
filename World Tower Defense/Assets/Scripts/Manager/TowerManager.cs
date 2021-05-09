@@ -27,7 +27,7 @@ public class TowerManager : UnitySingleton<TowerManager>
 
         Tower tower = (Tower)PoolingManager.GetObject(gameObject, "Tower");
         Vector2 pos = Camera.main.ScreenToWorldPoint(p_pos);
-        tower.transform.position = new Vector3(pos.x,pos.y + 0.05f,0);
+        tower.SetPosition(pos);
         tower.SetTowerData(towerInstance);
         list_tower.Add(tower);
 
@@ -100,5 +100,18 @@ public class TowerManager : UnitySingleton<TowerManager>
         
         p_tower.Upgrade();
     }
-    
+
+    public void SellTower(Tower p_tower)
+    {
+        string towerName = p_tower.TowerName;
+        if (dic_tower.ContainsKey(towerName))
+        {
+            if (dic_tower[towerName].Contains(p_tower))
+            {
+                dic_tower[towerName].Remove(p_tower);
+                StoreManager.Instance.SellTower(p_tower);
+                p_tower.ReturnTower();
+            }
+        }
+    }
 }

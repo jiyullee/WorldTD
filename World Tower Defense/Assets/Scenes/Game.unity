@@ -2925,7 +2925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1381255d6b0187947a72d2be455c1ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageWaitingTime: 20
+  stageWaitingTime: 5
 --- !u!1 &610487479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3195,6 +3195,7 @@ Transform:
   - {fileID: 1704441954}
   - {fileID: 931471463}
   - {fileID: 1027230970}
+  - {fileID: 813188495}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4371,6 +4372,56 @@ Transform:
   m_Father: {fileID: 672746160}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &813188494
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 813188495}
+  - component: {fileID: 813188496}
+  m_Layer: 0
+  m_Name: PoolingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &813188495
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813188494}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 643551305}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &813188496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813188494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95bcbcc6d2a4d7f408e629d8de7be49a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spown:
+  - count: 50
+    pollingObject: {fileID: 7252555372345088209, guid: 7ed480c8ca1ef184d85465c3c88310e6, type: 3}
+  - count: 30
+    pollingObject: {fileID: 5919826869327541493, guid: a7d54a9682f33304eb64bf0877c5d909, type: 3}
+  - count: 100
+    pollingObject: {fileID: 9075845500042128780, guid: b155685b6ad39c14d9325f14da2330cd, type: 3}
 --- !u!1 &817383837
 GameObject:
   m_ObjectHideFlags: 0
@@ -6523,7 +6574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dec669fe29e843459db8fe121155276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempObject: {fileID: 163527414}
   tileDatas:
   - {fileID: 11400000, guid: 61862125b7851f844949cc91788c00c8, type: 2}
   - {fileID: 11400000, guid: 43e15549d53e8f84fb29965580c113e4, type: 2}
@@ -8399,9 +8449,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1579435440}
   - component: {fileID: 1579435441}
-  - component: {fileID: 1579435442}
   m_Layer: 0
-  m_Name: MonsterSponer
+  m_Name: MonsterManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8434,32 +8483,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnCycle: 0.5
-  monsterImage:
-  - {fileID: 8964348670299197311, guid: 20535b7a386e2394283c0d2af31ae39a, type: 3}
-  - {fileID: -9062304531134733656, guid: 20535b7a386e2394283c0d2af31ae39a, type: 3}
-  - {fileID: 7730256063860039076, guid: 20535b7a386e2394283c0d2af31ae39a, type: 3}
-  - {fileID: 1132676901880397304, guid: 20535b7a386e2394283c0d2af31ae39a, type: 3}
-  - {fileID: -8868581108171312049, guid: 20535b7a386e2394283c0d2af31ae39a, type: 3}
-  - {fileID: -2191450496024337236, guid: 20535b7a386e2394283c0d2af31ae39a, type: 3}
---- !u!114 &1579435442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579435439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95bcbcc6d2a4d7f408e629d8de7be49a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spown:
-  - count: 50
-    pollingObject: {fileID: 7252555372345088209, guid: 7ed480c8ca1ef184d85465c3c88310e6, type: 3}
-  - count: 30
-    pollingObject: {fileID: 5919826869327541493, guid: a7d54a9682f33304eb64bf0877c5d909, type: 3}
-  - count: 100
-    pollingObject: {fileID: 9075845500042128780, guid: b155685b6ad39c14d9325f14da2330cd, type: 3}
 --- !u!1 &1584490716
 GameObject:
   m_ObjectHideFlags: 0

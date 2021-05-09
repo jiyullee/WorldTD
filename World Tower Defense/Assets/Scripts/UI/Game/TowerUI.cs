@@ -11,6 +11,7 @@ public class TowerUI : MonoBehaviourSubUI
     private GameObject obj_menu;
     private Button btn_info;
     private Button btn_compound;
+    private Button btn_sell;
     private Text text_towerName;
     private Text text_damage;
     private Text text_speed;
@@ -39,9 +40,14 @@ public class TowerUI : MonoBehaviourSubUI
         }
 
         btn_compound = obj_info.transform.Find("CompoundButton").GetComponent<Button>();
+        btn_sell = obj_info.transform.Find("SellButton").GetComponent<Button>();
+        
         AddButtonEvent(btn_compound, CompoundTower);
+        AddButtonEvent(btn_sell, SellTower);
         
         SetView(false);
+        btn_compound.interactable = false;
+ 
     }
 
     public override void SetView(bool state)
@@ -103,5 +109,13 @@ public class TowerUI : MonoBehaviourSubUI
             TowerManager.Instance.CompoundTower(tower);
         }
     }
-    
+
+    public void SellTower()
+    {
+        if (tower != null)
+        {
+            SetView(false);
+            TowerManager.Instance.SellTower(tower);
+        }
+    }
 }
