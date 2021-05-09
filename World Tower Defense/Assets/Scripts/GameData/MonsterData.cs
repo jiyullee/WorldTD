@@ -19,7 +19,7 @@ namespace GameData
             public float Speed;
             public int Amount;
             public string info;
-            public int spriteIndex;
+            public int SpriteIndex;
         }
         
     }

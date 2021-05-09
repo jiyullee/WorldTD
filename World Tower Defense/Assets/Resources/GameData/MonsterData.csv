@@ -1,4 +1,4 @@
-﻿KEY,Stage,HP,Armor,Speed,Amount,info,spriteIndex
+﻿KEY,Stage,HP,Armor,Speed,Amount,info,SpriteIndex
 0,1,40,0,1,20,,0
 1,2,80,0,1,20,,1
 2,3,120,0,1,20,,2

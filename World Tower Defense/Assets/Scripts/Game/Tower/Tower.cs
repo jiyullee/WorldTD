@@ -9,9 +9,10 @@ public class Tower : PollingObject
 {
     #region Fields
 
+    public TowerInstance towerInstance { get; private set; }
     public string TowerName { get; private set; }
-    public string[] SynergyNames { get; private set; }
-    [SerializeField] private int cost;
+    public string[] SynergyNames { get; private set; } 
+    public int Cost { get; private set; }
     public int Grade { get; private set; }
 
     [SerializeField] private float range;
@@ -40,6 +41,9 @@ public class Tower : PollingObject
     private float decreaseArmor;
     private float trueDamage;
 
+    private const int MAX_GRADE = 3 + 1;
+    private SpriteRenderer spriteRenderer;
+    private Sprite[] sprites = new Sprite[MAX_GRADE];
     private Collider2D[] colliders;
     public LayerMask AroundTowerLayer;
     public TowerButtonUI ButtonUI { get; private set; }
@@ -51,6 +55,7 @@ public class Tower : PollingObject
     {
         target = null;
         list_synergy = new List<Synergy>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public override void OnInitiate()
@@ -71,20 +76,24 @@ public class Tower : PollingObject
 
     public void SetTowerData(TowerInstance p_towerInstance)
     {
-        TowerData.TowerDataClass towerData = p_towerInstance.GetTowerData();
+        towerInstance = p_towerInstance;
+        TowerData.TowerDataClass towerData = towerInstance.GetTowerData();
         TowerName = towerData.TowerName;
         SynergyNames = towerData.SynergyName.ToArray();
-        cost = towerData.Cost;
+        Cost = towerData.Cost;
         range = towerData.Range * 0.6f; // 범위 보정
         speed = towerData.Speed;
         damages = towerData.Damage.ToArray();
         Grade = 1;
         cur_damage = damages[Grade - 1];
         canAttack = true;
-  
-            gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/Towers/{TowerName}{Grade}");
-        if ((gameObject.GetComponent<SpriteRenderer>().sprite) == null)
-            gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/TowerSample");
+
+        for (int i = 1; i < MAX_GRADE; i++)
+        {
+            sprites[i] = Resources.Load<Sprite>($"Images/Towers/{TowerName}{Grade}");
+        }
+
+        spriteRenderer.sprite = sprites[Grade];
 
         for (int i = 0; i < SynergyNames.Length; i++)
         {
@@ -105,10 +114,15 @@ public class Tower : PollingObject
             StartCoroutine(SearchAround(0.6f));
     }
 
+    public void SetPosition(Vector2 p_pos)
+    {
+        transform.position = new Vector3(p_pos.x, p_pos.y + 0.05f, 0);
+    }
+
     public void SetPositionFromScreen(Vector2 p_pos)
     {
         Vector3 targetPos = Camera.main.ScreenToWorldPoint(p_pos);
-        transform.position = new Vector3(targetPos.x, targetPos.y, 0);
+        transform.position = new Vector3(targetPos.x, targetPos.y + 0.05f, 0);
     }
 
     public void SpawnBullet()
@@ -170,10 +184,8 @@ public class Tower : PollingObject
     public void Upgrade()
     {
         Grade++;
+        spriteRenderer.sprite = sprites[Grade];
         ButtonUI.SetViewTowerUI();
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/Towers/{TowerName}{Grade}");
-        if ((gameObject.GetComponent<SpriteRenderer>().sprite) == null)
-            gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Image/TowerSample");
         ParticleSystem particle = EffectManager.GetParticle(transform);
         EffectManager.ReturnParticle(particle);
     }

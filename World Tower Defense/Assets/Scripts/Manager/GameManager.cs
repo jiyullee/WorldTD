@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor.SceneManagement;
 
-public class Gamemanager : UnitySingleton<Gamemanager>
+public class GameManager : UnitySingleton<GameManager>
 {
     [SerializeField]
-    private const int MaxHp = 30;
+    private const int maxHp = 30;
     private int hp;
+    
     public override void OnCreated()
     {
+        
     }
 
 
     public override void OnInitiate()
     {
-        hp = MaxHp;
+        hp = maxHp;
     }
 
     public void Damage(int damage)
     {
-        hp -= damage;
+        hp = hp - damage >= 0 ? hp - damage : 0;
         StateUI.Instance.SetHPText(hp);
         if (hp <= 0)
         {
@@ -28,21 +30,20 @@ public class Gamemanager : UnitySingleton<Gamemanager>
         }
     }
 
+
     //게임 클리어
     public void GameClear()
     {
-        PopUpUI.Instance.PopUp(POPUP_STATE.GameWin);
         TimeManager.Instance.Pause();
-        
-        //승리 UI
+        PopUpUI.Instance.PopUp(POPUP_STATE.GameWin);
     }
 
     //게임에서 짐.
     public void GameOver()
     {
-        PopUpUI.Instance.PopUp(POPUP_STATE.GameLose);
         TimeManager.Instance.Pause();
-        
+        PopUpUI.Instance.PopUp(POPUP_STATE.GameLose);
+
         //게임 오버 UI표기.
     }
 

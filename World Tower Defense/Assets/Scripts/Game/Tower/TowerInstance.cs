@@ -7,6 +7,7 @@ public class TowerInstance
 {
     private TowerData.TowerDataClass _towerDataClass;
 
+    public TowerInstance(){}
     public TowerInstance(int towerIndex)
     {
         _towerDataClass = TowerData.Instance.GetTableData(towerIndex);

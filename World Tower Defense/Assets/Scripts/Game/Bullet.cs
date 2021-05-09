@@ -42,8 +42,9 @@ public class Bullet : PollingObject
         Monster monster = collider.gameObject.GetComponent<Monster>();
         if (monster != null && monster == target)
         {
-            monster.GetDamage(damage, ignoreArmor, decreaseArmor, aroundDamage, trueDamage);
-            monster.DecreaseSpeed(decreaseMonsterSpeed);
+            monster.Damage(damage, ignoreArmor, decreaseArmor, trueDamage);
+            if(aroundDamage > 0) monster.DamageAround(aroundDamage);
+            if(decreaseMonsterSpeed > 0) monster.DecreaseSpeed(decreaseMonsterSpeed);
             DestroySelf();
         }
     }

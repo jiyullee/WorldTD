@@ -6,19 +6,22 @@ using GameData;
 
 public class MonsterManager : UnitySingleton<MonsterManager>
 {
+    #region Fields
+
+    public const string MonsterSpritePath = "Images/Monsters/spaceships";
     [SerializeField] private float spawnCycle = 0.5f;
-    [SerializeField] private Sprite[] monsterImage;
+    
     private GameObject monsterContainer;
-    private Sprite nextSprite;
-    private Queue<PollingObject> monsterQueue;
-    //현재 필드에 스폰된 몬스터 리스트s
+
+    //현재 필드에 스폰된 몬스터 리스트
     public static List<PollingObject> spawned_monsters = new List<PollingObject>();
-    public float stageWaitingTime { get; set; }
-    private int amount;
-    private int stage;
     private bool flag = true;
 
+    #endregion
+
     public static bool IsPoolingObject(PollingObject pollingObject) => spawned_monsters.Contains(pollingObject);
+    
+    #region CallBacks
 
     public override void OnCreated()
     {
@@ -29,7 +32,6 @@ public class MonsterManager : UnitySingleton<MonsterManager>
             monsterContainer = new GameObject();
         monsterContainer.transform.position = startTransfrom.transform.position;
         monsterContainer.gameObject.name = "monsterContainer";
-        monsterQueue = new Queue<PollingObject>();
         monsterContainer.transform.position = startTransfrom.position;
     }
 
@@ -38,17 +40,9 @@ public class MonsterManager : UnitySingleton<MonsterManager>
 
     }
 
+    #endregion
 
-    /// <summary>
-    /// 몬스터의 데이터를 세팅해줌.
-    /// 이미지가 생길 경우 이미지 스크립트로 해줄것.
-    /// </summary>
-    private void SetMonster()
-    {
-        nextSprite = monsterImage[MonsterData.Instance.GetTableData(stage).spriteIndex];
-        amount = MonsterData.Instance.GetTableData(stage).Amount;
-        amount = LevelManager.Instance.SetamountWeight(amount);
-    }
+    #region Functions
 
     public void StartSpown()
     {
@@ -56,26 +50,39 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     }
 
     /// <summary>
-    /// 몬스터를 amount개 소환하는 sponer
+    /// 몬스터를 amount개 소환하는 Spawner
     /// </summary>
     IEnumerator SpawnMonster()
     {
-        StageManager.IsCombatting = true;
-        SetMonster();
-        stage = StageManager.Instance.Stage;
+        int key = StageManager.Instance.Stage - 1;
+        int amount = MonsterData.Instance.GetTableData(key).Amount;
+        amount = LevelManager.Instance.SetamountWeight(amount);
+        
         while (amount > 0)
         {
             yield return new WaitForSeconds(spawnCycle);
             Monster monster = (Monster)PoolingManager.GetObject(monsterContainer, "Monster");
-            monster.SetMonsterData(stage - 1, nextSprite);
-            monsterQueue.Enqueue(monster);
+            AddMonster(monster);
+            monster.SetMonsterData(key);
             amount--;
         }
-        while (MonsterManager.spawned_monsters.Count > 0)
+        while (spawned_monsters.Count > 0)
         {
             yield return new WaitForEndOfFrame();
         }
         StageManager.Instance.Reward();
     }
 
+    public void AddMonster(Monster p_monster)
+    {
+        spawned_monsters.Add(p_monster);
+    }
+
+    public void RemoveMonster(Monster p_monster)
+    {
+        if (spawned_monsters.Contains(p_monster))
+            spawned_monsters.Remove(p_monster);
+    }
+    
+    #endregion
 }

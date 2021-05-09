@@ -6,8 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class MapManager : UnitySingleton<MapManager>
 {
-    private Tilemap _tilemap;
-    public GameObject tempObject;
+    private Tilemap tilemap;
 
     [SerializeField] private List<TileData> tileDatas;
 
@@ -16,7 +15,7 @@ public class MapManager : UnitySingleton<MapManager>
     public List<Vector3> list_towerPos = new List<Vector3>();
     public override void OnCreated()
     {
-        _tilemap = GetComponentInChildren<Tilemap>();
+        tilemap = GetComponentInChildren<Tilemap>();
         dataFromTiles = new Dictionary<TileBase, TileData>();
     }
 
@@ -37,13 +36,13 @@ public class MapManager : UnitySingleton<MapManager>
             }
         }
 
-        for (int i = -10; i < _tilemap.size.y; i++)
+        for (int i = -10; i < tilemap.size.y; i++)
         {
-            for (int j = -10; j < _tilemap.size.x; j++)
+            for (int j = -10; j < tilemap.size.x; j++)
             {
                 Vector3Int vInt = new Vector3Int(j,i,0);
-                Vector3 pos = _tilemap.CellToWorld(vInt) + new Vector3(0.32f,0.32f,0f);
-                TileBase tile = _tilemap.GetTile(vInt);
+                Vector3 pos = tilemap.CellToWorld(vInt) + new Vector3(0.32f,0.32f,0f);
+                TileBase tile = tilemap.GetTile(vInt);
                 if (tile && dataFromTiles.ContainsKey(tile))
                 {
                     if (dataFromTiles[tile].tile_data == TILE_DATA.TOWER)

@@ -18,7 +18,7 @@ namespace GameData
     public abstract class DataSets<K, T> : Singleton<K> where T : DataSets<K, T>.DataClass, new()
         where K : DataSets<K, T>, new()
     {
-        #region variable
+        #region Fields
 
         //메타 문자열
         static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";

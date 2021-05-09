@@ -5,40 +5,53 @@ using GameData;
 
 public class StageManager : UnitySingleton<StageManager>
 {
-    [SerializeField]
-    private const int MaxStage = 30;
-    [SerializeField]
-    private float stageWaitingTime;
-    private float max_waitTime;
+    #region Fields
+
+    private const int MAX_STAGE = 30;
+    [SerializeField] private float stageWaitingTime;
+    private float maxWaitingTime;
     private int stage;
-    public int Stage
-    {
-        get { return stage; }
-    }
+    public int Stage => stage;
     public static bool IsCombatting;
+
+    #endregion
+
+    #region CallBacks
+
     public override void OnCreated()
     {
-        stage = 0;
-        MonsterManager.Instance.stageWaitingTime = this.stageWaitingTime;
-        max_waitTime = stageWaitingTime;
+        
     }
 
     public override void OnInitiate()
     {
+        stage = 1;
+        maxWaitingTime = stageWaitingTime;
     }
-
-    // Start is called before the first frame update
+    
     private void Start()
     {
+        ReadyStage();
+    }
+
+    #endregion
+
+    #region Functions
+
+    /// <summary>
+    /// 스테이지 준비 단계
+    /// </summary>
+    public void ReadyStage()
+    {
+        StoreManager.Instance.EarnGold(6);
         StoreManager.Instance.RefreshStore();
-        TimeManager.Instance.ProgressTime(stageWaitingTime, max_waitTime, () =>
+        TimeManager.Instance.ProgressTime(stageWaitingTime, maxWaitingTime, () =>
         {
             TimeUI.Instance.InitTime();
-            stageWaitingTime = max_waitTime;
+            stageWaitingTime = maxWaitingTime;
             NextStage();
         });
     }
-
 
     /// <summary>
     /// 스테이지를 실행해 주는 함수
@@ -46,39 +59,34 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void StartStage()
     {
-        if (stage > MaxStage)
+        if (stage > MAX_STAGE)
         {
             StartCoroutine("CheckGameClear");
             return;
         }
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
+        IsCombatting = true;
         MonsterManager.Instance.StartSpown();
     }
+    
     /// <summary>
     /// 다음 스테이지를 켜주는 함수
     /// </summary>
     public void NextStage()
     {
-        stage++;
         StartStage();
+        stage++;
     }
-
-
+    
     /// <summary>
     /// 스테이지 보상 주기
     /// </summary>
     public void Reward()
     {
         IsCombatting = false;
-        StoreManager.Instance.EarnGold();
-        StoreManager.Instance.RefreshStore();
-        TimeManager.Instance.ProgressTime(stageWaitingTime, max_waitTime, () =>
-        {
-            TimeUI.Instance.InitTime();
-            stageWaitingTime = max_waitTime;
-            NextStage();
-        });
+        ReadyStage();
     }
+    
     /// <summary>
     /// 게임이 끝난 경우 남아있는 몹들을 계속 체크해서 끝나면 게임을 종료함.
     /// </summary>
@@ -87,10 +95,11 @@ public class StageManager : UnitySingleton<StageManager>
         while (true)
         {
             if (MonsterManager.spawned_monsters.Count == 0)
-                Gamemanager.Instance.GameClear();
+                GameManager.Instance.GameClear();
             yield return new WaitForEndOfFrame();
         }
     }
-    
+
+    #endregion
 }
 
