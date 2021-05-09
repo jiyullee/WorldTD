@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,6 +74,21 @@ public class Monster : PollingObject
         //현재 직접 리스트를 추가하고 있지만 MonsterSpawner 함수에서 추가하도록 수정해야함
         if (IsTarget)
             MonsterManager.spawned_monsters.Add(this);
+    }
+
+    /// <summary>
+    /// 몬스터의 데이터를 세팅해줌.
+    /// 스테이지를 통해 데이터를 불러옴, 스프라이트는 외부 할당
+    /// </summary>
+    public void SetMonsterData(string monster, Sprite sprite)
+    {
+        int index = Convert.ToInt32(monster);
+
+        hp = MonsterAssocationData.Instance.GetTableData(index).HP;
+        armor = MonsterAssocationData.Instance.GetTableData(index).Armor;
+        initMoveSpeed = MonsterAssocationData.Instance.GetTableData(index).Speed;
+        spriteRenderer.sprite = sprite;
+        moveSpeed = initMoveSpeed;
     }
 
     /// <summary>
