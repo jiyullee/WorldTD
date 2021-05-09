@@ -78,3 +78,14 @@ public enum SYNERGY : int
     Peninsula = 7,
     Continent = 8,
 }
+
+public enum MonsterAssociationData
+{
+    Nomal,
+    Amount,
+    Speed,
+    HP,
+    Armor,
+    Boss1,
+    Boss2,
+}
