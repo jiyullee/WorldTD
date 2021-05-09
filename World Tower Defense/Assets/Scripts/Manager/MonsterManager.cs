@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameData;
 
-public class MonsterManager : UnitySingleton<MonsterManager>
+public class _MonsterManager : UnitySingleton<_MonsterManager>
 {
     #region Fields
 

@@ -71,7 +71,7 @@ public class Monster : PollingObject
         initMoveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
         info = MonsterData.Instance.GetTableData(stage).info;
         int spriteIndex = MonsterData.Instance.GetTableData(stage).SpriteIndex;
-        spriteRenderer.sprite = Resources.LoadAll<Sprite>($"{MonsterManager.MonsterSpritePath}")[spriteIndex];
+        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[spriteIndex];
 
         SetDifficulty();
     }
@@ -80,14 +80,15 @@ public class Monster : PollingObject
     /// 몬스터의 데이터를 세팅해줌.
     /// 스테이지를 통해 데이터를 불러옴, 스프라이트는 외부 할당
     /// </summary>
-    public void SetMonsterData(string monster, Sprite sprite)
+    public void SetMonsterData(string monster)
     {
-        int index = Convert.ToInt32(monster);
+        int stage = Convert.ToInt32(monster);
 
-        hp = MonsterAssocationData.Instance.GetTableData(index).HP;
-        armor = MonsterAssocationData.Instance.GetTableData(index).Armor;
-        initMoveSpeed = MonsterAssocationData.Instance.GetTableData(index).Speed;
-        spriteRenderer.sprite = sprite;
+        hp = MonsterAssocationData.Instance.GetTableData(stage).HP;
+        armor = MonsterAssocationData.Instance.GetTableData(stage).Armor;
+        initMoveSpeed = MonsterAssocationData.Instance.GetTableData(stage).Speed;
+        int spriteIndex = MonsterData.Instance.GetTableData(stage).SpriteIndex;
+        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[spriteIndex];
         moveSpeed = initMoveSpeed;
     }
 

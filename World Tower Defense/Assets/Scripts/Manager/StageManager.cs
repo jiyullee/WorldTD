@@ -15,9 +15,7 @@ public class StageManager : UnitySingleton<StageManager>
     {
         get { return maxStage; }
     }
-    [SerializeField]
-    private float stageWaitingTime;
-    private float max_waitTime;
+
     private int stage;
     public int Stage => stage;
     public static bool IsCombatting;
@@ -74,7 +72,7 @@ public class StageManager : UnitySingleton<StageManager>
         }
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
         IsCombatting = true;
-        MonsterManager.Instance.StartSpown();
+        MonsterManager.Instance.StartSpawn();
     }
     
     /// <summary>
