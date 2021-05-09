@@ -119,6 +119,10 @@ public class UIManager : MonoBehaviourSubUI
         }
     }
 
+    /// <summary>
+    /// 화면 터치 버튼 활성화 여부 메소드
+    /// </summary>
+    /// <param name="state"></param>
     public void SetEventButton(bool state)
     {
         btn_event.interactable = state;

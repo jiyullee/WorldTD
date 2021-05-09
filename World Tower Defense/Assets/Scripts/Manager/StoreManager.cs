@@ -118,7 +118,14 @@ public class StoreManager : UnitySingleton<StoreManager>
     public void SellTower(Tower p_tower)
     {
         AddTower(p_tower);
-        gold += p_tower.Cost;
+        int tempWeight = 1;
+        switch (p_tower.Grade)
+        {
+            case 1: tempWeight = 1; break;
+            case 2: tempWeight = 3; break;
+            case 3: tempWeight = 9; break;
+        }
+        gold += p_tower.Cost * tempWeight;
         SetGoldUI();
     }
     

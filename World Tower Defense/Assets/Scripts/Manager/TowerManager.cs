@@ -111,6 +111,7 @@ public class TowerManager : UnitySingleton<TowerManager>
                 dic_tower[towerName].Remove(p_tower);
                 StoreManager.Instance.SellTower(p_tower);
                 p_tower.ReturnTower();
+                UIManager.Instance.SetEventButton(false);
             }
         }
     }
