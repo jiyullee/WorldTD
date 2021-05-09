@@ -49,6 +49,8 @@ public enum ParsingDataSet : int
     StoreTowerData,
     StoreData,
     SynergyData,
+    MonsterAssociationData,
+    FitTimeListData
 }
 public enum TILE_DATA
 {
@@ -75,4 +77,15 @@ public enum SYNERGY : int
     Island = 6,
     Peninsula = 7,
     Continent = 8,
+}
+
+public enum MonsterAssociationData
+{
+    Nomal,
+    Amount,
+    Speed,
+    HP,
+    Armor,
+    Boss1,
+    Boss2,
 }

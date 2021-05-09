@@ -6,10 +6,18 @@ using GameData;
 public class StageManager : UnitySingleton<StageManager>
 {
     #region Fields
-
-    private const int MAX_STAGE = 30;
+    
     [SerializeField] private float stageWaitingTime;
     private float maxWaitingTime;
+    [SerializeField]
+    private int maxStage = 30;
+    public int MaxStage
+    {
+        get { return maxStage; }
+    }
+    [SerializeField]
+    private float stageWaitingTime;
+    private float max_waitTime;
     private int stage;
     public int Stage => stage;
     public static bool IsCombatting;
@@ -59,7 +67,7 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void StartStage()
     {
-        if (stage > MAX_STAGE)
+        if (stage > maxStage)
         {
             StartCoroutine("CheckGameClear");
             return;
@@ -99,7 +107,7 @@ public class StageManager : UnitySingleton<StageManager>
             yield return new WaitForEndOfFrame();
         }
     }
-
+    
     #endregion
 }
 

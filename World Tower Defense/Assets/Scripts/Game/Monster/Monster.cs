@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,6 +77,21 @@ public class Monster : PollingObject
     }
 
     /// <summary>
+    /// 몬스터의 데이터를 세팅해줌.
+    /// 스테이지를 통해 데이터를 불러옴, 스프라이트는 외부 할당
+    /// </summary>
+    public void SetMonsterData(string monster, Sprite sprite)
+    {
+        int index = Convert.ToInt32(monster);
+
+        hp = MonsterAssocationData.Instance.GetTableData(index).HP;
+        armor = MonsterAssocationData.Instance.GetTableData(index).Armor;
+        initMoveSpeed = MonsterAssocationData.Instance.GetTableData(index).Speed;
+        spriteRenderer.sprite = sprite;
+        moveSpeed = initMoveSpeed;
+    }
+
+    /// <summary>
     /// 난이도 조절 함수 차후에 GameManager에서 받아올것.
     /// </summary>
     protected void SetDifficulty()
@@ -91,7 +107,6 @@ public class Monster : PollingObject
     /// </summary>
     public void Damage(float dmg, bool ignoreArmor, float decreaseArmor, float trueDamage)
     {
-        Transform tempPos = transform;
         if (!ignoreArmor)
         {
             armor -= decreaseArmor;
@@ -108,9 +123,7 @@ public class Monster : PollingObject
         {
             ParticleSystem particle = EffectManager.GetParticle(gameObject);
             EffectManager.ReturnParticle(particle);
-
             index = 0;
-            
             PoolingManager.ReturnObject(this);
             MonsterManager.Instance.RemoveMonster(this);
         }
@@ -119,13 +132,11 @@ public class Monster : PollingObject
 
     public void Damage(float aroundDamage)
     {
-        Transform tempPos = transform;
         hp -= aroundDamage;
         if (hp <= 0)
         {
             ParticleSystem particle = EffectManager.GetParticle(gameObject);
             EffectManager.ReturnParticle(particle);
-
             index = 0;
             PoolingManager.ReturnObject(this);
         }
