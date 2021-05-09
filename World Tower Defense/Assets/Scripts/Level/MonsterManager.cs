@@ -59,8 +59,8 @@ public class MonsterManager : UnitySingleton<MonsterManager>
 
     private string SetMonster(string gen)
     {
-        nextMonster = gen.Substring(gen.Length - 1);
-        int nextMonsterIndex = Convert.ToInt32(nextMonster);
+        nextMonster = gen.Substring(0,1);
+        int nextMonsterIndex = Int32.Parse(nextMonster);
         amount = MonsterAssocationData.Instance.GetTableData(nextMonsterIndex).Amount;
         return gen.Substring(0, gen.Length - 1);
     }
