@@ -43,8 +43,8 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void ReadyStage()
     {
-        StoreManager.Instance.EarnGold(6);
-        StoreManager.Instance.RefreshStore();
+        StoreManager.Instance.EarnGold(5);
+        StoreManager.Instance.RefreshStore(false);
         TimeManager.Instance.ProgressTime(stageWaitingTime, maxWaitingTime, () =>
         {
             TimeUI.Instance.InitTime();

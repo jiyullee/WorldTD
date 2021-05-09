@@ -91,7 +91,7 @@ public class Tower : PollingObject
 
         for (int i = 1; i < MAX_GRADE; i++)
         {
-            sprites[i] = Resources.Load<Sprite>($"Images/Towers/{TowerName}{Grade}");
+            sprites[i] = Resources.Load<Sprite>($"Images/Towers/{TowerName}{i}");
         }
 
         spriteRenderer.sprite = sprites[Grade];
@@ -103,7 +103,7 @@ public class Tower : PollingObject
             if (SynergyNames[i] == SYNERGY.Continent.ToString())
                 isContinent = true;
 
-            Synergy synergy = gameObject.AddComponent(System.Type.GetType(SynergyNames[i])) as Synergy; ;
+            Synergy synergy = gameObject.AddComponent(System.Type.GetType(SynergyNames[i])) as Synergy; 
             list_synergy.Add(synergy);
         }
 

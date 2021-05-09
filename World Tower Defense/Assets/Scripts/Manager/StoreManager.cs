@@ -15,9 +15,11 @@ public class StoreManager : UnitySingleton<StoreManager>
     private int max_exp;
     private float[] rarity = {0};
     private int max_store; // 상점 구매 칸 수
+    private int[] count_cost = {0, 6, 10, 8, 6, 3};
     public static TowerInstance selectedTowerInstance;
     public static bool isSelecting;
-    
+    public Sprite[] sprites_tower;
+    public Dictionary<string, Sprite> dic_towerImage = new Dictionary<string, Sprite>();
     public override void OnCreated()
     {
         list_all_towers = new List<TowerInstance>[5 + 1];
@@ -32,17 +34,30 @@ public class StoreManager : UnitySingleton<StoreManager>
     public override void OnInitiate()
     {
         InitState();
+        
+        for (int i = 0; i < sprites_tower.Length; i++)
+        {
+            int towerIndex = StoreTowerData.Instance.GetTableData(i).TowerIndex;
+            string towerName = TowerData.Instance.GetTableData(towerIndex).TowerName;
+            dic_towerImage.Add(towerName, Resources.Load<Sprite>($"Images/Flags/{towerName}") );
+        }
     }
 
     private void AddList()
     {
         int towerCount = StoreTowerData.Instance.GetTable().Count;
+        sprites_tower = new Sprite[towerCount];
         for (int i = 0; i < towerCount; i++)
         {
             int towerIndex = StoreTowerData.Instance.GetTableData(i).TowerIndex;
+            int count = StoreTowerData.Instance.GetTableData(i).Count;
             int cost = TowerData.Instance.GetTableData(towerIndex).Cost;
             TowerInstance towerInstance = new TowerInstance(towerIndex);
-            list_all_towers[cost].Add(towerInstance);
+            for (int j = 0; j < count; j++)
+            {
+                list_all_towers[cost].Add(towerInstance);
+            }
+            
         }
     }
 
@@ -52,6 +67,22 @@ public class StoreManager : UnitySingleton<StoreManager>
         towerInstance = p_tower.towerInstance;
         list_all_towers[p_tower.Cost].Add(towerInstance);
     }
+
+    private void CheckRarity()
+    {
+        rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
+        for (int i = 0; i < rarity.Length; i++)
+        {
+            if(list_all_towers[i + 1].Count >= 1) continue;
+
+            float r = rarity[i];
+            if (i < rarity.Length - 1)
+            {
+                rarity[i] = 0;
+                rarity[i + 1] += r;
+            }
+        }
+    }
     
     /// <summary>
     /// 상점에서 코스트 랜덤 선택
@@ -59,29 +90,52 @@ public class StoreManager : UnitySingleton<StoreManager>
     /// <returns></returns>
     private int SelectRand()
     {
+        CheckRarity();
         float rand = Random.Range(0f, 1f);
         int cost = 0;
-        float sum = rarity[cost];
-        while (true)
+        float sum = 0;
+        while (cost < rarity.Length)
         {
-            if (rand <= sum)
+            if (rand < sum)
             {
-                return cost + 1;
+                return cost;
             }
-            sum += rarity[++cost];
-        }
-    }
-    public void RefreshStore()
-    {
-        if (gold < 1)
-        {
-            PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
-            return;
+            sum += rarity[cost];
+            cost++;
         }
 
-        gold -= 1;
-        SetGoldUI();
-        
+        int maxIndex = 0;
+        float max = 0;
+        for (int i = 0; i < rarity.Length; i++)
+        {
+            if (max < rarity[i])
+            {
+                max = rarity[i];
+                maxIndex = i;
+            }
+        }
+
+        return maxIndex;
+    }
+    
+    /// <summary>
+    /// 상점 새로고침
+    /// </summary>
+    /// <param name="state">골드 차감 여부</param>
+    public void RefreshStore(bool state)
+    {
+        if (state)
+        {
+            if (gold < 1)
+            {
+                PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
+                return;
+            }
+
+            gold -= 1;
+            SetGoldUI();   
+        }
+
         for (int i = 0; i < max_store; i++)
         {
             int cost = SelectRand();
@@ -157,7 +211,6 @@ public class StoreManager : UnitySingleton<StoreManager>
         max_store = 5;
         level = 1;
         max_level = 8;
-        rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
         exp = 0;
         max_exp = StoreData.Instance.GetTableData(level).MaxExp;
         SetLevelUI();
@@ -192,7 +245,6 @@ public class StoreManager : UnitySingleton<StoreManager>
     public void LevelUp()
     {
         level = level + 1 <= max_level ? level + 1 : max_level;
-        rarity = StoreData.Instance.GetTableData(level).Rarity.ToArray();
         max_exp = StoreData.Instance.GetTableData(level).MaxExp;
         
         //레벨 UI 적용

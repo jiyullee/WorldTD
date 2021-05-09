@@ -10,7 +10,8 @@ public class StoreUI : MonoBehaviourSubUI
     private Text text_exp;
     private Text text_level;
     private Image image_expBar;
-    private StoreTowerUI[] storeTowers;
+    private GameObject _storeTower;
+    private StoreTowerUI[] storeTowers = new StoreTowerUI[5];
     private Button btn_refresh;
     public override void Init()
     {
@@ -22,9 +23,22 @@ public class StoreUI : MonoBehaviourSubUI
         image_expBar = transform.Find("Bottom/State/ExpBar/Bar").GetComponent<Image>();
 
         btn_refresh = transform.Find("Bottom/RefreshBtn").GetComponent<Button>();
-        AddButtonEvent(btn_refresh, StoreManager.Instance.RefreshStore);
+        AddButtonEvent(btn_refresh, () =>
+        {
+            StoreManager.Instance.RefreshStore(true);
+        });
         AddButtonEvent("Bottom/LvUpBtn", ExpUp);
-        storeTowers = transform.Find("Top/Scroll View/Viewport").GetComponentsInChildren<StoreTowerUI>();
+        _storeTower = transform.Find("Top/Scroll View/Viewport/StoreTower").gameObject;
+        for (int i = 0; i < storeTowers.Length; i++)
+        {
+            GameObject storeTower = Instantiate(_storeTower);
+            storeTowers[i] = storeTower.GetComponent<StoreTowerUI>();
+            storeTowers[i].transform.parent = transform.Find("Top/Scroll View/Viewport");
+            storeTowers[i].gameObject.SetActive(true);
+            storeTowers[i].Init();
+        }
+
+        
         for (int i = 0; i < storeTowers.Length; i++)
         {
             storeTowers[i].Init();

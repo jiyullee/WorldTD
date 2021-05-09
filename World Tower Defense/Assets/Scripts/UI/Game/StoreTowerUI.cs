@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 //상점 내 타워 기물을 표시하는 UI
 public class StoreTowerUI : MonoBehaviourSubUI
@@ -10,14 +13,17 @@ public class StoreTowerUI : MonoBehaviourSubUI
     private Text text_towerName;
     private Text text_cost;
     private Image img_cost;
+    private Image img_store;
     private Button button;
-    private Sprite icon;
+    private Sprite initSprite;
     public override void Init()
     {
         button = transform.Find("Button").GetComponent<Button>();
         AddButtonEvent(button, SelectTowerPos);
         text_towerName = transform.Find("Info/TowerName").GetComponent<Text>();
         text_cost = transform.Find("Info/Cost/Text").GetComponent<Text>();
+        img_store = transform.Find("Button/Image").GetComponent<Image>();
+        initSprite = img_store.sprite;
         InitTower();
     }
 
@@ -32,9 +38,10 @@ public class StoreTowerUI : MonoBehaviourSubUI
     public void SetTower(TowerInstance p_towerInstance)
     {
         towerInstance = p_towerInstance;
-        text_towerName.text = towerInstance.GetTowerData().TowerName;
+        string towerName = towerInstance.GetTowerData().TowerName;
+        text_towerName.text = towerName;
         text_cost.text = towerInstance.GetTowerData().Cost.ToString();
-        button.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Flags/{text_towerName.text}") ;
+        img_store.sprite = StoreManager.Instance.dic_towerImage[towerName];
         SetActiveButton(true); 
     }
 
@@ -61,7 +68,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
         MapUI.Instance.SetViewSelectableButtons(true);
         StoreUI.Instance.SetActiveButtons(false);
         InitTower();
-        button.GetComponent<Image>().sprite = null;
+        img_store.sprite = initSprite;
     }
 
     public void SetActiveButton(bool state)
