@@ -18,7 +18,7 @@ public class Collection : MonoBehaviourSubUI
     public void InitTowerInfo(TowerInstance p_towerInstance)
     {
         towerInstance = p_towerInstance;
-      gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Image/Flags/{towerInstance.GetTowerData().TowerName}");
+      gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>($"Images/Flags/{towerInstance.GetTowerData().TowerName}");
     }
 
     private void ShowTowerInfo()
