@@ -7,7 +7,7 @@ using GameData;
 public class MonsterManager : UnitySingleton<MonsterManager>
 {
     #region Fields
-    
+
     //군집체당 소환되는 시간
     [SerializeField] private float spawnTime = 5;
     public float SpawnTime { get => spawnTime; }
@@ -22,11 +22,11 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     private float time;
 
     #endregion
-    
+
     public static bool IsPoolingObject(PollingObject pollingObject) => spawned_monsters.Contains(pollingObject);
 
     #region CallBacks
-    
+
     public override void OnCreated()
     {
         Transform startTransfrom = LoadManager.Instance.GetMap()[0].gameObject.transform;
@@ -43,23 +43,22 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     {
 
     }
-    
+
     #endregion
 
     #region Functions
-    
+
     /// <summary>
     /// 진을 읽어서 맞는 몬스터 생성
     /// </summary>
     private string GetGen()
     {
-        string Gens = NewLevelManager.Instance.AddGen();
-        return Gens;
+        return NewLevelManager.Instance.AddGen();
     }
 
     private string SetMonster(string gen)
     {
-        nextMonster = gen.Substring(0,1);
+        nextMonster = gen.Substring(0, 1);
         int nextMonsterIndex = Int32.Parse(nextMonster);
         amount = MonsterAssocationData.Instance.GetTableData(nextMonsterIndex).Amount;
         return gen.Substring(0, gen.Length - 1);
@@ -82,7 +81,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         }
 
     }
-    
+
     /// <summary>
     /// 몬스터를 amount개 소환하는 sponer
     /// </summary>
@@ -110,7 +109,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         // NewLevelManager.Instance.Clear(time);
         StageManager.Instance.Reward();
     }
-    
+
     public void AddMonster(Monster p_monster)
     {
         spawned_monsters.Add(p_monster);
@@ -121,7 +120,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         if (spawned_monsters.Contains(p_monster))
             spawned_monsters.Remove(p_monster);
     }
-    
+
     #endregion
 
 }
