@@ -56,7 +56,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
         //초기 생성 단계
         if (Compatibility.isfirst == true)
         {
-            compatibility.gens[compatibility.Count][stage] = (stage == 1) ? random.ToString() : random.ToString() + compatibility.gens[stage - 1];
+            compatibility.gens[compatibility.Count][stage] = (stage == 1) ? random.ToString() : compatibility.gens[stage - 1] + random.ToString();
         }
         //섞은 이후
         else

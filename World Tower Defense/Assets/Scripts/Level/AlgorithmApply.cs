@@ -76,7 +76,7 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     /// 게임 클리어시 저장에서 혹은 신 로드시 count == maxCount일 경우 호출해주는 함수
     /// 유전자를 섞어서 보존해줌
     /// </summary>
-    public void GameClear()
+    public void ApplyGen()
     {
         //유전자 정렬
         SetGen();
