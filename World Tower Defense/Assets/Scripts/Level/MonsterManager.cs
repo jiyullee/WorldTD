@@ -43,7 +43,12 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     {
 
     }
-    
+
+    private void OnDestroy()
+    {
+        spawned_monsters.Clear();
+    }
+
     #endregion
 
     #region Functions
