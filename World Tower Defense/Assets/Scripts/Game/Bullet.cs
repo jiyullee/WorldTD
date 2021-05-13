@@ -27,7 +27,7 @@ public class Bullet : PollingObject
     
     private void Update()
     {
-        //BulletSprite();
+        BulletSprite();
         if (target != null)
         {
             Move();
@@ -86,7 +86,8 @@ public class Bullet : PollingObject
     public void BulletSprite()
     {
         string towerName = gameObject.transform.parent.GetComponent<Tower>().TowerName;
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Bullets/{towerName}_Bullet");
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Bullets/{towerName}_¹«±â");
+
     }
 
     #endregion

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    int destroyPoolCount = 10;
+    int destroyPoolCount = 20;
     int upgradePoolCount = 5;
 
     private static EffectManager mInstance;
@@ -98,24 +98,16 @@ public class EffectManager : MonoBehaviour
                 particle.transform.position = gameObject.transform.position;
                 particle.Play();
                 return particle;
-               
-
             }
             else
             {
-
                 var newParticle = instance.CreateDestroyParticle();
                 newParticle.transform.SetParent(gameObject.transform);
                 newParticle.transform.position = gameObject.transform.position;            
                 newParticle.Play();
                 return newParticle;
-
             }
         }
-
-  
-
-
     }
 
     public static void ReturnParticle(ParticleSystem particle)
