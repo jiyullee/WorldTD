@@ -69,13 +69,12 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         return gen.Substring(0, gen.Length - 1);
     }
 
-
-
     public void StartSpawn()
     {
         StartCoroutine(Calculation());
         StartCoroutine(SpawnMonster());
     }
+
     IEnumerator Calculation()
     {
         time = 0;
@@ -104,14 +103,21 @@ public class MonsterManager : UnitySingleton<MonsterManager>
                 monster.SetMonsterData(nextMonster);
                 AddMonster(monster);
                 amount--;
-                yield return new WaitForSeconds(spawnCycle);
+                // yield return new WaitForSeconds(spawnCycle);
+                //델타 타임 생각해서 아래와 같은 코드를 짬 더 좋은 코드있으면 수정 바람
+                float watietime = 0;
+                while (spawnCycle > watietime)
+                {
+                    watietime += Time.deltaTime;
+                    yield return new WaitForSeconds(Time.deltaTime);
+                }
             }
         }
         while (spawned_monsters.Count > 0 && monsterContainer.transform.childCount > 0)
         {
             yield return new WaitForEndOfFrame();
         }
-        // NewLevelManager.Instance.Clear(time);
+        NewLevelManager.Instance.Clear(time);
         StageManager.Instance.Reward();
     }
 
