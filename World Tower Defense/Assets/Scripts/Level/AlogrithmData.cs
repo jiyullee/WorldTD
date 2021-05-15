@@ -9,7 +9,7 @@ namespace GameData
         public override void OnCreated()
         {
             base.OnCreated();
-            fileName = ParsingDataSet.FitTimeListData;
+            fileName = ParsingDataSet.AlogrithmData;
         }
 
         public class AlogrithmDataClass : DataClass
