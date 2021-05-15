@@ -245,7 +245,7 @@ public class Tower : PollingObject
             }
 
             SpawnBullet();
-            yield return new WaitForSeconds(1 / GetCurrentSpeed());
+            yield return new WaitForSeconds(GetCurrentSpeed());
         }
     }
 

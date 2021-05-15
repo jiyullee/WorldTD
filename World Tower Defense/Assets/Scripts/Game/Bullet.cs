@@ -27,6 +27,7 @@ public class Bullet : PollingObject
     
     private void Update()
     {
+        BulletSprite();
         if (target != null)
         {
             Move();
@@ -77,7 +78,16 @@ public class Bullet : PollingObject
     public void Move()
     {
         Vector3 dir = target.transform.position - transform.position;
+        float angle = Mathf.Atan2(dir.y,dir.x) * Mathf.Rad2Deg+90;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.position += dir.normalized * Time.deltaTime * moveSpeed;
+    }
+
+    public void BulletSprite()
+    {
+        string towerName = gameObject.transform.parent.GetComponent<Tower>().TowerName;
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Bullets/{towerName}_¹«±â");
+
     }
 
     #endregion
