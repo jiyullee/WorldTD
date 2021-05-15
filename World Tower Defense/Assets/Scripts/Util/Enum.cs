@@ -50,7 +50,7 @@ public enum ParsingDataSet : int
     StoreData,
     SynergyData,
     MonsterAssociationData,
-    FitTimeListData
+    AlogrithmData
 }
 public enum TILE_DATA
 {
