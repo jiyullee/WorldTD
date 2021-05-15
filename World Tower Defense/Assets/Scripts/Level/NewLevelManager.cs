@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameData;
+[System.Serializable]
 public class Compatibility
 {
     //아래를 통해 클리어 시간을 산출 가능
@@ -42,7 +43,8 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
         set => compatibility = value;
     }
     //몬스터 종류
-    private int numberOfClusters = 4;
+    private int numberOfClusters = 3;
+
 
     /// <summary>
     /// 다음 유전자를 랜덤으로 더해주고 저장함.
@@ -56,13 +58,9 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
         //초기 생성 단계
         if (Compatibility.isfirst == true)
         {
-            compatibility.gens[compatibility.Count][stage] = (stage == 1) ? random.ToString() : compatibility.gens[stage - 1] + random.ToString();
+            compatibility.gens[compatibility.Count][stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count][stage - 1] + random.ToString();
         }
-        //섞은 이후
-        else
-        {
-            compatibility.gens[stage] = compatibility.gens[compatibility.Count];
-        }
+        //섞은 이후 는 그냥 넘김
         return compatibility.gens[compatibility.Count][stage];
     }
 
@@ -88,6 +86,8 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     {
         // 데이터 파싱을 통해 예상클리어 타임 얻어오기.
         float inputTimeRate = 0;
+        //여기가 문제있음
+        Debug.LogError("문제 있는 곳");
         float inputTime = AlogrithmData.Instance.GetTableData(stage).fitnessClearTimeRate;
         // 최장 클리어 타임 계산
         float maxClearTime = (MonsterManager.Instance.SpawnTime * StageManager.Instance.Stage) + 24;
