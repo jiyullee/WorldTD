@@ -6,11 +6,12 @@ using GameData;
 public class StageManager : UnitySingleton<StageManager>
 {
     #region Fields
-    
+
     [SerializeField] private float stageWaitingTime;
     private float maxWaitingTime;
     [SerializeField]
     private int maxStage = 30;
+    private float time = 0;
     public int MaxStage
     {
         get { return maxStage; }
@@ -26,7 +27,7 @@ public class StageManager : UnitySingleton<StageManager>
 
     public override void OnCreated()
     {
-        
+
     }
 
     public override void OnInitiate()
@@ -34,13 +35,18 @@ public class StageManager : UnitySingleton<StageManager>
         stage = 1;
         maxWaitingTime = stageWaitingTime;
     }
-    
+
     private void Start()
     {
         ReadyStage();
     }
 
     #endregion
+
+    private void Update()
+    {
+        time += Time.deltaTime;
+    }
 
     #region Functions
 
@@ -65,6 +71,7 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void StartStage()
     {
+        time = 0;
         if (stage > maxStage)
         {
             StartCoroutine("CheckGameClear");
@@ -74,7 +81,7 @@ public class StageManager : UnitySingleton<StageManager>
         IsCombatting = true;
         MonsterManager.Instance.StartSpawn();
     }
-    
+
     /// <summary>
     /// 다음 스테이지를 켜주는 함수
     /// </summary>
@@ -83,16 +90,17 @@ public class StageManager : UnitySingleton<StageManager>
         StartStage();
         stage++;
     }
-    
+
     /// <summary>
     /// 스테이지 보상 주기
     /// </summary>
     public void Reward()
     {
         IsCombatting = false;
+        NewLevelManager.Instance.Clear(time);
         ReadyStage();
     }
-    
+
     /// <summary>
     /// 게임이 끝난 경우 남아있는 몹들을 계속 체크해서 끝나면 게임을 종료함.
     /// </summary>
@@ -105,7 +113,7 @@ public class StageManager : UnitySingleton<StageManager>
             yield return new WaitForEndOfFrame();
         }
     }
-    
+
     #endregion
 }
 
