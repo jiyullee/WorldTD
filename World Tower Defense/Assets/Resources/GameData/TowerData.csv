@@ -1,7 +1,7 @@
 ﻿KEY,TowerName,SynergyName,Cost,Damage,Speed,Range
 0,그리스,"Europe,Peninsula",1,"13,26,52",1,5
 1,베트남,"Asia,Peninsula",1,"4,8,16",0.35,4
-2,스페인,"Europe,Peninsula",1,"28,56,112",2.2,4
+2,스페인,"Europe,Peninsula",1,"28,56,112",2,4
 3,이라크,"Asia,Continent",1,"10,20,40",0.7,3
 4,이스라엘,"Asia,Continent",1,"6,12,24",0.45,6
 5,콜롬비아,"SouthAmerica,Continent",1,"2,4,8",0.15,7
