@@ -86,8 +86,6 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     {
         // 데이터 파싱을 통해 예상클리어 타임 얻어오기.
         float inputTimeRate = 0;
-        //여기가 문제있음
-        Debug.LogError("문제 있는 곳");
         float inputTime = AlogrithmData.Instance.GetTableData(stage).fitnessClearTimeRate;
         // 최장 클리어 타임 계산
         float maxClearTime = (MonsterManager.Instance.SpawnTime * StageManager.Instance.Stage) + 24;
