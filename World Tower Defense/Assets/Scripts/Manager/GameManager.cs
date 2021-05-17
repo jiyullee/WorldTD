@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.SceneManagement;
 
 public class GameManager : UnitySingleton<GameManager>
 {
@@ -52,7 +51,7 @@ public class GameManager : UnitySingleton<GameManager>
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-                Application.Quit() // 어플리케이션 종료
+                Application.Quit(); // 어플리케이션 종료
 #endif
     }
 }
