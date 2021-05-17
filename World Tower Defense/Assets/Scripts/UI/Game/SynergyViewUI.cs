@@ -76,6 +76,7 @@ public class SynergyViewUI : MonoBehaviourSubUI
 
     public void ShowInfo()
     {
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
         SynergyUI.Instance.SetViewInfo(true, Index);
     }
 }

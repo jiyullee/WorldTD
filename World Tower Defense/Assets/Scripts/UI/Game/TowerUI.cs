@@ -106,6 +106,7 @@ public class TowerUI : MonoBehaviourSubUI
     {
         if (tower != null)
         {
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 6);
             TowerManager.Instance.CompoundTower(tower);
         }
     }

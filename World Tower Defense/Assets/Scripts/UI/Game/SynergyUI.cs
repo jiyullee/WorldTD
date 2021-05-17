@@ -45,8 +45,11 @@ public class SynergyUI : MonoBehaviourSubUI
         
         AddButtonEvent(btn_info, () =>
         {
-            if(btn_info.gameObject.activeSelf)
+            if (btn_info.gameObject.activeSelf)
+            {
+                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
                 btn_info.gameObject.SetActive(false);
+            }
         });
         AddButtonEvent(btn_view, ChangeState);
         Pos = new Vector3[2];

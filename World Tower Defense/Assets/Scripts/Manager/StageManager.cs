@@ -70,6 +70,7 @@ public class StageManager : UnitySingleton<StageManager>
             StartCoroutine("CheckGameClear");
             return;
         }
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 7);
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
         IsCombatting = true;
         MonsterManager.Instance.StartSpawn();

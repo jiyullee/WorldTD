@@ -5,16 +5,15 @@ using UnityEngine.UI;
 
 public class LobbyOptionUI : MonoBehaviourSubUI
 {
-    private Slider slider_sound;
+    private Slider slider_backSound;
+    private Slider slider_effectSound;
     public override void Init()
     {
         AddButtonEvent("BackBtn", () => LobbyUIManager.Instance.SetUI(UIState.OptionUI, false));
-        slider_sound = transform.Find("Slider").GetComponent<Slider>();
-        slider_sound.onValueChanged.AddListener(volume => ControlVolume(volume));
-    }
-
-    public void ControlVolume(float volume)
-    {
-        
+        slider_backSound = transform.Find("BackgroundSlider").GetComponent<Slider>();
+        slider_effectSound = transform.Find("EffectSlider").GetComponent<Slider>();
+        slider_backSound.onValueChanged.AddListener(volume => SoundManager.Instance.ControlVolume(SOUNDTYPE.BACKGROUND, volume));
+        slider_effectSound.onValueChanged.AddListener(volume => SoundManager.Instance.ControlVolume(SOUNDTYPE.EFFECT, volume));
+        SetView(false);
     }
 }
