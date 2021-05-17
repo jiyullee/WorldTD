@@ -32,6 +32,13 @@ public enum SYNERGY_STATE
     UP,
     DOWN,
 }
+
+public enum SOUNDTYPE 
+{
+    BACKGROUND,
+    EFFECT,
+    
+}
 [System.Serializable]
 public enum Difficulty : int
 {
@@ -49,8 +56,9 @@ public enum ParsingDataSet : int
     StoreTowerData,
     StoreData,
     SynergyData,
+    SoundData,
     MonsterAssociationData,
-    AlogrithmData
+    FitTimeListData,
 }
 public enum TILE_DATA
 {

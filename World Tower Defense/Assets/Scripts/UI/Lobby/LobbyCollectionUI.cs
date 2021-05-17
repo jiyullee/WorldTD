@@ -39,7 +39,7 @@ public class LobbyCollectionUI : MonoBehaviourSubUI
         {
             GameObject obj_clt = Instantiate(obj_collection);
             obj_clt.SetActive(true);
-            obj_clt.transform.SetParent(content.transform);
+            obj_clt.transform.SetParent(content.transform, false);
             obj_clt.GetComponent<Collection>().Init();
             obj_clt.GetComponent<Collection>().InitTowerInfo(new TowerInstance(i));
         }

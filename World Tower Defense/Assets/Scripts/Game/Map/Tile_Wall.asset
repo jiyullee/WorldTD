@@ -28,4 +28,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00d601cd3e5d6df4ca65373be16c934d, type: 2}
   - {fileID: 11400000, guid: f897b096e2a08b24dbf8dc00de3ab9e6, type: 2}
   - {fileID: 11400000, guid: 26d1df07bb11b5a43ae7890972b6a36e, type: 2}
+  - {fileID: 11400000, guid: 26d1df07bb11b5a43ae7890972b6a36e, type: 2}
   tile_data: 2

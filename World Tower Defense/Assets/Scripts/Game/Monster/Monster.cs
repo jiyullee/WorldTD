@@ -122,6 +122,7 @@ public class Monster : PollingObject
 
         if (hp <= 0)
         {
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4);
             ParticleSystem particle = EffectManager.GetParticle(gameObject);
             EffectManager.ReturnParticle(particle);
             index = 0;

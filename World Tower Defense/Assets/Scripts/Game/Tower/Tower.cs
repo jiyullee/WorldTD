@@ -245,6 +245,7 @@ public class Tower : PollingObject
             }
 
             SpawnBullet();
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 2);
             yield return new WaitForSeconds(GetCurrentSpeed());
         }
     }

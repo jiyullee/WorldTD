@@ -13,7 +13,11 @@ public class StateUI : MonoBehaviourSubUI
     public override void Init()
     {
         Instance = this;
-        AddButtonEvent("OptionBtn", () => PopUpUI.Instance.PopUp(POPUP_STATE.Option));
+        AddButtonEvent("OptionBtn", () =>
+        {
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
+            PopUpUI.Instance.PopUp(POPUP_STATE.Option);
+        });
         transform.Find("TimeUI").gameObject.AddComponent<TimeUI>().Init();
 
         text_hp = transform.Find("HP/HPText").GetComponent<Text>();

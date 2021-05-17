@@ -7,12 +7,14 @@ using UnityEngine.UI;
 public class MapUI : MonoBehaviourSubUI
 {
     public static MapUI Instance;
-    
+
+    public GameObject obj_towerButton;
     private List<TowerButtonUI> list_buttonUI = new List<TowerButtonUI>();
     
     public override void Init()
     {
         Instance = this;
+        obj_towerButton = transform.Find("Buttons/TowerButton").gameObject;
     }
 
     private void Start()
@@ -26,21 +28,14 @@ public class MapUI : MonoBehaviourSubUI
 
         for (int i = 0; i < pos_towers.Length; i++)
         {
-            GameObject buttonObject = new GameObject("TowerButton");
-            buttonObject.layer = 9;
-            buttonObject.AddComponent<Button>();
-            buttonObject.AddComponent<Image>();
-            buttonObject.AddComponent<CanvasGroup>();
-            TowerButtonUI buttonUI = buttonObject.AddComponent<TowerButtonUI>();
-           
-
-            Vector2 pos = Camera.main.WorldToScreenPoint(pos_towers[i]);
-            buttonObject.GetComponent<RectTransform>().SetPositionAndRotation(pos, Quaternion.identity);
-            buttonObject.GetComponent<RectTransform>().sizeDelta = new Vector2(60, 60);
-            buttonObject.transform.SetParent(transform.Find("Buttons"));
+            GameObject buttonObject = Instantiate(obj_towerButton);
+            TowerButtonUI buttonUI = buttonObject.GetComponent<TowerButtonUI>();
+            buttonObject.transform.position = Camera.main.WorldToScreenPoint(pos_towers[i]);
+            buttonObject.transform.SetParent(transform.Find("Buttons"), true);
             buttonUI.Init(); 
             list_buttonUI.Add(buttonUI);
         }
+        obj_towerButton.SetActive(false);
     }
 
     public void SetViewSelectableButtons(bool state)

@@ -8,18 +8,27 @@ public class MainLobbyUI : MonoBehaviourSubUI
     {
         AddButtonEvent("MenuUI/StartBtn", StartGame);
         AddButtonEvent("MenuUI/CollectionBtn", 
-            () => LobbyUIManager.Instance.SetUI(UIState.CollectionUI, true));
-        AddButtonEvent("MenuUI/OptionBtn", () => LobbyUIManager.Instance.SetUI(UIState.OptionUI, true));
+            () =>
+            {
+                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 5);
+                LobbyUIManager.Instance.SetUI(UIState.CollectionUI, true);
+            });
+        AddButtonEvent("MenuUI/OptionBtn", () =>
+        {
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 5);
+            LobbyUIManager.Instance.SetUI(UIState.OptionUI, true);
+        });
         AddButtonEvent("MenuUI/EndBtn", EndGame);
     }
 
     private void StartGame()
     {
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 5);
         SceneManager.Instance.LoadScene("Game");
     }
     
     private void EndGame()
     {
-        Debug.Log("Click_EndGame");
+        Application.Quit();
     }
 }

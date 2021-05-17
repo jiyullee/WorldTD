@@ -21,4 +21,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d5b24fc02be9b18408f21ecb284ae724, type: 2}
   - {fileID: 11400000, guid: f897b096e2a08b24dbf8dc00de3ab9e6, type: 2}
   - {fileID: 11400000, guid: 26d1df07bb11b5a43ae7890972b6a36e, type: 2}
+  - {fileID: 11400000, guid: e4e4c335a8d7005429882fdd51fab3d8, type: 2}
+  - {fileID: 11400000, guid: 05d3da6b04d5c4046a1d95ba780706b4, type: 2}
+  - {fileID: 11400000, guid: 695d5309f5caadb4ebefbf2fa8969e66, type: 2}
   tile_data: 0

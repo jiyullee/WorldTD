@@ -30,7 +30,7 @@ public class SynergyUI : MonoBehaviourSubUI
         for (int i = 0; i < synergy_count; i++)
         {
             GameObject obj = Instantiate(obj_synergy);
-            obj.transform.SetParent(content);
+            obj.transform.SetParent(content, false);
             obj.gameObject.SetActive(true);
             SynergyViewUI synergyViewUI = obj.GetComponent<SynergyViewUI>();
             synergyViewUI.Init();
@@ -45,8 +45,11 @@ public class SynergyUI : MonoBehaviourSubUI
         
         AddButtonEvent(btn_info, () =>
         {
-            if(btn_info.gameObject.activeSelf)
+            if (btn_info.gameObject.activeSelf)
+            {
+                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
                 btn_info.gameObject.SetActive(false);
+            }
         });
         AddButtonEvent(btn_view, ChangeState);
         Pos = new Vector3[2];
