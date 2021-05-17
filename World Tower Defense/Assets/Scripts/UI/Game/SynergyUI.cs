@@ -30,7 +30,7 @@ public class SynergyUI : MonoBehaviourSubUI
         for (int i = 0; i < synergy_count; i++)
         {
             GameObject obj = Instantiate(obj_synergy);
-            obj.transform.SetParent(content);
+            obj.transform.SetParent(content, false);
             obj.gameObject.SetActive(true);
             SynergyViewUI synergyViewUI = obj.GetComponent<SynergyViewUI>();
             synergyViewUI.Init();

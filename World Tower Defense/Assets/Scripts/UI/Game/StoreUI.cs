@@ -28,12 +28,12 @@ public class StoreUI : MonoBehaviourSubUI
             StoreManager.Instance.RefreshStore(true);
         });
         AddButtonEvent("Bottom/LvUpBtn", ExpUp);
-        _storeTower = transform.Find("Top/Scroll View/Viewport/StoreTower").gameObject;
+        _storeTower = transform.Find("Top/Scroll View/Viewport/Content/StoreTower").gameObject;
         for (int i = 0; i < storeTowers.Length; i++)
         {
             GameObject storeTower = Instantiate(_storeTower);
             storeTowers[i] = storeTower.GetComponent<StoreTowerUI>();
-            storeTowers[i].transform.parent = transform.Find("Top/Scroll View/Viewport");
+            storeTowers[i].transform.SetParent(transform.Find("Top/Scroll View/Viewport/Content"), false);
             storeTowers[i].gameObject.SetActive(true);
             storeTowers[i].Init();
         }
