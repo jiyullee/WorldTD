@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EffectManager : MonoBehaviour
 {
-    int destroyPoolCount = 20;
+    int destroyPoolCount = 40;
     int upgradePoolCount = 5;
 
     private static EffectManager mInstance;
