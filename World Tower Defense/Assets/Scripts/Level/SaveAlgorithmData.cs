@@ -11,7 +11,13 @@ using System;
 /// </summary>
 public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
 {
-
+    /// <summary>
+    /// 꺼질때 데이터 저장.
+    /// </summary>
+    private void OnApplicationQuit()
+    {
+        SaveData();
+    }
     /// <summary>
     /// 유전자를 Json으로 저장
     /// 이때 각각의 객체를 비교해주기 위해 현재시간을 string값으로 저장함
@@ -21,9 +27,10 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
     public void SaveData()
     {
         string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
-        Compatibility compatibility = NewLevelManager.Instance.Compatibility;
-        compatibility.Count++;
-        string jsonData = JsonUtility.ToJson(compatibility);
+        NewLevelManager.Instance.Compatibility.Count++;
+        if (!Directory.Exists(saveDirectory))
+            Directory.CreateDirectory(saveDirectory);
+        string jsonData = JsonUtility.ToJson(NewLevelManager.Instance.Compatibility);
         string savePath = Path.Combine(saveDirectory, "Data.json");
         File.WriteAllText(savePath, jsonData);
     }
@@ -37,15 +44,16 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
     {
         string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
         string savePath = Path.Combine(saveDirectory, "Data.json");
-        Compatibility compatibility;
-        FileInfo fileInfo = new FileInfo(savePath);
-        if (fileInfo.Exists)
+        Compatibility compatibility = new Compatibility();
+        compatibility.init();
+        if (Directory.Exists(saveDirectory))
         {
             string data = File.ReadAllText(savePath);
             compatibility = JsonUtility.FromJson<Compatibility>(data);
             if (compatibility.Count == compatibility.maxCount)
             {
                 //유전자 조합
+                AlgorithmApply.Instance.ApplyGen();
                 compatibility.Count = 0;
                 compatibility.isfirst = false;
             }

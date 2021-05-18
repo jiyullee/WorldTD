@@ -66,7 +66,10 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         nextMonster = gen.Substring(0, 1);
         int nextMonsterIndex = Int32.Parse(nextMonster);
         amount = MonsterAssocationData.Instance.GetTableData(nextMonsterIndex).Amount;
-        return gen.Substring(0, gen.Length - 1);
+        if (gen.Length >= 1)
+            return gen.Substring(1, gen.Length - 1);
+        else
+            return "";
     }
 
     public void StartSpawn()
@@ -80,8 +83,8 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         time = 0;
         while (MonsterManager.spawned_monsters.Count > 0 || amount > 0)
         {
-            time += 0.1f;
-            yield return new WaitForSeconds(0.1f);
+            time += Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
         }
 
     }
@@ -95,6 +98,9 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         stage = StageManager.Instance.Stage;
         while (gen.Length > 0)
         {
+            Debug.Log(gen);
+            if (gen == "")
+                break;
             gen = SetMonster(gen);
             spawnCycle = spawnTime / amount;
             while (amount > 0)
