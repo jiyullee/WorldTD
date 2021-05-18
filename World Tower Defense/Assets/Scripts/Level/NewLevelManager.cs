@@ -40,7 +40,6 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     /// <param name="time"> 현재 클리어 시간값. </param>
     public void Clear(float time, int stage)
     {
-        int stage = StageManager.Instance.Stage;
         compatibility.clearTimes[compatibility.Count].arr[stage] = time;
         compatibility.clearTimeRate[compatibility.Count].arr[stage] = clearTimeRate(stage);
         compatibility.clearStages[compatibility.Count]++;
