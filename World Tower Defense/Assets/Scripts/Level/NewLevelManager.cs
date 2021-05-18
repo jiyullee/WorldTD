@@ -38,7 +38,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     /// 클리어 시간 저장, 스테이지를 올려준다.
     /// </summary>
     /// <param name="time"> 현재 클리어 시간값. </param>
-    public void Clear(float time)
+    public void Clear(float time, int stage)
     {
         int stage = StageManager.Instance.Stage;
         compatibility.clearTimes[compatibility.Count].arr[stage] = time;

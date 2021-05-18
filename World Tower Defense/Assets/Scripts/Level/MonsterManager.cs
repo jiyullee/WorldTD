@@ -81,12 +81,13 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     IEnumerator Calculation()
     {
         time = 0;
-        while (MonsterManager.spawned_monsters.Count > 0 || amount > 0)
+        time += Time.deltaTime;
+        yield return new WaitForSeconds(Time.deltaTime);
+        while (spawned_monsters.Count > 0 || amount > 0)
         {
             time += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
-
     }
 
     /// <summary>
@@ -123,7 +124,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         {
             yield return new WaitForEndOfFrame();
         }
-        NewLevelManager.Instance.Clear(time);
+        NewLevelManager.Instance.Clear(time, stage);
         StageManager.Instance.Reward();
     }
 

@@ -98,7 +98,6 @@ public class StageManager : UnitySingleton<StageManager>
     public void Reward()
     {
         IsCombatting = false;
-        NewLevelManager.Instance.Clear(time);
         ReadyStage();
     }
 
