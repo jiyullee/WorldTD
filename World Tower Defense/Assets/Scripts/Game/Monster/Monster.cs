@@ -71,8 +71,7 @@ public class Monster : PollingObject
         armor = MonsterData.Instance.GetTableData(stage).Armor;
         initMoveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
         info = MonsterData.Instance.GetTableData(stage).info;
-        int spriteIndex = MonsterData.Instance.GetTableData(stage).SpriteIndex;
-        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[spriteIndex];
+        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterData.Instance.GetTableData(stage).SpriteIndex];
         isBoss = (StageManager.Instance.Stage % 5 == 0) ? true : false;
         SetDifficulty();
     }
