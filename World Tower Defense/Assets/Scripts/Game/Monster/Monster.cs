@@ -6,7 +6,7 @@ using GameData;
 public class Monster : PollingObject
 {
     #region Fields
-    
+
     private SpriteRenderer spriteRenderer;
     // public AnimationCurve moveCurve;
     private Transform[] map;
@@ -20,10 +20,11 @@ public class Monster : PollingObject
     private int index = 1;
     private int maxIndex;
     private string info;
+    public bool isBoss { get; private set; }
 
     public LayerMask AroundMonsterLayer;
     private bool IsTarget => MonsterManager.IsPoolingObject(this);
-    
+
     #endregion
 
     #region CallBacks
@@ -72,7 +73,7 @@ public class Monster : PollingObject
         info = MonsterData.Instance.GetTableData(stage).info;
         int spriteIndex = MonsterData.Instance.GetTableData(stage).SpriteIndex;
         spriteRenderer.sprite = MonsterManager.Instance.monsterImage[spriteIndex];
-
+        isBoss = (StageManager.Instance.Stage % 5 == 0) ? true : false;
         SetDifficulty();
     }
 
@@ -101,7 +102,7 @@ public class Monster : PollingObject
         initMoveSpeed = LevelManager.Instance.SetSpeedWeight(initMoveSpeed);
         moveSpeed = initMoveSpeed;
     }
-    
+
     /// <summary>
     /// 데미지를 받는 함수
     /// 체력이 0이하로 내려가게 되면 풀링풀에 반환해줌
@@ -180,7 +181,7 @@ public class Monster : PollingObject
     }
 
     #endregion
-    
+
     #region Functions_Move
 
     /// <summary>
@@ -220,5 +221,5 @@ public class Monster : PollingObject
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
     #endregion
-    
+
 }
