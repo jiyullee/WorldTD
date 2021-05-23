@@ -37,11 +37,12 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     {
         if (left >= right) return;
         int mid = (left + right) / 2;
-        partition(stage, left, right);
+        Partition(stage, left, right);
         QuickSort(stage, left, mid);
         QuickSort(stage, mid + 1, right);
     }
-    public void partition(int stage, int left, int right)
+
+    public void Partition(int stage, int left, int right)
     {
         float pivot = fitnessClearTimes[stage][(left + right) / 2];
         int i = left, j = right;
@@ -51,11 +52,13 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
                 j--;
             while (i < j && pivot >= fitnessClearTimes[stage][i])
                 i++;
-            swap(stage, i, j);
+            Swap(stage, i, j);
         }
-        fitnessClearTimes[stage][left] = fitnessClearTimes[stage][i]; fitnessClearTimes[stage][i] = pivot;
+        fitnessClearTimes[stage][left] = fitnessClearTimes[stage][i];
+        fitnessClearTimes[stage][i] = pivot;
     }
-    public void swap(int stage, int i, int j)
+
+    public void Swap(int stage, int i, int j)
     {
         string tempGens;
         float tempFit;
@@ -69,6 +72,21 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         gens[stage][j] = tempGens;
     }
 
+    //0을 최 후순위로 바꾸는 알고리즘
+    public void BackZero()
+    {
+        float[][] fitnessClearTimess = fitnessClearTimes;
+        int countX = 0, countY = 0, countX2 = 0, countY2 = 0;
+        for (int i = 0; i < maxStage; i++)
+            for (int j = 0; j < maxCount; i++)
+            {
+                if (fitnessClearTimes[i][j] == 0)
+                    fitnessClearTimess[maxStage - countX2++][maxCount - countY2++] = fitnessClearTimes[i][j];
+                else
+                    fitnessClearTimess[countX++][countY++] = fitnessClearTimes[i][j];
+            }
+        fitnessClearTimes = fitnessClearTimess;
+    }
     #endregion
 
 
@@ -94,6 +112,7 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         {
             QuickSort(i, 0, maxCount);
         }
+        BackZero();
     }
 
     /// <summary>
