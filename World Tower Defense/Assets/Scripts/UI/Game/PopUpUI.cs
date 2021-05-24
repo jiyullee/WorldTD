@@ -16,6 +16,9 @@ public class PopUpUI : MonoBehaviourSubUI
     private Text text_score_win;
     private Text text_score_lose;
 
+    private Slider slider_backSound;
+    private Slider slider_effectSound;
+    
     private POPUP_STATE selectedUI;
     public override void Init()
     {
@@ -31,6 +34,15 @@ public class PopUpUI : MonoBehaviourSubUI
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
         text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
         text_score_lose = transform.Find("GameLoseUI/ScoreText").GetComponent<Text>();
+
+        slider_backSound = transform.Find("OptionUI/BackgroundSlider").GetComponent<Slider>();
+        slider_effectSound = transform.Find("OptionUI/EffectSlider").GetComponent<Slider>();
+        slider_backSound.value = PlayerPrefs.GetFloat("BackgroundSound");
+        slider_effectSound.value = PlayerPrefs.GetFloat("EffectSound");
+        slider_backSound.onValueChanged.AddListener(volume => 
+            SoundManager.Instance.ControlVolume(SOUNDTYPE.BACKGROUND, volume));
+        slider_effectSound.onValueChanged.AddListener(volume => 
+            SoundManager.Instance.ControlVolume(SOUNDTYPE.EFFECT, volume));
 
         AddButtonEvent("GameWinUI/ExitButton", LoadLobby);
         AddButtonEvent("GameWinUI/ReGameButton", ReGame);
@@ -90,17 +102,20 @@ public class PopUpUI : MonoBehaviourSubUI
 
     private void LoadLobby()
     {
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
         SoundManager.Instance.PlaySound(SOUNDTYPE.BACKGROUND, 0);
         SceneManager.Instance.LoadScene("Lobby");
     }
 
     private void ReGame()
     {
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
         Debug.Log("ReGame");
     }
 
     private void Resume()
     {
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
         if (selectedUI != POPUP_STATE.None)
             dic_PopUp[selectedUI].SetActive(false);
         TimeManager.Instance.StartTime();
