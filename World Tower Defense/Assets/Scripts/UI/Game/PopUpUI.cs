@@ -90,6 +90,7 @@ public class PopUpUI : MonoBehaviourSubUI
 
     private void LoadLobby()
     {
+        SoundManager.Instance.PlaySound(SOUNDTYPE.BACKGROUND, 0);
         SceneManager.Instance.LoadScene("Lobby");
     }
 

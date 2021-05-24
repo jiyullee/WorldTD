@@ -28,7 +28,6 @@ public class SoundData : DataSets<SoundData, SoundData.SoundDataClass>
         public string SoundType;
         public string SoundName;
         public string Path;
-        public float Volume;
     }
 
     public AudioClip LoadAudioClip(int key)

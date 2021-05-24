@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class SoundManager : UnitySingleton<SoundManager>
@@ -18,11 +19,13 @@ public class SoundManager : UnitySingleton<SoundManager>
         DontDestroyOnLoad(gameObject);
         Background = transform.Find("Background").GetComponent<AudioSource>();
         Effect = transform.Find("Effect").GetComponent<AudioSource>();
+        Background.loop = true;
     }
 
     public override void OnInitiate()
     {
-        
+        //로비 배경 음악 재생
+        PlaySound(SOUNDTYPE.BACKGROUND, 0);
     }
 
     #endregion
@@ -32,20 +35,16 @@ public class SoundManager : UnitySingleton<SoundManager>
     public void PlaySound(SOUNDTYPE p_type, int key)
     {
         AudioClip clip = SoundData.Instance.GetAudioClip(key);
-        float volume = SoundData.Instance.GetTableData(key).Volume;
-
         AudioSource playSource = null;
         if (p_type == SOUNDTYPE.BACKGROUND)
         {
             playSource = Background;
             playSource.clip = clip;
-            playSource.volume = volume * volume_weight;
             playSource.Play();
         }
         else if(p_type == SOUNDTYPE.EFFECT)
         {
             playSource = Effect;
-            playSource.volume = volume * volume_weight;
             playSource.PlayOneShot(clip);
         }
 
@@ -65,13 +64,12 @@ public class SoundManager : UnitySingleton<SoundManager>
     public void ControlVolume(SOUNDTYPE p_type, float p_volume)
     {
         AudioSource playSource = null;
-        volume_weight = p_volume;
         if (p_type == SOUNDTYPE.BACKGROUND)
             playSource = Background;
         else if (p_type == SOUNDTYPE.EFFECT)
             playSource = Effect;
 
-        playSource.volume *= volume_weight;
+        playSource.volume = p_volume;
     }
     
     #endregion

@@ -9,7 +9,11 @@ public class LobbyOptionUI : MonoBehaviourSubUI
     private Slider slider_effectSound;
     public override void Init()
     {
-        AddButtonEvent("BackBtn", () => LobbyUIManager.Instance.SetUI(UIState.OptionUI, false));
+        AddButtonEvent("BackBtn", () =>
+        {
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 11);
+            LobbyUIManager.Instance.SetUI(UIState.OptionUI, false);
+        });
         slider_backSound = transform.Find("BackgroundSlider").GetComponent<Slider>();
         slider_effectSound = transform.Find("EffectSlider").GetComponent<Slider>();
         slider_backSound.onValueChanged.AddListener(volume => SoundManager.Instance.ControlVolume(SOUNDTYPE.BACKGROUND, volume));

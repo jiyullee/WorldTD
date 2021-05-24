@@ -10,12 +10,12 @@ public class MainLobbyUI : MonoBehaviourSubUI
         AddButtonEvent("MenuUI/CollectionBtn", 
             () =>
             {
-                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 5);
+                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 11);
                 LobbyUIManager.Instance.SetUI(UIState.CollectionUI, true);
             });
         AddButtonEvent("MenuUI/OptionBtn", () =>
         {
-            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 5);
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 11);
             LobbyUIManager.Instance.SetUI(UIState.OptionUI, true);
         });
         AddButtonEvent("MenuUI/EndBtn", EndGame);
@@ -23,8 +23,9 @@ public class MainLobbyUI : MonoBehaviourSubUI
 
     private void StartGame()
     {
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 5);
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 11);
         SceneManager.Instance.LoadScene("Game");
+        SoundManager.Instance.PlaySound(SOUNDTYPE.BACKGROUND, 1);
     }
     
     private void EndGame()
