@@ -121,8 +121,8 @@ public class Monster : PollingObject
         if (hp <= 0)
         {
             SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4);
-            ParticleSystem particle = EffectManager.GetParticle(gameObject);
-            EffectManager.ReturnParticle(particle);
+            ParticleSystem particle = EffectManager.GetDestroyParticle(gameObject);
+            EffectManager.ReturnDestroyParticle(particle);
             index = 0;
             PoolingManager.ReturnObject(this);
             MonsterManager.Instance.RemoveMonster(this);
@@ -135,8 +135,8 @@ public class Monster : PollingObject
         hp -= aroundDamage;
         if (hp <= 0)
         {
-            ParticleSystem particle = EffectManager.GetParticle(gameObject);
-            EffectManager.ReturnParticle(particle);
+            ParticleSystem particle = EffectManager.GetDestroyParticle(gameObject);
+            EffectManager.ReturnDestroyParticle(particle);
             index = 0;
             PoolingManager.ReturnObject(this);
         }
