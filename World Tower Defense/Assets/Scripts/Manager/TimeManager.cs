@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class TimeManager : UnitySingleton<TimeManager>
 {
     private float tempTime = 1.0f;
-
+    private float speed;
     public override void OnCreated()
     {
     }
@@ -18,23 +18,23 @@ public class TimeManager : UnitySingleton<TimeManager>
     public void InitTime()
     {
         ChangeSpeed(1.0f);
+        StartTime();
     }
     public void ChangeSpeed(float time)
     {
-        Time.timeScale = time;
-        Time.fixedDeltaTime = 0.02F * Time.timeScale;
+        speed = time;
     }
 
     public void Pause()
     {
-        tempTime = (Time.timeScale == 0) ? tempTime : Time.timeScale;
+        speed = (Time.timeScale == 0) ? speed : Time.timeScale;
         Time.timeScale = 0;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
     }
 
     public void StartTime()
     {
-        Time.timeScale = tempTime;
+        Time.timeScale = speed;
         Time.fixedDeltaTime = 0.02F * Time.timeScale;
     }
 

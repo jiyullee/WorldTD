@@ -15,14 +15,18 @@ public class PopUpUI : MonoBehaviourSubUI
     private Text text_stage;
     private Text text_score_win;
     private Text text_score_lose;
-
+    private Text text_speed;
+    
     private Slider slider_backSound;
     private Slider slider_effectSound;
     
     private POPUP_STATE selectedUI;
+
+    private bool IsFast;
     public override void Init()
     {
         Instance = this;
+        IsFast = false;
         selectedUI = POPUP_STATE.None;
 
         dic_PopUp.Add(POPUP_STATE.StageStart, transform.Find("StageStartUI").gameObject);
@@ -34,6 +38,7 @@ public class PopUpUI : MonoBehaviourSubUI
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
         text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
         text_score_lose = transform.Find("GameLoseUI/ScoreText").GetComponent<Text>();
+        text_speed = transform.Find("OptionUI/SpeedButton/Text").GetComponent<Text>();
 
         slider_backSound = transform.Find("OptionUI/BackgroundSlider").GetComponent<Slider>();
         slider_effectSound = transform.Find("OptionUI/EffectSlider").GetComponent<Slider>();
@@ -51,6 +56,7 @@ public class PopUpUI : MonoBehaviourSubUI
         AddButtonEvent("OptionUI/ResumeButton", Resume);
         AddButtonEvent("OptionUI/LobbyButton", LoadLobby);
         AddButtonEvent("OptionUI/ExitButton", ExitGame);
+        AddButtonEvent("OptionUI/SpeedButton", ChangeSpeed);
     }
 
     /// <summary>
@@ -110,7 +116,8 @@ public class PopUpUI : MonoBehaviourSubUI
     private void ReGame()
     {
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
-        Debug.Log("ReGame");
+        SceneManager.Instance.LoadScene("Loading");
+        SceneManager.Instance.LoadScene("Game");
     }
 
     private void Resume()
@@ -124,5 +131,21 @@ public class PopUpUI : MonoBehaviourSubUI
     private void ExitGame()
     {
         Application.Quit();
+    }
+
+    private void ChangeSpeed()
+    {
+        if (!IsFast)
+        {
+            TimeManager.Instance.ChangeSpeed(2);
+            text_speed.text = "2배속";
+            IsFast = true;
+        }
+        else
+        {
+            TimeManager.Instance.ChangeSpeed(1);
+            text_speed.text = "1배속";
+            IsFast = false;
+        }
     }
 }

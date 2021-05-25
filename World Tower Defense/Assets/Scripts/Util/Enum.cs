@@ -15,6 +15,7 @@ public enum UIState
     SynergyUI,
     TowerUI,
     PopUpUI,
+    ExitPopUpUI,
 }
 
 public enum POPUP_STATE
@@ -59,6 +60,7 @@ public enum ParsingDataSet : int
     SoundData,
     MonsterAssociationData,
     FitTimeListData,
+    FontData,
 }
 public enum TILE_DATA
 {
