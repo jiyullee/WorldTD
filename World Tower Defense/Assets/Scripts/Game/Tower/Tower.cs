@@ -184,11 +184,12 @@ public class Tower : PollingObject
 
     public void Upgrade()
     {
+        ParticleSystem particle = EffectManager.GetUpgradeParticle(gameObject);
+        EffectManager.ReturnUpgradeParticle(particle);
         Grade++;
         spriteRenderer.sprite = sprites[Grade];
         ButtonUI.SetViewTowerUI();
-        ParticleSystem particle = EffectManager.GetParticle(gameObject);
-        EffectManager.ReturnParticle(particle);
+
     }
 
     #endregion
