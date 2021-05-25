@@ -20,14 +20,10 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     private int monsterSize = 5;
     private float[] MaxClearTimes;
 
-    //차후에 Compatibility로 대체
-    //Compatibility의 maxCount
-    private int maxCount = 10;
-    private int maxStage;
-    private float[] clearTimeRate;
+    private Compatibility compatibility;
 
-    private string[][] gens;
-    private float[][] fitnessClearTimes;
+    //입력해줘야함. 입력 받는 클리어 비율
+    private float[] inputClearRate;
 
     #region QuickSort
     /// <summary>
@@ -44,58 +40,54 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
 
     public void Partition(int stage, int left, int right)
     {
-        float pivot = fitnessClearTimes[stage][(left + right) / 2];
         int i = left, j = right;
         while (i < j)
         {
-            while (pivot < fitnessClearTimes[stage][j])
-                j--;
-            while (i < j && pivot >= fitnessClearTimes[stage][i])
-                i++;
+            j--;
+            i++;
             Swap(stage, i, j);
         }
-        fitnessClearTimes[stage][left] = fitnessClearTimes[stage][i];
-        fitnessClearTimes[stage][i] = pivot;
     }
 
     public void Swap(int stage, int i, int j)
     {
-        string tempGens;
+        string temp;
         float tempFit;
-
-        tempFit = fitnessClearTimes[stage][i];
-        fitnessClearTimes[stage][i] = fitnessClearTimes[stage][j];
-        fitnessClearTimes[stage][j] = tempFit;
-
-        tempGens = gens[stage][i];
-        gens[stage][i] = gens[stage][j];
-        gens[stage][j] = tempGens;
+        //유전자 교환
+        temp = compatibility.gens[stage].arr[i];
+        compatibility.gens[stage].arr[i] = compatibility.gens[stage].arr[i];
+        compatibility.gens[stage].arr[i] = temp;
+        //적합도 교환
+        tempFit = compatibility.clearTimeRate[stage].arr[i];
+        compatibility.clearTimeRate[stage].arr[i] = compatibility.clearTimeRate[stage].arr[i];
+        compatibility.clearTimeRate[stage].arr[i] = tempFit;
     }
 
     //0을 최 후순위로 바꾸는 알고리즘
     public void BackZero()
     {
-        float[][] fitnessClearTimess = fitnessClearTimes;
+        floatArray[] fitnessClearTimess = compatibility.clearTimeRate;
         int countX = 0, countY = 0, countX2 = 0, countY2 = 0;
-        for (int i = 0; i < maxStage; i++)
-            for (int j = 0; j < maxCount; i++)
+        for (int i = 0; i < compatibility.maxStage; i++)
+            for (int j = 0; j < compatibility.maxCount; i++)
             {
-                if (fitnessClearTimes[i][j] == 0)
-                    fitnessClearTimess[maxStage - countX2++][maxCount - countY2++] = fitnessClearTimes[i][j];
+                if (compatibility.clearTimeRate[i].arr[j] == 0)
+                    fitnessClearTimess[compatibility.maxStage - countX2++].arr[compatibility.maxCount - countY2++] = compatibility.clearTimeRate[i].arr[j];
                 else
-                    fitnessClearTimess[countX++][countY++] = fitnessClearTimes[i][j];
+                    fitnessClearTimess[countX++].arr[countY++] = compatibility.clearTimeRate[i].arr[j];
             }
-        fitnessClearTimes = fitnessClearTimess;
+        compatibility.clearTimeRate = fitnessClearTimess;
     }
     #endregion
 
 
     /// <summary>
-    /// 게임 클리어시 저장에서 혹은 신 로드시 count == maxCount일 경우 호출해주는 함수
+    /// 게임 클리어시 저장에서 혹은 신 로드시 count == compatibility.maxCount일 경우 호출해주는 함수
     /// 유전자를 섞어서 보존해줌
     /// </summary>
     public void ApplyGen()
     {
+
         //유전자 정렬
         SetGen();
         //유전자 혼합
@@ -108,9 +100,9 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     /// </summary>
     public void SetGen()
     {
-        for (int i = 0; i < maxStage; i++)
+        for (int i = 0; i < compatibility.maxStage; i++)
         {
-            QuickSort(i, 0, maxCount);
+            QuickSort(i, 0, compatibility.maxCount);
         }
         BackZero();
     }
@@ -121,15 +113,15 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     /// </summary>
     public void MixGen()
     {
-        int fit = (int)Mathf.Floor(fitnessGenRate * maxCount * 100);
-        int mutantionGen = (int)Mathf.Floor(mutationGenRate * maxCount * 100);
-        for (int j = fit; j < maxCount; j++)
+        int fit = (int)Mathf.Floor(fitnessGenRate * compatibility.maxCount);
+        int mutantionGen = (int)Mathf.Floor(mutationGenRate * compatibility.maxCount);
+        for (int j = fit; j < compatibility.maxCount; j++)
         {
-            for (int i = 0; i < maxStage; i++)
+            for (int i = 0; i < compatibility.maxStage; i++)
             {
                 int randomIndex = UnityEngine.Random.Range(0, fit / 10);
-                gens[j][i] = gens[randomIndex][i];
-                if (maxCount - mutantionGen > j)
+                compatibility.gens[j].arr[i] = compatibility.gens[randomIndex].arr[i];
+                if (compatibility.maxCount - mutantionGen > j)
                     if (UnityEngine.Random.Range(0, mutantionGen / 10) == 0)
                         Mutent(j, i);
             }
@@ -142,16 +134,17 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         int monster = UnityEngine.Random.Range(0, monsterSize + 1);
         int randomStage = UnityEngine.Random.Range(0, stage + 1);
         char[] c = new char[stage];
-        c = gens[genIndex][stage].ToCharArray();
+        c = compatibility.gens[genIndex].arr[stage].ToCharArray();
         c[randomStage] = monster.ToString()[0];
-        gens[genIndex][stage] = c.ToString();
+        compatibility.gens[genIndex].arr[stage] = c.ToString();
     }
 
 
     public override void OnCreated()
     {
-        MaxClearTimes = new float[maxStage];
-        for (int i = 0; i < maxStage; i++)
+        MaxClearTimes = new float[compatibility.maxStage];
+        inputClearRate = new float[compatibility.maxStage];
+        for (int i = 0; i < compatibility.maxStage; i++)
         {
             MaxClearTimes[i] = (MonsterManager.Instance.SpawnTime * StageManager.Instance.Stage) + 24;
         }
@@ -159,6 +152,6 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
 
     public override void OnInitiate()
     {
-        maxStage = StageManager.Instance.MaxStage;
+
     }
 }

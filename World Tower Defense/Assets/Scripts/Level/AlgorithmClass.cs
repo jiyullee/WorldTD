@@ -13,7 +13,7 @@ public class Compatibility
     //아래를 통해 유전자를 뽑을 수 있음.
     public stringArray[] gens;
     public int Count = 0;
-    public int maxCount = 10;
+    public int maxCount = 5;
     public int maxStage = 30;
     //첫번째인지 판별하는 플래그
     public bool isfirst = true;
@@ -32,6 +32,7 @@ public class Compatibility
         clearStages = new int[maxStage + 1];
         isfirst = true;
     }
+    
 }
 
 [System.Serializable]
