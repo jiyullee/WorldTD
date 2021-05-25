@@ -19,7 +19,7 @@ public class LobbyUIManager : MonoBehaviourSubUI
     
     private void Start()
     {
-        list_texts = GetComponentsInChildren<Text>().ToList();
+        list_texts = FindObjectsOfType<Text>().ToList();
         for (int i = 0; i < list_texts.Count; i++)
         {
             list_texts[i].font = FontManager.Instance.GetFont(1);
