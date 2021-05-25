@@ -13,7 +13,8 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     }
     //몬스터 종류
     private int clustersSize = 3;
-    private int bossCount = 0;
+    private int bossCount = 1;
+    private string beforeGen = "";
 
 
     /// <summary>
@@ -25,22 +26,15 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     {
         int random = UnityEngine.Random.Range(0, clustersSize + 1);
         int stage = StageManager.Instance.Stage;
-        //초기 생성 단계
-        if (Compatibility.isfirst == true)
+        if (stage % 5 == 0)
         {
-            compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 1] + random.ToString();
+            compatibility.gens[compatibility.Count].arr[stage] = (clustersSize + bossCount++).ToString();
         }
-        //섞은 이후 는 그냥 넘김
-        return compatibility.gens[compatibility.Count].arr[stage];
-    }
-
-    public string AddBoss()
-    {
-        int stage = StageManager.Instance.Stage;
         //초기 생성 단계
-        if (Compatibility.isfirst == true)
+        else if (compatibility.isfirst == true)
         {
-            compatibility.gens[compatibility.Count].arr[stage] = $"{clustersSize + bossCount++}";
+            compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : beforeGen + random.ToString();
+            beforeGen = compatibility.gens[compatibility.Count].arr[stage];
         }
         //섞은 이후 는 그냥 넘김
         return compatibility.gens[compatibility.Count].arr[stage];

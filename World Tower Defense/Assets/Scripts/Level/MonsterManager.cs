@@ -9,7 +9,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     #region Fields
 
     //군집체당 소환되는 시간
-    [SerializeField] private float spawnTime = 5;
+    private float spawnTime = 5;
     public float SpawnTime { get => spawnTime; }
     private float spawnCycle;
     public Sprite[] monsterImage;
@@ -53,25 +53,20 @@ public class MonsterManager : UnitySingleton<MonsterManager>
 
     #region Functions
 
-    /// <summary>
-    /// 진을 읽어서 맞는 몬스터 생성
-    /// </summary>
-    private string GetGen()
-    {
-        return NewLevelManager.Instance.AddGen();
-    }
 
     private string SetMonster(string gen)
     {
         if (stage % 5 == 0)
         {
-            Debug.Log("boss");
-            gen = NewLevelManager.Instance.AddBoss();
+            nextMonster = gen;
+            gen = "";
             amount = 1;
-            return "";
         }
-        nextMonster = gen.Substring(0, 1);
-        amount = MonsterAssocationData.Instance.GetTableData(Int32.Parse(nextMonster)).Amount;
+        else
+        {
+            nextMonster = gen.Substring(0, 1);
+            amount = MonsterAssocationData.Instance.GetTableData(Int32.Parse(nextMonster)).Amount;
+        }
         if (gen.Length >= 1)
             return gen.Substring(1, gen.Length - 1);
         else
@@ -102,12 +97,10 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     /// </summary>
     IEnumerator SpawnMonster()
     {
-        string gen = GetGen();
+        string gen = NewLevelManager.Instance.AddGen();
         stage = StageManager.Instance.Stage;
         while (gen.Length > 0)
         {
-            if (gen == "")
-                break;
             gen = SetMonster(gen);
             spawnCycle = spawnTime / amount;
             while (amount > 0)
@@ -125,6 +118,8 @@ public class MonsterManager : UnitySingleton<MonsterManager>
                     yield return new WaitForSeconds(Time.deltaTime);
                 }
             }
+            if (gen == "")
+                break;
         }
         while (spawned_monsters.Count > 0 && monsterContainer.transform.childCount > 0)
         {

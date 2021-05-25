@@ -82,13 +82,11 @@ public class Monster : PollingObject
     /// </summary>
     public void SetMonsterData(string monster)
     {
-        int stage = Convert.ToInt32(monster);
-
-        hp = MonsterAssocationData.Instance.GetTableData(stage).HP;
-        armor = MonsterAssocationData.Instance.GetTableData(stage).Armor;
-        initMoveSpeed = MonsterAssocationData.Instance.GetTableData(stage).Speed;
-        int spriteIndex = MonsterData.Instance.GetTableData(stage).SpriteIndex;
-        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[spriteIndex];
+        int monsterKey = Convert.ToInt32(monster);
+        hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
+        armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
+        initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
+        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterData.Instance.GetTableData(monsterKey).SpriteIndex];
         moveSpeed = initMoveSpeed;
     }
 
