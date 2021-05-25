@@ -31,8 +31,8 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
         if (!Directory.Exists(saveDirectory))
             Directory.CreateDirectory(saveDirectory);
         string jsonData = JsonUtility.ToJson(NewLevelManager.Instance.Compatibility);
-        string savePath = Path.Combine(saveDirectory, "Data.json");
-        File.WriteAllText(savePath, jsonData);
+        string filePath = Path.Combine(saveDirectory, "Data.json");
+        File.WriteAllText(filePath, jsonData);
     }
 
     /// <summary>
@@ -43,22 +43,22 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
     public Compatibility GetData()
     {
         string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
-        string savePath = Path.Combine(saveDirectory, "Data.json");
-        Compatibility compatibility = new Compatibility();
-        compatibility.init();
-        if (Directory.Exists(saveDirectory))
+        string filePath = Path.Combine(saveDirectory, "Data.json");
+        Compatibility compatibility = null;
+        Debug.Log(saveDirectory);
+        //아래 fileInfo가 안드에서 되는지 확인해야함
+        if (new FileInfo(filePath).Exists)
         {
-            string data = File.ReadAllText(savePath);
+            string data = File.ReadAllText(filePath);
             compatibility = JsonUtility.FromJson<Compatibility>(data);
             if (compatibility.Count == compatibility.maxCount)
             {
-                //유전자 조합
                 AlgorithmApply.Instance.ApplyGen();
                 compatibility.Count = 0;
                 compatibility.isfirst = false;
             }
         }
-        else
+        if (compatibility == null)
         {
             compatibility = new Compatibility();
             compatibility.init();
