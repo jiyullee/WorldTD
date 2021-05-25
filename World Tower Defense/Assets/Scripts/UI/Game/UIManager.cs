@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,11 +19,24 @@ public class UIManager : MonoBehaviourSubUI
     private GraphicRaycaster graphicRaycaster;
     private PointerEventData ped;
     public static Canvas canvas { get; private set; }
+
+    public List<Text> list_texts = new List<Text>();
+    
     void Awake()
     {
         Instance = this;
         Init();
     }
+
+    private void Start()
+    {
+        list_texts = GetComponentsInChildren<Text>().ToList();
+        for (int i = 0; i < list_texts.Count; i++)
+        {
+            list_texts[i].font = FontManager.Instance.GetFont(1);
+        }
+    }
+
     public override void Init()
     {
         Instance = this;

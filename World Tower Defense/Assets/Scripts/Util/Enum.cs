@@ -59,6 +59,7 @@ public enum ParsingDataSet : int
     SoundData,
     MonsterAssociationData,
     FitTimeListData,
+    FontData,
 }
 public enum TILE_DATA
 {
