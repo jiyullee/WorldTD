@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviourSubUI
     private PointerEventData ped;
     public static Canvas canvas { get; private set; }
 
-    public List<Text> list_texts = new List<Text>();
+    private List<Text> list_texts = new List<Text>();
     
     void Awake()
     {
@@ -52,7 +52,6 @@ public class UIManager : MonoBehaviourSubUI
         AddUI(UIState.SynergyUI, "SynergyUI", "SynergyUI");
         AddUI(UIState.TowerUI, "TowerUI", "TowerUI");
         AddUI(UIState.PopUpUI, "PopUpUI", "PopUpUI");
-
         foreach (var data in uiList)
         {
             if(data.Value)
@@ -82,8 +81,7 @@ public class UIManager : MonoBehaviourSubUI
             }
             
         }
-        
-        
+
     }
 
     /// <summary>

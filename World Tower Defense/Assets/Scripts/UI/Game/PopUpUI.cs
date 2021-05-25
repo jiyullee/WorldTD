@@ -110,7 +110,8 @@ public class PopUpUI : MonoBehaviourSubUI
     private void ReGame()
     {
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
-        Debug.Log("ReGame");
+        SceneManager.Instance.LoadScene("Loading");
+        SceneManager.Instance.LoadScene("Game");
     }
 
     private void Resume()

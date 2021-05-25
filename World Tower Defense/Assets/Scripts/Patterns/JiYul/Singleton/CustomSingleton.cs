@@ -47,13 +47,15 @@ public abstract class UnitySingleton<T> : MonoBehaviour, ISingleton where T : Un
 
     public abstract void OnInitiate();
 
+    public static bool IsNull => _instance == null;
+
     private static T _instance;
 
-    public static T Instance => _instance != null ? _instance : GetInstanceObject();
+    public static T Instance => !IsNull ? _instance : GetInstanceObject();
 
     protected static T GetInstanceObject()
     {
-        if (_instance != null) return _instance;
+        if (!IsNull) return _instance;
 
         _instance = FindObjectOfType<T>();
         

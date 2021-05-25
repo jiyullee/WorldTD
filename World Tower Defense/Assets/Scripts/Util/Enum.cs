@@ -15,6 +15,7 @@ public enum UIState
     SynergyUI,
     TowerUI,
     PopUpUI,
+    ExitPopUpUI,
 }
 
 public enum POPUP_STATE

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ public class LobbyUIManager : MonoBehaviourSubUI
     public static LobbyUIManager Instance { get; private set; }
     
     public Dictionary<UIState, MonoBehaviourSubUI> uiList = new Dictionary<UIState, MonoBehaviourSubUI>();
-    public List<Text> list_texts = new List<Text>();
+    private List<Text> list_texts = new List<Text>();
     void Awake()
     {
         Instance = this;
@@ -30,7 +31,7 @@ public class LobbyUIManager : MonoBehaviourSubUI
         AddUI(UIState.Lobby, "LobbyUI", "MainLobbyUI");
         AddUI(UIState.OptionUI, "OptionUI", "LobbyOptionUI");
         AddUI(UIState.CollectionUI, "CollectionUI", "LobbyCollectionUI");
-        
+
         foreach (var data in uiList)
         {
             if(data.Value)
