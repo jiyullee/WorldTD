@@ -63,14 +63,21 @@ public class MonsterManager : UnitySingleton<MonsterManager>
 
     private string SetMonster(string gen)
     {
+        if (stage % 5 == 0)
+        {
+            Debug.Log("boss");
+            gen = NewLevelManager.Instance.AddBoss();
+            amount = 1;
+            return "";
+        }
         nextMonster = gen.Substring(0, 1);
-        int nextMonsterIndex = Int32.Parse(nextMonster);
-        amount = MonsterAssocationData.Instance.GetTableData(nextMonsterIndex).Amount;
+        amount = MonsterAssocationData.Instance.GetTableData(Int32.Parse(nextMonster)).Amount;
         if (gen.Length >= 1)
             return gen.Substring(1, gen.Length - 1);
         else
             return "";
     }
+
 
     public void StartSpawn()
     {
@@ -99,7 +106,6 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         stage = StageManager.Instance.Stage;
         while (gen.Length > 0)
         {
-            Debug.Log(gen);
             if (gen == "")
                 break;
             gen = SetMonster(gen);
@@ -127,6 +133,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         NewLevelManager.Instance.Clear(time, stage);
         StageManager.Instance.Reward();
     }
+
 
     public void AddMonster(Monster p_monster)
     {
