@@ -12,16 +12,9 @@ using System;
 public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
 {
     /// <summary>
-    /// 꺼질때 데이터 저장.
-    /// </summary>
-    private void OnApplicationQuit()
-    {
-        SaveData();
-    }
-    /// <summary>
     /// 유전자를 Json으로 저장
     /// 이때 각각의 객체를 비교해주기 위해 현재시간을 string값으로 저장함
-    /// 게임이 끝날때 호출
+    /// 게임을 클리어 하거나 게임이 죽었을 경우 호출
     /// </summary>
     [ContextMenu("Save Data")]
     public void SaveData()
