@@ -36,6 +36,7 @@ public class GameManager : UnitySingleton<GameManager>
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 9);
         TimeManager.Instance.Pause();
         PopUpUI.Instance.PopUp(POPUP_STATE.GameWin);
+        SaveAlgorithmData.Instance.SaveData();
     }
 
     //게임에서 짐.
@@ -44,8 +45,7 @@ public class GameManager : UnitySingleton<GameManager>
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 8);
         TimeManager.Instance.Pause();
         PopUpUI.Instance.PopUp(POPUP_STATE.GameLose);
-
-        //게임 오버 UI표기.
+        SaveAlgorithmData.Instance.SaveData();
     }
 
     public void ExitGame()

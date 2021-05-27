@@ -84,7 +84,7 @@ public class TowerUI : MonoBehaviourSubUI
 
         text_damage.text = "공격력 : " + String.Format("{0:0.##}", tower.GetCurrentDamage());
         text_speed.text = "공격 속도 : " + String.Format("{0:0.##}", tower.GetCurrentSpeed());
-        text_range.text = "공격 범위 : " + String.Format("{0:0.##}", tower.GetCurrentRange());
+        text_range.text = "공격 범위 : " + String.Format("{0:0.##}칸", (int)(tower.GetCurrentRange() / 0.6f));
         SetGrade(tower.Grade);
         btn_compound.interactable = TowerManager.Instance.CanCompound(tower);
     }
@@ -108,6 +108,7 @@ public class TowerUI : MonoBehaviourSubUI
         {
             SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 6);
             TowerManager.Instance.CompoundTower(tower);
+            SetView(false);
         }
     }
 

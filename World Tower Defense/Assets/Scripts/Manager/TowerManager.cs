@@ -99,6 +99,7 @@ public class TowerManager : UnitySingleton<TowerManager>
         }
         
         p_tower.Upgrade();
+        UIManager.Instance.SetEventButton(false);
     }
 
     public void SellTower(Tower p_tower)

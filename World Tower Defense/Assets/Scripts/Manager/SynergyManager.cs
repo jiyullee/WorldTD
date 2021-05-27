@@ -125,7 +125,8 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         List<Tower> list_tower = TowerManager.Instance.list_tower;
         for (int i = 0; i < list_tower.Count; i++)
         {
-            list_tower[i].ActiveSynergy();
+            if(list_tower[i] != null)
+                list_tower[i].ActiveSynergy();
         }
     }
 }

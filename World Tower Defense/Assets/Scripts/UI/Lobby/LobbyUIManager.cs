@@ -10,20 +10,10 @@ public class LobbyUIManager : MonoBehaviourSubUI
     public static LobbyUIManager Instance { get; private set; }
     
     public Dictionary<UIState, MonoBehaviourSubUI> uiList = new Dictionary<UIState, MonoBehaviourSubUI>();
-    private List<Text> list_texts = new List<Text>();
     void Awake()
     {
         Instance = this;
         Init();
-    }
-    
-    private void Start()
-    {
-        list_texts = FindObjectsOfType<Text>().ToList();
-        for (int i = 0; i < list_texts.Count; i++)
-        {
-            list_texts[i].font = FontManager.Instance.GetFont(1);
-        }
     }
     
     public override void Init()
@@ -34,8 +24,10 @@ public class LobbyUIManager : MonoBehaviourSubUI
 
         foreach (var data in uiList)
         {
-            if(data.Value)
+            if (data.Value)
+            {
                 data.Value.Init();
+            }
         }
     }
 

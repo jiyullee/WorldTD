@@ -52,7 +52,8 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
         {
             //타워 생성
             tower = StoreManager.Instance.CreateTower(transform.position);
-            tower.SetButtonUI(this);
+            if(tower != null)
+                tower.SetButtonUI(this);
             SetView(false);
             SetInteractable(true);
         }
@@ -94,8 +95,13 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!isPlaceTower) return;
-        if (StageManager.IsCombatting) return;
+        if (!isPlaceTower) {return;}
+
+        if (StageManager.IsCombatting)
+        {
+            transform.position = initPos;
+            return;
+        }
         canvasGroup.blocksRaycasts = true;
         if (!CanSwap)
         {

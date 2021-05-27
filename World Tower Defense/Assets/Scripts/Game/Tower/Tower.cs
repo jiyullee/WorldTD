@@ -188,8 +188,6 @@ public class Tower : PollingObject
         EffectManager.ReturnUpgradeParticle(particle);
         Grade++;
         spriteRenderer.sprite = sprites[Grade];
-        ButtonUI.SetViewTowerUI();
-
     }
 
     #endregion
