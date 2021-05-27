@@ -51,6 +51,11 @@ public class SynergyViewUI : MonoBehaviourSubUI
     
     public void SetTexts(int idx)
     {
+        if (text_synergyName.text == "섬")
+        {
+            text_count.text = "항상 적용";
+            return;
+        }
         string text = "";
         for (int i = 1; i < list_activateNums.Count; i++)
         {
