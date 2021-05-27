@@ -10,6 +10,10 @@ public class TowerManager : UnitySingleton<TowerManager>
     List<Tower> list_compound = new List<Tower>();
     //타워 이름 별로 저장된 타워 자료구조
     public Dictionary<string, List<Tower>> dic_tower = new Dictionary<string, List<Tower>>();
+
+    private int TowerCount => list_tower.Count;
+    private int MaxTowerCount = 0;
+    public bool CanBuildTower => TowerCount < MaxTowerCount;
     
     public override void OnCreated()
     {
@@ -19,6 +23,12 @@ public class TowerManager : UnitySingleton<TowerManager>
     public override void OnInitiate()
     {
 
+    }
+
+    public void SetTowerCount(int p_level)
+    {
+        MaxTowerCount = StoreData.Instance.GetTableData(p_level).MaxTowerCount;
+        StateUI.Instance.SetTowerText(TowerCount, MaxTowerCount);
     }
 
     public Tower CreateTower(TowerInstance towerInstance, Vector3 p_pos)
@@ -57,6 +67,7 @@ public class TowerManager : UnitySingleton<TowerManager>
             dic_tower[p_tower.TowerName].Remove(p_tower);
 
         list_tower.Remove(p_tower);
+        StateUI.Instance.SetTowerText(TowerCount, MaxTowerCount);
     }
 
     public void IncreaseRange(float p)
@@ -109,7 +120,7 @@ public class TowerManager : UnitySingleton<TowerManager>
         {
             if (dic_tower[towerName].Contains(p_tower))
             {
-                dic_tower[towerName].Remove(p_tower);
+                RemoveTower(p_tower);
                 StoreManager.Instance.SellTower(p_tower);
                 p_tower.ReturnTower();
                 UIManager.Instance.SetEventButton(false);

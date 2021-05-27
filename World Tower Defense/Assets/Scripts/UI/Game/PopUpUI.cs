@@ -34,6 +34,7 @@ public class PopUpUI : MonoBehaviourSubUI
         dic_PopUp.Add(POPUP_STATE.GameLose, transform.Find("GameLoseUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.Option, transform.Find("OptionUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.LackGold, transform.Find("LackGoldUI").gameObject);
+        dic_PopUp.Add(POPUP_STATE.OverTower, transform.Find("OverTowerUI").gameObject);
 
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
         text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
@@ -79,6 +80,9 @@ public class PopUpUI : MonoBehaviourSubUI
                 break;
             case POPUP_STATE.LackGold:
                 StartCoroutine(CloseSelf(POPUP_STATE.LackGold, 1.0f));
+                break;
+            case POPUP_STATE.OverTower:
+                StartCoroutine(CloseSelf(POPUP_STATE.OverTower, 1.0f));
                 break;
             case POPUP_STATE.GameWin:
             case POPUP_STATE.GameLose:

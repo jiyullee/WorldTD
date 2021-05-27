@@ -200,6 +200,7 @@ public class StoreManager : UnitySingleton<StoreManager>
     {
         //타워 생성 후 타워 정보 삭제 -> 배치 가능한 버튼 OFF & 기물 구매 가능 ON
         Tower tower = TowerManager.Instance.CreateTower(selectedTowerInstance, p_pos);
+        TowerManager.Instance.SetTowerCount(level);
         SetNullInstance();
         MapUI.Instance.SetViewSelectableButtons(false);
         StoreUI.Instance.SetActiveButtons(true);
@@ -209,15 +210,13 @@ public class StoreManager : UnitySingleton<StoreManager>
     private void InitState()
     {
         max_store = 5;
-        level = 1;
         max_level = 8;
         exp = 0;
-        max_exp = StoreData.Instance.GetTableData(level).MaxExp;
-        SetLevelUI();
-        SetExpUI();
+        level = 0;
+        LevelUp();
     }
 
-    public void ExpUp(int increase)
+    public void ExpUp(int increase, bool useGold)
     {
         //골드 부족
         if (gold < 5)
@@ -226,7 +225,8 @@ public class StoreManager : UnitySingleton<StoreManager>
             return;
         }
 
-        gold -= 5;
+        if(useGold)
+            gold -= 5;
         
         if (exp + increase < max_exp)
             exp += increase;
@@ -249,6 +249,8 @@ public class StoreManager : UnitySingleton<StoreManager>
         
         //레벨 UI 적용
         SetLevelUI();
+        SetExpUI();
+        TowerManager.Instance.SetTowerCount(level);
     }
 
     private void SetExpUI()

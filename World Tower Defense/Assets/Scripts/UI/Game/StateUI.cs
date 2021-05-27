@@ -37,6 +37,6 @@ public class StateUI : MonoBehaviourSubUI
 
     public void SetTowerText(int p_cnt, int p_maxCnt)
     {
-        text_towerCount.text = $"{p_cnt}/{p_maxCnt}";
+        text_towerCount.text = $"{p_cnt} / {p_maxCnt}";
     }
 }

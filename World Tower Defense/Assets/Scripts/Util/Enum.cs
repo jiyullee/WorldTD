@@ -25,6 +25,7 @@ public enum POPUP_STATE
     GameLose,
     Option,
     LackGold,
+    OverTower,
     None,
 }
 

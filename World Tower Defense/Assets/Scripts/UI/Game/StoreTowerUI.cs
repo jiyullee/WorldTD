@@ -52,7 +52,12 @@ public class StoreTowerUI : MonoBehaviourSubUI
             SetActiveButton(false);
             return;
         }
-        
+
+        if (!TowerManager.Instance.CanBuildTower)
+        {
+            PopUpUI.Instance.PopUp(POPUP_STATE.OverTower);
+            return;
+        }
         
         //구매 가능 여부 판단
         if (!StoreManager.Instance.CanBuyTower(towerInstance.GetTowerData().Cost))

@@ -62,7 +62,7 @@ public class StoreUI : MonoBehaviourSubUI
 
     public void ExpUp()
     {
-        StoreManager.Instance.ExpUp(4);
+        StoreManager.Instance.ExpUp(4, true);
     }
 
     public void SetGoldUI(int p_gold, int p_interest)

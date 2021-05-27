@@ -15,5 +15,6 @@ public class StoreData : DataSets<StoreData, StoreData.StoreDataClass>
         public int Level;
         public List<float> Rarity;
         public int MaxExp;
+        public int MaxTowerCount;
     }
 }

@@ -38,6 +38,7 @@ public class StageManager : UnitySingleton<StageManager>
 
     private void Start()
     {
+        StoreManager.Instance.EarnGold(5);
         ReadyStage();
     }
 
@@ -55,7 +56,6 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void ReadyStage()
     {
-        StoreManager.Instance.EarnGold(5);
         StoreManager.Instance.RefreshStore(false);
         TimeManager.Instance.ProgressTime(stageWaitingTime, maxWaitingTime, () =>
         {
@@ -98,6 +98,8 @@ public class StageManager : UnitySingleton<StageManager>
     public void Reward()
     {
         IsCombatting = false;
+        StoreManager.Instance.EarnGold(5);
+        StoreManager.Instance.ExpUp(2, false);
         ReadyStage();
     }
 
