@@ -25,8 +25,8 @@ public class SoundManager : UnitySingleton<SoundManager>
 
     public override void OnInitiate()
     {
-        SaveVolume(SOUNDTYPE.BACKGROUND, 100);
-        SaveVolume(SOUNDTYPE.EFFECT, 100);
+        SaveVolume(SOUNDTYPE.BACKGROUND, 1);
+        SaveVolume(SOUNDTYPE.EFFECT, 1);
         
         //로비 배경 음악 재생
         PlaySound(SOUNDTYPE.BACKGROUND, 0);
@@ -58,7 +58,7 @@ public class SoundManager : UnitySingleton<SoundManager>
         else if(p_type == SOUNDTYPE.EFFECT)
         {
             playSource = Effect;
-            playSource.volume = PlayerPrefs.GetFloat("EffectSound");
+            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.3f;
             playSource.PlayOneShot(clip);
         }
 

@@ -26,6 +26,11 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
         SetView(false);
         button.interactable = false;
         initPos = GetComponent<RectTransform>().transform.position;
+        #if UNITY_EDITOR
+            GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
+        #elif UNITY_ANDROID
+            GetComponent<RectTransform>().sizeDelta = new Vector2(75,75);
+        #endif
     }
 
     public override void SetView(bool state)
@@ -78,6 +83,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     {
         if (!isPlaceTower) return;
         if (StageManager.IsCombatting) return;
+        
         canvasGroup.blocksRaycasts = false;
         UIManager.Instance.SetEventButton(false);
         
@@ -86,7 +92,12 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public void OnDrag(PointerEventData eventData)
     {
         if (!isPlaceTower) return;
-        if (StageManager.IsCombatting) return;
+        if (StageManager.IsCombatting)
+        {
+            transform.position = initPos;
+            tower.SetPositionFromScreen(initPos);
+            return;
+        }
         transform.position = eventData.position;
         if(isPlaceTower)
             tower.SetPositionFromScreen(transform.position);
@@ -95,20 +106,14 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!isPlaceTower) {return;}
-
-        if (StageManager.IsCombatting)
-        {
-            transform.position = initPos;
-            return;
-        }
+        if (!isPlaceTower) return;
+        
         canvasGroup.blocksRaycasts = true;
-        if (!CanSwap)
+        if (StageManager.IsCombatting || !CanSwap)
         {
             transform.position = initPos;
-            if(isPlaceTower)
-                tower.SetPositionFromScreen(initPos);
-           
+            tower.SetPositionFromScreen(initPos);
+            return;
         }
         CanSwap = false;
     }

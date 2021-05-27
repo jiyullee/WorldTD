@@ -101,6 +101,7 @@ public class TowerManager : UnitySingleton<TowerManager>
     }
     public void CompoundTower(Tower p_tower)
     {
+        if (!CanCompound(p_tower)) return;
         list_compound.Remove(p_tower);
 
         for (int i = 0; i < 2; i++)
