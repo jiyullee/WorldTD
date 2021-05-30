@@ -18,6 +18,7 @@ public class Monster : PollingObject
     private float hp;
     private float armor;
     private int index = 1;
+    private int spriteIndex;
     private int maxIndex;
     private string info;
     public bool isBoss { get; private set; }
@@ -65,28 +66,19 @@ public class Monster : PollingObject
     /// 몬스터의 데이터를 세팅해줌.
     /// 스테이지를 통해 데이터를 불러옴, 스프라이트는 외부 할당
     /// </summary>
-    public void SetMonsterData(int stage)
-    {
-        hp = MonsterData.Instance.GetTableData(stage).HP;
-        armor = MonsterData.Instance.GetTableData(stage).Armor;
-        initMoveSpeed = MonsterData.Instance.GetTableData(stage).Speed;
-        info = MonsterData.Instance.GetTableData(stage).info;
-        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterData.Instance.GetTableData(stage).SpriteIndex];
-        isBoss = (StageManager.Instance.Stage % 5 == 0) ? true : false;
-        SetDifficulty();
-    }
-
-    /// <summary>
-    /// 몬스터의 데이터를 세팅해줌.
-    /// 스테이지를 통해 데이터를 불러옴, 스프라이트는 외부 할당
-    /// </summary>
     public void SetMonsterData(string monster)
     {
+        isBoss = (StageManager.Instance.Stage % 5 == 0);
         int monsterKey = Convert.ToInt32(monster);
         hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
+        if (isBoss == false)
+        {
+            Debug.Log(Mathf.Pow(1.1f, (int)(StageManager.Instance.Stage / 5)));
+            hp = hp * Mathf.Pow(1.1f, (int)(StageManager.Instance.Stage / 5));
+        }
         armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
         initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
-        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterData.Instance.GetTableData(monsterKey).SpriteIndex];
+        spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterAssocationData.Instance.GetTableData(monsterKey).spriteIndex];
         moveSpeed = initMoveSpeed;
     }
 
@@ -197,7 +189,7 @@ public class Monster : PollingObject
                 index = 1;
                 PoolingManager.ReturnObject(this);
                 MonsterManager.Instance.RemoveMonster(this);
-                int damage = (info == "Boss") ? 5 : 1;
+                int damage = (isBoss) ? 5 : 1;
                 GameManager.Instance.Damage(damage);
             }
 
