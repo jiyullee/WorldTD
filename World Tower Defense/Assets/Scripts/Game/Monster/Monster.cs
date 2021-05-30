@@ -22,7 +22,10 @@ public class Monster : PollingObject
     private int maxIndex;
     private string info;
     public bool isBoss { get; private set; }
-
+    private float time;
+    private float targetDistance;
+    private float correctionSpeed = 2;
+    [SerializeField] float requiredTime;
     public LayerMask AroundMonsterLayer;
     private bool IsTarget => MonsterManager.IsPoolingObject(this);
 
@@ -40,6 +43,7 @@ public class Monster : PollingObject
         color = spriteRenderer.color;
         hitColor = color;
         hitColor.a = 0.5f;
+        CalculationRequiredTime();
     }
 
     public override void OnInitiate()
@@ -73,22 +77,11 @@ public class Monster : PollingObject
         hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
         if (isBoss == false)
         {
-            Debug.Log(Mathf.Pow(1.1f, (int)(StageManager.Instance.Stage / 5)));
             hp = hp * Mathf.Pow(1.1f, (int)(StageManager.Instance.Stage / 5));
         }
         armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
         initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
         spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterAssocationData.Instance.GetTableData(monsterKey).spriteIndex];
-        moveSpeed = initMoveSpeed;
-    }
-
-    /// <summary>
-    /// 난이도 조절 함수 차후에 GameManager에서 받아올것.
-    /// </summary>
-    protected void SetDifficulty()
-    {
-        hp = LevelManager.Instance.SetHpWeight(hp);
-        initMoveSpeed = LevelManager.Instance.SetSpeedWeight(initMoveSpeed);
         moveSpeed = initMoveSpeed;
     }
 
@@ -172,17 +165,24 @@ public class Monster : PollingObject
     #endregion
 
     #region Functions_Move
+    void CalculationRequiredTime()
+    {
+        targetDistance = Vector3.Magnitude(map[index - 1].position - map[index].position);
+        requiredTime = targetDistance / moveSpeed / correctionSpeed;
+    }
 
     /// <summary>
     /// 몬스터가 움직이는 함수
     /// </summary>
     private void Move()
     {
-        Vector3 dir = map[index].position - transform.position;
-        // thisTransform.position = Vector3.Lerp(thisTransform.position, map[index].position, Time.deltaTime * moveSpeed);
-        thisTransform.position += dir.normalized * Time.deltaTime * moveSpeed;
-        if ((dir).magnitude < 0.1f)
+        time += Time.deltaTime * moveSpeed / correctionSpeed;
+        time = Mathf.Clamp(time, 0f, requiredTime);
+
+        thisTransform.position = Vector3.Lerp(map[index - 1].position, map[index].position, time / requiredTime);
+        if (time >= requiredTime)
         {
+            time = 0;
             index++;
             if (index >= map.Length)
             {
@@ -192,7 +192,7 @@ public class Monster : PollingObject
                 int damage = (isBoss) ? 5 : 1;
                 GameManager.Instance.Damage(damage);
             }
-
+            CalculationRequiredTime();
             Look();
         }
     }

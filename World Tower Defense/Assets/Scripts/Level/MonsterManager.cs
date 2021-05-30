@@ -109,14 +109,14 @@ public class MonsterManager : UnitySingleton<MonsterManager>
                 monster.SetMonsterData(nextMonster);
                 AddMonster(monster);
                 amount--;
-                // yield return new WaitForSeconds(spawnCycle);
+                yield return new WaitForSeconds(spawnCycle);
                 //델타 타임 생각해서 아래와 같은 코드를 짬 더 좋은 코드있으면 수정 바람
-                float watietime = 0;
-                while (spawnCycle > watietime)
-                {
-                    watietime += Time.deltaTime;
-                    yield return new WaitForSeconds(Time.deltaTime);
-                }
+                // float watietime = 0;
+                // while (spawnCycle > watietime)
+                // {
+                //     watietime += Time.deltaTime;
+                //     yield return new WaitForSeconds(Time.deltaTime);
+                // }
             }
             if (gen == "")
                 break;
