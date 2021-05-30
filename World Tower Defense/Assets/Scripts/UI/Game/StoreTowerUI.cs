@@ -49,7 +49,9 @@ public class StoreTowerUI : MonoBehaviourSubUI
     {
         towerInstance = null;
         text_towerName.text = "";
+        text_synergyName.text = "";
         text_cost.text = "";
+        btn_info.interactable = false;
         SetActiveButton(false);
     }
     
@@ -68,6 +70,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
             text_synergyName.text += synergyNames[i] + " ";
         }
         SetActiveButton(true);
+        btn_info.interactable = true;
         SetInfoUI();
     }
 

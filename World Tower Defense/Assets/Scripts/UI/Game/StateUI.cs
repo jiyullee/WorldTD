@@ -16,6 +16,7 @@ public class StateUI : MonoBehaviourSubUI
         AddButtonEvent("OptionBtn", () =>
         {
             SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
+            UIManager.Instance.SetEventButton(true);
             PopUpUI.Instance.PopUp(POPUP_STATE.Option);
         });
         transform.Find("TimeUI").gameObject.AddComponent<TimeUI>().Init();

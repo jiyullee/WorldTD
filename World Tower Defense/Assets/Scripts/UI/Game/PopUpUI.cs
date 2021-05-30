@@ -130,6 +130,7 @@ public class PopUpUI : MonoBehaviourSubUI
         if (selectedUI != POPUP_STATE.None)
             dic_PopUp[selectedUI].SetActive(false);
         TimeManager.Instance.StartTime();
+        UIManager.Instance.SetEventButton(false);
     }
 
     private void ExitGame()

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManager : UnitySingleton<GameManager>
 {
     [SerializeField]
-    private const int maxHp = 300;
+    private const int maxHp = 30;
     private int hp;
     
     public override void OnCreated()

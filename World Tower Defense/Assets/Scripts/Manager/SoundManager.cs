@@ -52,14 +52,14 @@ public class SoundManager : UnitySingleton<SoundManager>
         {
             playSource = Background;
             playSource.clip = clip;
-            playSource.volume = PlayerPrefs.GetFloat("BackgroundSound");
+            playSource.volume = PlayerPrefs.GetFloat("BackgroundSound") * 0.7f;
             playSource.Play();
         }
         else if(p_type == SOUNDTYPE.EFFECT)
         {
             playSource = Effect;
             playSource.clip = clip;
-            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.3f;
+            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.4f;
             playSource.Play();
         }
 

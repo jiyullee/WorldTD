@@ -48,6 +48,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public void InitTower()
     {
         tower = null;
+        button.interactable = false;
         SetView(false);
     }
     

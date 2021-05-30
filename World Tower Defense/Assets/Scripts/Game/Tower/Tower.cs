@@ -71,6 +71,7 @@ public class Tower : PollingObject
     public void ReturnTower()
     {
         ButtonUI.InitTower();
+        ButtonUI = null;
         PoolingManager.ReturnObject(this);
 
     }
