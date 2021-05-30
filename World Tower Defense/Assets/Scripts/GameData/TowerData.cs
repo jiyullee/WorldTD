@@ -16,6 +16,7 @@ namespace GameData
         {
             public string TowerName;
             public List<string> SynergyName;
+            public List<string> SynergyName_KR;
             public int Cost;
             public List<float> Damage;
             public float Speed;

@@ -38,7 +38,7 @@ public class StageManager : UnitySingleton<StageManager>
 
     private void Start()
     {
-        StoreManager.Instance.EarnGold(5);
+        StoreManager.Instance.EarnGold(500);
         ReadyStage();
     }
 

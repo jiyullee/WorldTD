@@ -11,19 +11,37 @@ public class StoreTowerUI : MonoBehaviourSubUI
 {
     private TowerInstance towerInstance;
     private Text text_towerName;
+    private Text text_synergyName;
     private Text text_cost;
+    private Text text_info_name;
+    private Text text_info_damage;
+    private Text text_info_speed;
+    private Text text_info_range;
     private Image img_cost;
     private Image img_store;
-    private Button button;
+    private Button btn_flag;
+    private Button btn_info;
+    private Button btn_infoUI;
     private Sprite initSprite;
     public override void Init()
     {
-        button = transform.Find("Button").GetComponent<Button>();
-        AddButtonEvent(button, SelectTowerPos);
+        btn_flag = transform.Find("Button").GetComponent<Button>();
+        btn_info = transform.Find("Info/InfoButton").GetComponent<Button>();
+        btn_infoUI = transform.Find("Info/InfoUI").GetComponent<Button>();
+        AddButtonEvent(btn_flag, SelectTowerPos);
+        AddButtonEvent(btn_info, () => ShowInfo(true));
+        AddButtonEvent(btn_infoUI, () => ShowInfo(false));
         text_towerName = transform.Find("Info/TowerName").GetComponent<Text>();
+        text_synergyName = transform.Find("Info/SynergyName").GetComponent<Text>();
         text_cost = transform.Find("Info/Cost/Text").GetComponent<Text>();
+        text_info_name = transform.Find("Info/InfoUI/NameText").GetComponent<Text>();
+        text_info_damage = transform.Find("Info/InfoUI/DamageText/Text").GetComponent<Text>();
+        text_info_speed = transform.Find("Info/InfoUI/SpeedText/Text").GetComponent<Text>();
+        text_info_range = transform.Find("Info/InfoUI/RangeText/Text").GetComponent<Text>();
+        
         img_store = transform.Find("Button/Image").GetComponent<Image>();
         initSprite = img_store.sprite;
+        ShowInfo(false);
         InitTower();
     }
 
@@ -39,10 +57,35 @@ public class StoreTowerUI : MonoBehaviourSubUI
     {
         towerInstance = p_towerInstance;
         string towerName = towerInstance.GetTowerData().TowerName;
+        List<string> synergyNames = new List<string>();
+        synergyNames = towerInstance.GetTowerData().SynergyName_KR;
         text_towerName.text = towerName;
+        text_synergyName.text = "";
         text_cost.text = towerInstance.GetTowerData().Cost.ToString();
         img_store.sprite = StoreManager.Instance.dic_towerImage[towerName];
-        SetActiveButton(true); 
+        for (int i = 0; i < synergyNames.Count; i++)
+        {
+            text_synergyName.text += synergyNames[i] + " ";
+        }
+        SetActiveButton(true);
+        SetInfoUI();
+    }
+
+    private void SetInfoUI()
+    {
+        text_info_name.text = towerInstance.GetTowerData().TowerName;
+        List<float> damages = new List<float>();
+        damages = towerInstance.GetTowerData().Damage;
+        text_info_damage.text = "";
+        for (int i = 0; i < damages.Count; i++)
+        {
+            if (i != damages.Count - 1)
+                text_info_damage.text += $"{(int) damages[i]} / ";
+            else
+                text_info_damage.text += $"{(int) damages[i]} ★";
+        }
+        text_info_speed.text = towerInstance.GetTowerData().Speed.ToString();
+        text_info_range.text = towerInstance.GetTowerData().Range.ToString() + "칸";
     }
 
     private void SelectTowerPos()
@@ -78,12 +121,14 @@ public class StoreTowerUI : MonoBehaviourSubUI
 
     public void SetActiveButton(bool state)
     {
-        button.interactable = state;
+        btn_flag.interactable = state;
         if (towerInstance == null)
-            button.interactable = false;
+            btn_flag.interactable = false;
     }
- 
-    
-    
+
+    public void ShowInfo(bool state)
+    {
+        btn_infoUI.gameObject.SetActive(state);
+    }
 
 }

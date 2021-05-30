@@ -117,15 +117,14 @@ public class TowerManager : UnitySingleton<TowerManager>
     public void SellTower(Tower p_tower)
     {
         string towerName = p_tower.TowerName;
-        if (dic_tower.ContainsKey(towerName))
+        if (dic_tower.ContainsKey(towerName) && dic_tower[towerName].Contains(p_tower))
         {
-            if (dic_tower[towerName].Contains(p_tower))
-            {
-                RemoveTower(p_tower);
-                StoreManager.Instance.SellTower(p_tower);
-                p_tower.ReturnTower();
-                UIManager.Instance.SetEventButton(false);
-            }
+            RemoveTower(p_tower);
+            StoreManager.Instance.SellTower(p_tower);
+            p_tower.ReturnTower();
+            SynergyManager.Instance.RemoveSynergy(p_tower);
+            SynergyManager.Instance.SetSynergy();
+            UIManager.Instance.SetEventButton(false);
         }
     }
 }

@@ -58,6 +58,17 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         SetSynergyUI();
     }
 
+    public void RemoveSynergy(Tower p_tower)
+    {
+        string towerName = p_tower.TowerName;
+        string[] synergyNames = p_tower.SynergyNames;
+        for (int j = 0; j < synergyNames.Length; j++)
+        {
+            string synergyName = synergyNames[j];
+            if(SynergyTable[synergyName].ContainsKey(towerName))
+                SynergyTable[synergyName][towerName] = false;
+        }
+    }
     private void CheckSynergy()
     {
         List<Tower> list_tower = TowerManager.Instance.list_tower;
@@ -66,7 +77,6 @@ public class SynergyManager : UnitySingleton<SynergyManager>
         {
             string towerName = list_tower[i].TowerName;
             string[] synergyNames = list_tower[i].SynergyNames;
-
             for (int j = 0; j < synergyNames.Length; j++)
             {
                 string synergyName = synergyNames[j];
@@ -109,7 +119,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
                     }
                 }    
             }
-
+            
             SynergyIndex[synergyName] = index;
 
         }
@@ -129,4 +139,5 @@ public class SynergyManager : UnitySingleton<SynergyManager>
                 list_tower[i].ActiveSynergy();
         }
     }
+    
 }
