@@ -25,9 +25,6 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     //입력해줘야함. 입력 받는 클리어 비율
     private float[] inputClearRate;
 
-    private void Start()
-
-    }
 
     #region QuickSort
     /// <summary>
