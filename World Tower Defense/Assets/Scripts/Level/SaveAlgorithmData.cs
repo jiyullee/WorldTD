@@ -23,8 +23,10 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
         NewLevelManager.Instance.Compatibility.Count++;
         if (!Directory.Exists(saveDirectory))
             Directory.CreateDirectory(saveDirectory);
+
         string jsonData = JsonUtility.ToJson(NewLevelManager.Instance.Compatibility);
         string filePath = Path.Combine(saveDirectory, "Data.json");
+
         File.WriteAllText(filePath, jsonData);
     }
 
@@ -38,7 +40,6 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
         string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
         string filePath = Path.Combine(saveDirectory, "Data.json");
         Compatibility compatibility = null;
-        Debug.Log(saveDirectory);
         //아래 fileInfo가 안드에서 되는지 확인해야함
         if (new FileInfo(filePath).Exists)
         {
