@@ -9,6 +9,7 @@ public class TowerUI : MonoBehaviourSubUI
     public static TowerUI Instance;
     private GameObject obj_info;
     private GameObject obj_menu;
+    private Image img_flag;
     private Button btn_info;
     private Button btn_compound;
     private Button btn_sell;
@@ -28,7 +29,7 @@ public class TowerUI : MonoBehaviourSubUI
         btn_info = obj_menu.transform.Find("InfoButton").GetComponent<Button>();
         
         AddButtonEvent(btn_info, ShowInfo);
-        
+        img_flag = transform.Find("InfoUI/FlagImage").GetComponent<Image>();
         text_towerName = obj_info.transform.Find("TowerInfo/TowerNameText").GetComponent<Text>();
         text_damage = obj_info.transform.Find("TowerInfo/DamageText").GetComponent<Text>();
         text_speed = obj_info.transform.Find("TowerInfo/SpeedText").GetComponent<Text>();
@@ -80,11 +81,14 @@ public class TowerUI : MonoBehaviourSubUI
     {
         
         tower = p_tower;
+        img_flag.sprite = Resources.Load<Sprite>($"Images/Flags/{tower.TowerName}");
         text_towerName.text = tower.TowerName;
-
+    
         text_damage.text = "공격력 : " + String.Format("{0:0.##}", tower.GetCurrentDamage());
         text_speed.text = "공격 속도 : " + String.Format("{0:0.##}", tower.GetCurrentSpeed());
         text_range.text = "공격 범위 : " + String.Format("{0:0.##}칸", (int)(tower.GetCurrentRange() / 0.6f));
+        text_range.text = "공격 범위 : " + String.Format("{0:0.##}칸", (tower.GetCurrentRange() / 0.6f));
+        
         SetGrade(tower.Grade);
         btn_compound.interactable = TowerManager.Instance.CanCompound(tower);
     }

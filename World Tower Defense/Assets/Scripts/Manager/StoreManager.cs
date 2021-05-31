@@ -94,7 +94,7 @@ public class StoreManager : UnitySingleton<StoreManager>
         float rand = Random.Range(0f, 1f);
         int cost = 0;
         float sum = 0;
-        while (cost < rarity.Length)
+        while (cost < rarity.Length + 1)
         {
             if (rand < sum)
             {
@@ -218,15 +218,28 @@ public class StoreManager : UnitySingleton<StoreManager>
 
     public void ExpUp(int increase, bool useGold)
     {
-        //골드 부족
-        if (gold < 5)
+        if (useGold)
         {
-            PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
-            return;
+            if (level >= max_level)
+            {
+                PopUpUI.Instance.PopUp(POPUP_STATE.OverLevel);
+                return;
+            }
+            else
+            {
+                //골드 부족
+                if (gold < 5)
+                {
+                    PopUpUI.Instance.PopUp(POPUP_STATE.LackGold);
+                    return;
+                }
+                gold -= 5;
+            }
         }
-
-        if(useGold)
-            gold -= 5;
+        else
+        {
+            if (level >= max_level) return;
+        }
         
         if (exp + increase < max_exp)
             exp += increase;

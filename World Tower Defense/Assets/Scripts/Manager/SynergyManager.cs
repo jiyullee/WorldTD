@@ -106,7 +106,7 @@ public class SynergyManager : UnitySingleton<SynergyManager>
             int index = 0;
             List<int> list_activateCount = SynergyCount[synergyName];
 
-            if (count == list_activateCount[list_activateCount.Count - 1])
+            if (count >= list_activateCount[list_activateCount.Count - 1])
                 index = list_activateCount.Count - 1;
             else
             {

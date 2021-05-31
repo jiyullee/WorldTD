@@ -72,6 +72,7 @@ public class StoreTowerUI : MonoBehaviourSubUI
         SetActiveButton(true);
         btn_info.interactable = true;
         SetInfoUI();
+        ShowInfo(false);
     }
 
     private void SetInfoUI()

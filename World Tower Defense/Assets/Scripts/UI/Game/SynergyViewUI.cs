@@ -57,6 +57,7 @@ public class SynergyViewUI : MonoBehaviourSubUI
             return;
         }
         string text = "";
+        if (idx == 10) idx = list_activateNums.Count - 1;
         for (int i = 1; i < list_activateNums.Count; i++)
         {
             if (i != list_activateNums.Count - 1)

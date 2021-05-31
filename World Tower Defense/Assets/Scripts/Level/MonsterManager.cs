@@ -30,7 +30,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     public override void OnCreated()
     {
         Transform startTransfrom = LoadManager.Instance.GetMap()[0].gameObject.transform;
-        monsterImage = Resources.LoadAll<Sprite>("Images/Monsters/spaceships");
+        monsterImage = Resources.LoadAll<Sprite>("Images/Monsters/");
         // monsterContainer = Instantiate(new GameObject(), startTransfrom.position, startTransfrom.rotation); 아래 코드와 동일
         if (monsterContainer == null)
             monsterContainer = new GameObject();

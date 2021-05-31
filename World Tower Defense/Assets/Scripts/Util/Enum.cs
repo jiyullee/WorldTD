@@ -26,6 +26,7 @@ public enum POPUP_STATE
     Option,
     LackGold,
     OverTower,
+    OverLevel,
     None,
 }
 
