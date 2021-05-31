@@ -58,9 +58,8 @@ public class SoundManager : UnitySingleton<SoundManager>
         else if(p_type == SOUNDTYPE.EFFECT)
         {
             playSource = Effect;
-            playSource.clip = clip;
-            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.4f;
-            playSource.Play();
+            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.3f;
+            playSource.PlayOneShot(clip);
         }
 
     }

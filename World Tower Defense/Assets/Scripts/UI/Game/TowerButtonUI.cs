@@ -29,7 +29,7 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
         #if UNITY_EDITOR
             GetComponent<RectTransform>().sizeDelta = new Vector2(60,60);
         #elif UNITY_ANDROID
-            GetComponent<RectTransform>().sizeDelta = new Vector2(75,75);
+            GetComponent<RectTransform>().sizeDelta = new Vector2(70,70);
         #endif
     }
 
@@ -148,7 +148,9 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
         if (StageManager.IsCombatting) return;
         if (eventData.pointerDrag != null)
         {
-            eventData.pointerDrag.GetComponent<TowerButtonUI>().Swap(this);
+            TowerButtonUI targetButtonUI = eventData.pointerDrag.GetComponent<TowerButtonUI>();
+            if (targetButtonUI == null) return;
+            targetButtonUI.Swap(this);
             initPos = transform.position;
             SetView(false);
             SetInteractable(isPlaceTower);

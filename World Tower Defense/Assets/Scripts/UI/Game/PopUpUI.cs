@@ -35,12 +35,12 @@ public class PopUpUI : MonoBehaviourSubUI
         dic_PopUp.Add(POPUP_STATE.Option, transform.Find("OptionUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.LackGold, transform.Find("LackGoldUI").gameObject);
         dic_PopUp.Add(POPUP_STATE.OverTower, transform.Find("OverTowerUI").gameObject);
+        dic_PopUp.Add(POPUP_STATE.OverLevel, transform.Find("OverLevelUI").gameObject);
 
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
         text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
         text_score_lose = transform.Find("GameLoseUI/ScoreText").GetComponent<Text>();
-        text_speed = transform.Find("OptionUI/SpeedButton/Text").GetComponent<Text>();
-
+     
         slider_backSound = transform.Find("OptionUI/BackgroundSlider").GetComponent<Slider>();
         slider_effectSound = transform.Find("OptionUI/EffectSlider").GetComponent<Slider>();
         slider_backSound.value = PlayerPrefs.GetFloat("BackgroundSound");
@@ -57,7 +57,6 @@ public class PopUpUI : MonoBehaviourSubUI
         AddButtonEvent("OptionUI/ResumeButton", Resume);
         AddButtonEvent("OptionUI/LobbyButton", LoadLobby);
         AddButtonEvent("OptionUI/ExitButton", ExitGame);
-        AddButtonEvent("OptionUI/SpeedButton", ChangeSpeed);
     }
 
     /// <summary>
@@ -83,6 +82,9 @@ public class PopUpUI : MonoBehaviourSubUI
                 break;
             case POPUP_STATE.OverTower:
                 StartCoroutine(CloseSelf(POPUP_STATE.OverTower, 1.0f));
+                break;
+            case POPUP_STATE.OverLevel:
+                StartCoroutine(CloseSelf(POPUP_STATE.OverLevel, 1.0f));
                 break;
             case POPUP_STATE.GameWin:
             case POPUP_STATE.GameLose:
@@ -137,20 +139,5 @@ public class PopUpUI : MonoBehaviourSubUI
     {
         Application.Quit();
     }
-
-    private void ChangeSpeed()
-    {
-        if (!IsFast)
-        {
-            TimeManager.Instance.ChangeSpeed(2);
-            text_speed.text = "2배속";
-            IsFast = true;
-        }
-        else
-        {
-            TimeManager.Instance.ChangeSpeed(1);
-            text_speed.text = "1배속";
-            IsFast = false;
-        }
-    }
+    
 }

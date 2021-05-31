@@ -56,6 +56,7 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void ReadyStage()
     {
+        StateUI.Instance.SetReadyStageText();
         StoreManager.Instance.RefreshStore(false);
         TimeManager.Instance.ProgressTime(stageWaitingTime, maxWaitingTime, () =>
         {
@@ -79,6 +80,7 @@ public class StageManager : UnitySingleton<StageManager>
         }
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 7);
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
+        StateUI.Instance.SetStageText(stage);
         IsCombatting = true;
         MonsterManager.Instance.StartSpawn();
     }

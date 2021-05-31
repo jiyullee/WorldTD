@@ -51,7 +51,7 @@ public class Tower : PollingObject
     private Collider2D[] colliders;
     public LayerMask AroundTowerLayer;
     public TowerButtonUI ButtonUI { get; private set; }
-    
+    private AudioSource _audioSource;
     #endregion
 
     #region Callbacks
@@ -61,6 +61,7 @@ public class Tower : PollingObject
         target = null;
         list_synergy = new List<Synergy>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        _audioSource = GetComponentInChildren<AudioSource>();
     }
 
     public override void OnInitiate()
@@ -139,12 +140,19 @@ public class Tower : PollingObject
         bullet.IgnoreArmor(ignoreArmor);
         bullet.DamageAround(isDamageAround);
         list_bullet.Enqueue(bullet);
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 2);
+        PlayAttackSound();
     }
 
     public void SetButtonUI(TowerButtonUI p_buttonUI)
     {
         ButtonUI = p_buttonUI;
+    }
+
+    private void PlayAttackSound()
+    {
+        AudioClip clip = SoundData.Instance.GetAudioClip(2);
+        _audioSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.3f;
+        _audioSource.PlayOneShot(clip);
     }
 
     public void ActiveSynergy()

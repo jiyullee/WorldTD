@@ -23,6 +23,7 @@ public class TimeManager : UnitySingleton<TimeManager>
     public void ChangeSpeed(float time)
     {
         speed = time;
+        StartTime();
     }
 
     public void Pause()
