@@ -247,9 +247,12 @@ public class Tower : PollingObject
                 StartCoroutine(SearchTarget());
                 break;
             }
-            if(MonsterManager.IsPoolingObject(target))
+
+            if (MonsterManager.IsPoolingObject(target))
                 SpawnBullet();
-         
+            else
+                target = null;
+            
             yield return new WaitForSeconds(GetCurrentSpeed());
         }
     }
