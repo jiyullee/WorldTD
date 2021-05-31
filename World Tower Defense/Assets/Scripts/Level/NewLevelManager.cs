@@ -36,8 +36,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
         else if (string.IsNullOrEmpty(compatibility.gens[compatibility.Count].arr[stage]))
         {
             Debug.Log("없어");
-            compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : beforeGen + random.ToString();
-            beforeGen = compatibility.gens[compatibility.Count].arr[stage];
+            compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 1] + random.ToString();
         }
         //섞은 이후 는 그냥 넘김
         return compatibility.gens[compatibility.Count].arr[stage];

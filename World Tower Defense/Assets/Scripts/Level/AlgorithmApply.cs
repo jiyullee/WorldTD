@@ -104,7 +104,7 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         //유전자 정렬
         SetGen();
         //유전자 혼합
-        // MixGen();
+        MixGen();
     }
 
     [ContextMenu("MixGen")]
@@ -126,14 +126,21 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     public void MixGen()
     {
         Debug.Log("mix");
-        int mutantionGen = (int)Mathf.Floor(mutationGenRate * compatibility.maxCount) + 1;
         for (int j = originGenCount + 1; j < compatibility.maxCount; j++)
         {
             for (int i = 1; i < maxStage; i++)
             {
                 int randomIndex = UnityEngine.Random.Range(0, originGenCount + 1);
-                compatibility.gens[j].arr[i] = compatibility.gens[randomIndex].arr[i];
+                int count = 0;
+                while (true)
+                {
+                    randomIndex = UnityEngine.Random.Range(0, originGenCount + 1);
+                    count++;
 
+                    if (!string.IsNullOrEmpty(compatibility.gens[randomIndex].arr[i]) || count == originGenCount + 1)
+                        break;
+                }
+                compatibility.gens[j].arr[i] = compatibility.gens[randomIndex].arr[i];
                 // if (UnityEngine.Random.Range(0, mutantionGen) == 0)
                 //     Mutent(j, i);
             }
