@@ -6,6 +6,7 @@ using GameData;
 public class Monster : PollingObject
 {
     #region Fields
+    [SerializeField] protected AnimationCurve _wayPointCurve;
 
     private SpriteRenderer spriteRenderer;
     // public AnimationCurve moveCurve;
@@ -25,7 +26,7 @@ public class Monster : PollingObject
     public bool isBoss { get; private set; }
     private float time;
     private float targetDistance;
-    private float correctionSpeed = 2;
+    [SerializeField] private float correctionSpeed = 1f;
     [SerializeField] float requiredTime;
     public LayerMask AroundMonsterLayer;
     private bool IsTarget => MonsterManager.IsPoolingObject(this);
@@ -44,21 +45,24 @@ public class Monster : PollingObject
         color = spriteRenderer.color;
         hitColor = color;
         hitColor.a = 0.5f;
-        CalculationRequiredTime();
     }
 
     public override void OnInitiate()
     {
 
     }
-
-    private void LateUpdate()
+    private void FixedUpdate()
     {
+
         if (IsTarget)
             Move();
     }
     private void OnEnable()
     {
+    }
+    private void Start()
+    {
+        CalculationRequiredTime();
         Look();
         ResetColor();
     }
@@ -168,10 +172,16 @@ public class Monster : PollingObject
     #endregion
 
     #region Functions_Move
+
+    /// <summary>
+    /// 거리계산함수
+    /// </summary>
     void CalculationRequiredTime()
     {
+        time = 0;
+        index = Mathf.Clamp(index, 1, maxIndex);
         targetDistance = Vector3.Magnitude(map[index - 1].position - map[index].position);
-        requiredTime = targetDistance / moveSpeed / correctionSpeed;
+        requiredTime = targetDistance / moveSpeed;
     }
 
     /// <summary>
@@ -179,13 +189,10 @@ public class Monster : PollingObject
     /// </summary>
     private void Move()
     {
-        time += Time.deltaTime * moveSpeed / correctionSpeed;
+        time += Time.deltaTime * moveSpeed;
         time = Mathf.Clamp(time, 0f, requiredTime);
-
-        thisTransform.position = Vector3.Lerp(map[index - 1].position, map[index].position, time / requiredTime);
         if (time >= requiredTime)
         {
-            time = 0;
             index++;
             if (index >= map.Length)
             {
@@ -195,9 +202,10 @@ public class Monster : PollingObject
                 int damage = (isBoss) ? 5 : 1;
                 GameManager.Instance.Damage(damage);
             }
-            CalculationRequiredTime();
             Look();
+            CalculationRequiredTime();
         }
+        thisTransform.position = Vector3.Lerp(map[index - 1].position, map[index].position, _wayPointCurve.Evaluate(time / requiredTime));
     }
 
     /// <summary>
