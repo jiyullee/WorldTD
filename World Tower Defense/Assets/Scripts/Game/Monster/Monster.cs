@@ -205,6 +205,8 @@ public class Monster : PollingObject
             Look();
             CalculationRequiredTime();
         }
+        index = index >= map.Length ? 1 : index;
+        index = index < 1 ? 1 : index;
         thisTransform.position = Vector3.Lerp(map[index - 1].position, map[index].position, _wayPointCurve.Evaluate(time / requiredTime));
     }
 

@@ -46,8 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: Monster
-<<<<<<< HEAD
-=======
   _wayPointCurve:
     serializedVersion: 2
     m_Curve:
@@ -72,16 +70,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
->>>>>>> e7caae6e67e7c6d19e4ce49c5d1a9740e10b3ff1
   moveSpeed: 1
   requiredTime: 0
   AroundMonsterLayer:
     serializedVersion: 2
-<<<<<<< HEAD
-    m_Bits: 128
-=======
     m_Bits: 0
->>>>>>> e7caae6e67e7c6d19e4ce49c5d1a9740e10b3ff1
 --- !u!212 &8508369338539348234
 SpriteRenderer:
   m_ObjectHideFlags: 0
