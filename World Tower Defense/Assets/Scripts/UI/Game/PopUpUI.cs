@@ -13,8 +13,6 @@ public class PopUpUI : MonoBehaviourSubUI
     private GameObject obj_LeakGold;
 
     private Text text_stage;
-    private Text text_score_win;
-    private Text text_score_lose;
     private Text text_speed;
     
     private Slider slider_backSound;
@@ -38,9 +36,7 @@ public class PopUpUI : MonoBehaviourSubUI
         dic_PopUp.Add(POPUP_STATE.OverLevel, transform.Find("OverLevelUI").gameObject);
 
         text_stage = transform.Find("StageStartUI/Text").GetComponent<Text>();
-        text_score_win = transform.Find("GameWinUI/ScoreText").GetComponent<Text>();
-        text_score_lose = transform.Find("GameLoseUI/ScoreText").GetComponent<Text>();
-     
+
         slider_backSound = transform.Find("OptionUI/BackgroundSlider").GetComponent<Slider>();
         slider_effectSound = transform.Find("OptionUI/EffectSlider").GetComponent<Slider>();
         slider_backSound.value = PlayerPrefs.GetFloat("BackgroundSound");
@@ -88,7 +84,6 @@ public class PopUpUI : MonoBehaviourSubUI
                 break;
             case POPUP_STATE.GameWin:
             case POPUP_STATE.GameLose:
-                SetScoreText(p);
                 break;
 
         }
@@ -104,12 +99,6 @@ public class PopUpUI : MonoBehaviourSubUI
     private void SetStageText(int p_stage)
     {
         text_stage.text = $"{p_stage} 스테이지 시작";
-    }
-
-    private void SetScoreText(int p_score)
-    {
-        text_score_win.text = $"스코어 : {p_score}";
-        text_score_lose.text = $"스코어 : {p_score}";
     }
 
     private void LoadLobby()
