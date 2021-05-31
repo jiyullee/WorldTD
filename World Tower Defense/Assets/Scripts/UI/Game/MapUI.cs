@@ -9,12 +9,16 @@ public class MapUI : MonoBehaviourSubUI
     public static MapUI Instance;
 
     public GameObject obj_towerButton;
+    public GameObject obj_arrows;
     private List<TowerButtonUI> list_buttonUI = new List<TowerButtonUI>();
+    private Animator _animator;
     
     public override void Init()
     {
         Instance = this;
         obj_towerButton = transform.Find("Buttons/TowerButton").gameObject;
+        obj_arrows = transform.Find("Arrows").gameObject;
+        _animator = transform.Find("Arrows").GetComponent<Animator>();
     }
 
     private void Start()
@@ -50,5 +54,16 @@ public class MapUI : MonoBehaviourSubUI
             }
         }
     }
-    
+
+    public void PlayRoadAnim()
+    {
+        obj_arrows.SetActive(true);
+        _animator.Play("Arrow");
+    }
+
+    public void StopRoadAnim()
+    {
+        obj_arrows.SetActive(false);
+        _animator.Play("Entry");
+    }
 }
