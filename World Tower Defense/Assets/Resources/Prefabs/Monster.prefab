@@ -46,8 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabName: Monster
-  spriteRenderer: {fileID: 8508369338539348234}
   moveSpeed: 1
+  requiredTime: 0
+  AroundMonsterLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!212 &8508369338539348234
 SpriteRenderer:
   m_ObjectHideFlags: 0

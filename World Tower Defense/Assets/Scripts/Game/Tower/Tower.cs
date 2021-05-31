@@ -21,7 +21,7 @@ public class Tower : PollingObject
     private float cur_damage;
 
     private bool canAttack;
-    private bool isPeninsula;
+    private bool isIsland;
     private bool isContinent;
 
     private TOWER_STATE TowerState;
@@ -33,13 +33,17 @@ public class Tower : PollingObject
     private float decreaseMonsterSpeed = 0f;
     private float increaseAttack = 0f;
     private float increaseSpeed = 0f;
-    private float increaseRange = 0f;
+    public float increaseRange { get; private set; }
     private bool isActiveAfricaSynergy;
     private bool ignoreArmor;
     private float aroundDamage;
+    private bool isDamageAround;
     private float percent_damageBuff;
+    private bool isDamageBuff;
     private float decreaseArmor;
-    private float trueDamage;
+    private float trueDamageWeight;
+    private float trueDamageCount;
+    private float trueDamage => trueDamageWeight * trueDamageCount;
 
     private const int MAX_GRADE = 3 + 1;
     private SpriteRenderer spriteRenderer;
@@ -99,8 +103,8 @@ public class Tower : PollingObject
 
         for (int i = 0; i < SynergyNames.Length; i++)
         {
-            if (SynergyNames[i] == SYNERGY.Peninsula.ToString())
-                isPeninsula = true;
+            if (SynergyNames[i] == SYNERGY.Island.ToString())
+                isIsland = true;
             if (SynergyNames[i] == SYNERGY.Continent.ToString())
                 isContinent = true;
 
@@ -110,10 +114,10 @@ public class Tower : PollingObject
 
         ChangeState(TOWER_STATE.SearchTarget);
         StartCoroutine(SearchTarget());
-        if (isPeninsula)
-            StartCoroutine(SearchAround(1.2f));
+        if (isIsland)
+            StartCoroutine(SearchAround(1.5f));
         if (isContinent)
-            StartCoroutine(SearchAround(0.6f));
+            StartCoroutine(SearchAround(0.9f));
     }
 
     public void SetPosition(Vector2 p_pos)
@@ -133,8 +137,9 @@ public class Tower : PollingObject
         bullet.transform.position = new Vector3(transform.position.x, transform.position.y, 1);
         bullet.Init(target, GetDamage(), decreaseMonsterSpeed, decreaseArmor, aroundDamage, trueDamage);
         bullet.IgnoreArmor(ignoreArmor);
+        bullet.DamageAround(isDamageAround);
         list_bullet.Enqueue(bullet);
-
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 2);
     }
 
     public void SetButtonUI(TowerButtonUI p_buttonUI)
@@ -175,11 +180,10 @@ public class Tower : PollingObject
     private float GetDamage()
     {
         float rand = Random.Range(0f, 1f);
-        if (rand < percent_damageBuff)
+        if(isDamageBuff && rand < percent_damageBuff)
             cur_damage = damages[Grade - 1] * (1 + increaseAttack) * 2;
         else
             cur_damage = damages[Grade - 1] * (1 + increaseAttack);
-
         return cur_damage;
     }
 
@@ -206,14 +210,14 @@ public class Tower : PollingObject
             for (int i = 0; i < list_monsters.Count; i++)
             {
                 float dist = Vector2.Distance(list_monsters[i].transform.position, transform.position);
-
-                if (dist <= GetCurrentRange() + increaseRange && dist <= closetDist)
+                
+                if (dist <= GetCurrentRange() && dist <= closetDist)
                 {
                     closetDist = dist;
                     target = list_monsters[i];
                 }
             }
-
+            
             if (target != null)
             {
                 ChangeState(TOWER_STATE.Attack);
@@ -236,7 +240,7 @@ public class Tower : PollingObject
             }
 
             float dist = Vector2.Distance(target.transform.position, transform.position);
-            if (dist >= range)
+            if (dist >= GetCurrentRange())
             {
                 target = null;
                 ChangeState(TOWER_STATE.SearchTarget);
@@ -245,7 +249,7 @@ public class Tower : PollingObject
             }
 
             SpawnBullet();
-            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 2);
+         
             yield return new WaitForSeconds(GetCurrentSpeed());
         }
     }
@@ -256,13 +260,17 @@ public class Tower : PollingObject
         {
             yield return null;
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius, AroundTowerLayer);
-
-            if (isPeninsula)
+            if (isIsland)
             {
-                if (colliders.Length == 0)
+                if (colliders.Length == 1)
                     ignoreArmor = true;
                 else
                     ignoreArmor = false;
+            }
+
+            if (isContinent && colliders.Length >= 1)
+            {
+                trueDamageCount = colliders.Length - 1;
             }
         }
     }
@@ -281,6 +289,7 @@ public class Tower : PollingObject
     public void DamageBuff(float p_percent)
     {
         percent_damageBuff = p_percent;
+        isDamageBuff = percent_damageBuff != 0;
     }
 
     //북미
@@ -310,22 +319,16 @@ public class Tower : PollingObject
     //반도
     public void AroundAttack(float p)
     {
-        aroundDamage = p;
+        isDamageAround = p != 0;
+        aroundDamage = GetCurrentDamage() * p;
     }
 
     //대륙
     public void IncreaseTrueDamage(float p_damage)
     {
-        if (colliders != null)
-        {
-            trueDamage = p_damage * colliders.Length;
-        }
-        else
-        {
-            trueDamage = 0;
-        }
+        trueDamageWeight = p_damage;
     }
-
+    
     #endregion
 
 }

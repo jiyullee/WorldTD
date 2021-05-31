@@ -17,6 +17,7 @@ public class Monster : PollingObject
     protected Color hitColor;
     private float hp;
     private float armor;
+    private float initArmor;
     private int index = 1;
     private int spriteIndex;
     private int maxIndex;
@@ -80,6 +81,7 @@ public class Monster : PollingObject
             hp = hp * Mathf.Pow(1.1f, (int)(StageManager.Instance.Stage / 5));
         }
         armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
+        initArmor = armor;
         initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
         spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterAssocationData.Instance.GetTableData(monsterKey).spriteIndex];
         moveSpeed = initMoveSpeed;
@@ -93,16 +95,17 @@ public class Monster : PollingObject
     {
         if (!ignoreArmor)
         {
-            armor -= decreaseArmor;
-            armor = armor - decreaseArmor >= 0 ? armor - decreaseArmor : 0;
-            hp = hp + armor - dmg;
-            hp -= trueDamage;
+            armor = initArmor - decreaseArmor;
+            armor = armor >= 0 ? armor : 0;
+            dmg = armor - dmg >= 0 ? 0 : dmg - armor;
         }
         else
         {
-            hp -= dmg + trueDamage;
+            armor = 0;
         }
-
+        dmg = armor - dmg >= 0 ? 0 : dmg - armor;
+        hp -= dmg;
+        hp -= trueDamage;
         if (hp <= 0)
         {
             SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4);
@@ -131,12 +134,12 @@ public class Monster : PollingObject
 
     public void DamageAround(float aroundDamage)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f, AroundMonsterLayer);
-
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 0.6f, AroundMonsterLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
             Monster monster = colliders[i].GetComponent<Monster>();
-            monster.Damage(aroundDamage);
+            if(monster != null)
+                monster.Damage(aroundDamage);
         }
     }
 

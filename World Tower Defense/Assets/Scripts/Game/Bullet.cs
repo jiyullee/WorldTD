@@ -13,6 +13,7 @@ public class Bullet : PollingObject
     private float trueDamage;
     private PollingObject target;
     private bool ignoreArmor;
+    private bool damageAround;
     #region CallBacks
 
     public override void OnCreated()
@@ -44,8 +45,8 @@ public class Bullet : PollingObject
         if (monster != null && monster == target)
         {
             monster.Damage(damage, ignoreArmor, decreaseArmor, trueDamage);
-            if(aroundDamage > 0) monster.DamageAround(aroundDamage);
-            if(decreaseMonsterSpeed > 0) monster.DecreaseSpeed(decreaseMonsterSpeed);
+            if(damageAround) monster.DamageAround(aroundDamage);
+            monster.DecreaseSpeed(decreaseMonsterSpeed);
             DestroySelf();
         }
     }
@@ -75,6 +76,11 @@ public class Bullet : PollingObject
         ignoreArmor = flag;
     }
 
+    public void DamageAround(bool flag)
+    {
+        damageAround = flag;
+    }
+
     public void Move()
     {
         Vector3 dir = target.transform.position - transform.position;
@@ -86,7 +92,7 @@ public class Bullet : PollingObject
     public void BulletSprite()
     {
         string towerName = gameObject.transform.parent.GetComponent<Tower>().TowerName;
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Bullets/{towerName}_¹«±â");
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Bullets/{towerName}_ë¬´ê¸°");
 
     }
 
