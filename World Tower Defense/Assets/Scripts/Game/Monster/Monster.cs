@@ -75,14 +75,14 @@ public class Monster : PollingObject
     /// 몬스터의 데이터를 세팅해줌.
     /// 스테이지를 통해 데이터를 불러옴, 스프라이트는 외부 할당
     /// </summary>
-    public void SetMonsterData(string monster)
+    public void SetMonsterData(string monster, float weight)
     {
         isBoss = (StageManager.Instance.Stage % 5 == 0);
         int monsterKey = Convert.ToInt32(monster);
         hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
         if (isBoss == false)
         {
-            hp = hp * Mathf.Pow(1.1f, (int)(StageManager.Instance.Stage / 5));
+            hp = hp * Mathf.Pow(weight, (int)(StageManager.Instance.Stage / 5));
         }
         armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
         initArmor = armor;
@@ -112,7 +112,7 @@ public class Monster : PollingObject
         hp -= trueDamage;
         if (hp <= 0)
         {
-            if(isBoss)
+            if (isBoss)
                 SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 3, 0.5f);
             else
                 SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4, 0.5f);
@@ -145,7 +145,7 @@ public class Monster : PollingObject
         for (int i = 0; i < colliders.Length; i++)
         {
             Monster monster = colliders[i].GetComponent<Monster>();
-            if(monster != null)
+            if (monster != null)
                 monster.Damage(aroundDamage);
         }
     }

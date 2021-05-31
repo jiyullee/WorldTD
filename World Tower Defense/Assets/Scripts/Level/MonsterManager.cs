@@ -20,6 +20,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     public static List<PollingObject> spawned_monsters = new List<PollingObject>();
     private int stage;
     private float time;
+    private float weight = 1.1f;
 
     #endregion
 
@@ -106,7 +107,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
             while (amount > 0)
             {
                 Monster monster = (Monster)PoolingManager.GetObject(monsterContainer, "Monster");
-                monster.SetMonsterData(nextMonster);
+                monster.SetMonsterData(nextMonster, weight);
                 AddMonster(monster);
                 amount--;
                 yield return new WaitForSeconds(spawnCycle);
