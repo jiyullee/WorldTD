@@ -20,19 +20,19 @@ public class Compatibility
 
     public void init()
     {
-        clearTimeRate = new floatArray[maxCount + 1];
-        clearTimes = new floatArray[maxCount + 1];
-        gens = new stringArray[maxCount + 1];
-        for (int i = 0; i < maxCount + 1; i++)
+        clearTimeRate = new floatArray[maxCount];
+        clearTimes = new floatArray[maxCount];
+        gens = new stringArray[maxCount];
+        for (int i = 0; i < maxCount; i++)
         {
-            clearTimeRate[i] = new floatArray(maxStage + 1);
-            clearTimes[i] = new floatArray(maxStage + 1);
-            gens[i] = new stringArray(maxStage + 1);
+            clearTimeRate[i] = new floatArray(maxStage);
+            clearTimes[i] = new floatArray(maxStage);
+            gens[i] = new stringArray(maxStage);
         }
-        clearStages = new int[maxStage + 1];
+        clearStages = new int[maxCount];
         isfirst = true;
     }
-    
+
 }
 
 [System.Serializable]
@@ -42,6 +42,10 @@ public class floatArray
     public floatArray(int stage)
     {
         arr = new float[stage];
+        for (int j = 0; j < stage; j++)
+        {
+            arr[j] = 1.0f;
+        }
     }
 }
 [System.Serializable]

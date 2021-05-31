@@ -5,7 +5,8 @@ using GameData;
 
 public class NewLevelManager : UnitySingleton<NewLevelManager>
 {
-    private Compatibility compatibility;
+
+    [SerializeField] private Compatibility compatibility;
     public Compatibility Compatibility
     {
         get => compatibility;
@@ -24,6 +25,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     /// <returns> 유전자를 리턴해줌</returns>
     public string AddGen()
     {
+        Debug.Log("add");
         int random = UnityEngine.Random.Range(0, clustersSize + 1);
         int stage = StageManager.Instance.Stage;
         if (stage % 5 == 0)
@@ -31,8 +33,9 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
             compatibility.gens[compatibility.Count].arr[stage] = (clustersSize + bossCount++).ToString();
         }
         //초기 생성 단계
-        else if (compatibility.isfirst == true)
+        else if (string.IsNullOrEmpty(compatibility.gens[compatibility.Count].arr[stage]))
         {
+            Debug.Log("없어");
             compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : beforeGen + random.ToString();
             beforeGen = compatibility.gens[compatibility.Count].arr[stage];
         }
@@ -49,7 +52,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     {
         compatibility.clearTimes[compatibility.Count].arr[stage] = time;
         compatibility.clearTimeRate[compatibility.Count].arr[stage] = clearTimeRate(stage);
-        compatibility.clearStages[compatibility.Count]++;
+        compatibility.clearStages[compatibility.Count] = StageManager.Instance.Stage;
     }
 
     /// <summary>
@@ -60,12 +63,21 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     public float clearTimeRate(int stage)
     {
         // 데이터 파싱을 통해 예상클리어 타임 얻어오기.
-        float inputTimeRate = 0;
-        float inputTime = AlogrithmData.Instance.GetTableData(stage).fitnessClearTimeRate;
-        // 최장 클리어 타임 계산
-        float maxClearTime = (MonsterManager.Instance.SpawnTime * StageManager.Instance.Stage) + 24;
-        float clearTimeRate = compatibility.clearTimes[compatibility.Count].arr[stage] / maxClearTime;
-        return Mathf.Abs(inputTimeRate - clearTimeRate);
+        float maxClearTime;
+
+        if (stage > 1 && compatibility.gens[compatibility.Count].arr[stage].Substring(0, 1) == "2")
+        {
+            maxClearTime = MonsterManager.Instance.SpawnTime * (stage - 1) + 30;
+        }
+        else
+            maxClearTime = MonsterManager.Instance.SpawnTime * (stage) + 30;
+
+        if (stage == 1 && compatibility.gens[compatibility.Count].arr[stage].Substring(0, 1) == "2")
+            maxClearTime = MonsterManager.Instance.SpawnTime + 15;
+
+        float fitness = Mathf.Abs(AlogrithmData.Instance.GetTableData(stage).fitnessClearTimeRate - compatibility.clearTimes[compatibility.Count].arr[stage] / maxClearTime);
+        fitness = (float)System.Math.Round(fitness, 4);
+        return fitness;
     }
 
 
@@ -77,6 +89,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
 
     public override void OnInitiate()
     {
-        compatibility = SaveAlgorithmData.Instance.GetData();
+        Compatibility = SaveAlgorithmData.Instance.GetData();
+        AlgorithmApply.Instance.Compatibility = compatibility;
     }
 }

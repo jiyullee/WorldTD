@@ -7,10 +7,10 @@ public class GameManager : UnitySingleton<GameManager>
     [SerializeField]
     private const int maxHp = 30;
     private int hp;
-    
+
     public override void OnCreated()
     {
-        
+
     }
 
 
@@ -42,6 +42,7 @@ public class GameManager : UnitySingleton<GameManager>
     //게임에서 짐.
     public void GameOver()
     {
+        NewLevelManager.Instance.Compatibility.gens[NewLevelManager.Instance.Compatibility.Count].arr[StageManager.Instance.Stage - 1] = null;
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 8, 0.5f);
         TimeManager.Instance.Pause();
         PopUpUI.Instance.PopUp(POPUP_STATE.GameLose);

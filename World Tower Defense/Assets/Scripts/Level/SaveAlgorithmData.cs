@@ -20,11 +20,12 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
     public void SaveData()
     {
         string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
-        NewLevelManager.Instance.Compatibility.Count++;
+        Compatibility compatibility = NewLevelManager.Instance.Compatibility;
+        compatibility.Count++;
         if (!Directory.Exists(saveDirectory))
             Directory.CreateDirectory(saveDirectory);
 
-        string jsonData = JsonUtility.ToJson(NewLevelManager.Instance.Compatibility);
+        string jsonData = JsonUtility.ToJson(compatibility);
         string filePath = Path.Combine(saveDirectory, "Data.json");
 
         File.WriteAllText(filePath, jsonData);
@@ -45,12 +46,14 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
         {
             string data = File.ReadAllText(filePath);
             compatibility = JsonUtility.FromJson<Compatibility>(data);
+            AlgorithmApply.Instance.Compatibility = compatibility;
             if (compatibility.Count == compatibility.maxCount)
             {
                 AlgorithmApply.Instance.ApplyGen();
                 compatibility.Count = 0;
                 compatibility.isfirst = false;
             }
+            compatibility = AlgorithmApply.Instance.Compatibility;
         }
         if (compatibility == null)
         {
