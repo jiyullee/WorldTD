@@ -139,7 +139,7 @@ public class Tower : PollingObject
         bullet.IgnoreArmor(ignoreArmor);
         bullet.DamageAround(isDamageAround);
         list_bullet.Enqueue(bullet);
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 2);
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 2, 0.25f);
     }
 
     public void SetButtonUI(TowerButtonUI p_buttonUI)
@@ -240,15 +240,15 @@ public class Tower : PollingObject
             }
 
             float dist = Vector2.Distance(target.transform.position, transform.position);
-            if (dist >= GetCurrentRange() || !MonsterManager.spawned_monsters.Contains(target))
+            if (dist >= GetCurrentRange())
             {
                 target = null;
                 ChangeState(TOWER_STATE.SearchTarget);
                 StartCoroutine(SearchTarget());
                 break;
             }
-
-            SpawnBullet();
+            if(MonsterManager.IsPoolingObject(target))
+                SpawnBullet();
          
             yield return new WaitForSeconds(GetCurrentSpeed());
         }

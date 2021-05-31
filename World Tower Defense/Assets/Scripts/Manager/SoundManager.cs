@@ -25,11 +25,11 @@ public class SoundManager : UnitySingleton<SoundManager>
 
     public override void OnInitiate()
     {
-        SaveVolume(SOUNDTYPE.BACKGROUND, 1);
+        SaveVolume(SOUNDTYPE.BACKGROUND, 1f);
         SaveVolume(SOUNDTYPE.EFFECT, 1);
         
         //로비 배경 음악 재생
-        PlaySound(SOUNDTYPE.BACKGROUND, 0);
+        PlaySound(SOUNDTYPE.BACKGROUND, 0, 1f);
     }
 
     #endregion
@@ -44,7 +44,7 @@ public class SoundManager : UnitySingleton<SoundManager>
             PlayerPrefs.SetFloat("EffectSound", p_volume);
     }
     
-    public void PlaySound(SOUNDTYPE p_type, int key)
+    public void PlaySound(SOUNDTYPE p_type, int key, float volume = 1)
     {
         AudioClip clip = SoundData.Instance.GetAudioClip(key);
         AudioSource playSource = null;
@@ -52,13 +52,13 @@ public class SoundManager : UnitySingleton<SoundManager>
         {
             playSource = Background;
             playSource.clip = clip;
-            playSource.volume = PlayerPrefs.GetFloat("BackgroundSound") * 0.7f;
+            playSource.volume = PlayerPrefs.GetFloat("BackgroundSound") * volume;
             playSource.Play();
         }
         else if(p_type == SOUNDTYPE.EFFECT)
         {
             playSource = Effect;
-            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * 0.3f;
+            playSource.volume = PlayerPrefs.GetFloat("EffectSound") * volume;
             playSource.PlayOneShot(clip);
         }
 

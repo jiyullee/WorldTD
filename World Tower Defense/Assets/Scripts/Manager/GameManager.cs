@@ -33,7 +33,7 @@ public class GameManager : UnitySingleton<GameManager>
     //게임 클리어
     public void GameClear()
     {
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 9);
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 9, 0.5f);
         TimeManager.Instance.Pause();
         PopUpUI.Instance.PopUp(POPUP_STATE.GameWin);
         SaveAlgorithmData.Instance.SaveData();
@@ -42,7 +42,7 @@ public class GameManager : UnitySingleton<GameManager>
     //게임에서 짐.
     public void GameOver()
     {
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 8);
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 8, 0.5f);
         TimeManager.Instance.Pause();
         PopUpUI.Instance.PopUp(POPUP_STATE.GameLose);
         SaveAlgorithmData.Instance.SaveData();

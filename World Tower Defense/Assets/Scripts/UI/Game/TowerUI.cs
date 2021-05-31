@@ -110,7 +110,7 @@ public class TowerUI : MonoBehaviourSubUI
     {
         if (tower != null)
         {
-            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 6);
+            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 6, 0.5f);
             TowerManager.Instance.CompoundTower(tower);
             SetView(false);
         }

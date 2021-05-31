@@ -112,7 +112,10 @@ public class Monster : PollingObject
         hp -= trueDamage;
         if (hp <= 0)
         {
-            SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4);
+            if(isBoss)
+                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 3, 0.5f);
+            else
+                SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4, 0.5f);
             ParticleSystem particle = EffectManager.GetDestroyParticle(gameObject);
             EffectManager.ReturnDestroyParticle(particle);
             index = 0;

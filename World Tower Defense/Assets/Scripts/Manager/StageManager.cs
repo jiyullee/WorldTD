@@ -78,7 +78,7 @@ public class StageManager : UnitySingleton<StageManager>
             StartCoroutine("CheckGameClear");
             return;
         }
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 7);
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 7, 0.5f);
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
         StateUI.Instance.SetStageText(stage);
         IsCombatting = true;

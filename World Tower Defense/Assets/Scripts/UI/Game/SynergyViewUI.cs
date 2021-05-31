@@ -82,7 +82,7 @@ public class SynergyViewUI : MonoBehaviourSubUI
 
     public void ShowInfo()
     {
-        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
+        SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10, 0.7f);
         SynergyUI.Instance.SetViewInfo(true, Index);
     }
 }
