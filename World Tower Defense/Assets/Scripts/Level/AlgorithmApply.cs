@@ -25,6 +25,7 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     //입력해줘야함. 입력 받는 클리어 비율
     private float[] inputClearRate;
 
+
     #region QuickSort
     /// <summary>
     /// 유전자와 적합도를 퀵솔트 해주는 알고리즘
@@ -142,6 +143,12 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
 
     public override void OnCreated()
     {
+
+    }
+
+    public override void OnInitiate()
+    {
+        compatibility = NewLevelManager.Instance.Compatibility;
         MaxClearTimes = new float[compatibility.maxStage];
         inputClearRate = new float[compatibility.maxStage];
         for (int i = 0; i < compatibility.maxStage; i++)
@@ -150,8 +157,5 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         }
     }
 
-    public override void OnInitiate()
-    {
 
-    }
 }
