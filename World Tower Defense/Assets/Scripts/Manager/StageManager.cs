@@ -75,8 +75,7 @@ public class StageManager : UnitySingleton<StageManager>
     public void StartStage()
     {
         time = 0;
-        if(stage <= 2)
-            MapUI.Instance.StopRoadAnim();
+        MapUI.Instance.StopRoadAnim();
         if (stage > maxStage)
         {
             StartCoroutine("CheckGameClear");
