@@ -82,18 +82,19 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (eventData.clickCount > 2) return;
         if (!isPlaceTower) return;
         if (StageManager.IsCombatting) return;
-        
+        if (StoreManager.isSelecting) return;
         canvasGroup.blocksRaycasts = false;
         UIManager.Instance.SetEventButton(false);
-        
     }
     
     public void OnDrag(PointerEventData eventData)
     {
         if (!isPlaceTower) return;
-        if (StageManager.IsCombatting)
+        if (StoreManager.isSelecting) return;
+        if (StageManager.IsCombatting || eventData.clickCount > 2)
         {
             transform.position = initPos;
             tower.SetPositionFromScreen(initPos);
@@ -108,9 +109,9 @@ public class TowerButtonUI : MonoBehaviourSubUI, IDragHandler, IBeginDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!isPlaceTower) return;
-        
+        if (StoreManager.isSelecting) return;
         canvasGroup.blocksRaycasts = true;
-        if (StageManager.IsCombatting || !CanSwap)
+        if (StageManager.IsCombatting || !CanSwap || eventData.clickCount > 2)
         {
             transform.position = initPos;
             tower.SetPositionFromScreen(initPos);
