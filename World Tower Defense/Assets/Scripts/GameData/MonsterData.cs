@@ -21,6 +21,7 @@ namespace GameData
             public string info;
             public int SpriteIndex;
             public float Weight;
+            public int Damage;
         }
         
     }

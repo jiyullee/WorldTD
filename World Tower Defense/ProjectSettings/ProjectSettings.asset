@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: 1b2e
   productName: "\uC6D4\uB4DC \uD0C0\uC6CC \uB514\uD39C\uC2A4"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -146,7 +146,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.DefaultCompany.WorldTowerDefense
+    Android: com.1b2e.WorldTowerDefense
     Standalone: com.DefaultCompany.WorldTowerDefense
   buildNumber:
     Standalone: 0

@@ -22,6 +22,7 @@ public class Monster : PollingObject
     private int index = 1;
     private int spriteIndex;
     private int maxIndex;
+    private int damage;
     private string info;
     public bool isBoss;
     private float time;
@@ -67,6 +68,7 @@ public class Monster : PollingObject
     public void SetMonsterData(string monster, float weight)
     {
         int stage = StageManager.Instance.Stage;
+        damage = MonsterData.Instance.GetTableData(stage -1).Damage;
         string info = MonsterData.Instance.GetTableData(stage - 1).info;
         isBoss = info == "Boss";
         time = 0;
@@ -76,7 +78,7 @@ public class Monster : PollingObject
         float Weight = MonsterData.Instance.GetTableData(stage - 1).Weight;
         if (isBoss == false)
         {
-            hp = hp * Mathf.Pow(Weight, (int)(stage / 5));
+            hp = hp * Mathf.Pow(Weight, (int)(stage / 5) + 1);
         }
         armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
         initArmor = armor;
@@ -200,7 +202,6 @@ public class Monster : PollingObject
                 index = 1;
                 PoolingManager.ReturnObject(this);
                 MonsterManager.Instance.RemoveMonster(this);
-                int damage = (isBoss) ? 5 : 1;
                 GameManager.Instance.Damage(damage);
             }
             Look();
