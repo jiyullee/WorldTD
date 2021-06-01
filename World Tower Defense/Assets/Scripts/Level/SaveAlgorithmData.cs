@@ -70,8 +70,8 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
 
     public override void OnCreated()
     {
-        filePath = Path.Combine(saveDirectory, dataName);
         saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
+        filePath = Path.Combine(saveDirectory, dataName);
     }
 
     public override void OnInitiate()
