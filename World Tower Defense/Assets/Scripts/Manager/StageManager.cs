@@ -56,6 +56,11 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void ReadyStage()
     {
+        if (stage >= maxStage && GameManager.Instance.HP > 0)
+        {
+            GameManager.Instance.GameClear();
+            return;
+        }
         StateUI.Instance.SetReadyStageText();
         if(stage <= 2)
             MapUI.Instance.PlayRoadAnim();
@@ -76,11 +81,6 @@ public class StageManager : UnitySingleton<StageManager>
     {
         time = 0;
         MapUI.Instance.StopRoadAnim();
-        if (stage >= maxStage)
-        {
-            StartCoroutine("CheckGameClear");
-            return;
-        }
         SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 7, 0.5f);
         PopUpUI.Instance.PopUp(POPUP_STATE.StageStart, stage);
         StateUI.Instance.SetStageText(stage);
