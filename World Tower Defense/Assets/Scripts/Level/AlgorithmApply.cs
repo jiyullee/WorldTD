@@ -71,7 +71,6 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
             if (i <= j)
                 Swap(stage, i, j);
         }
-        Debug.Log("pivot");
         Swap(stage, pivot, j);
         //j는 피벗이니까 냅둠
         return j;
@@ -128,7 +127,6 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         Compatibility temp = new Compatibility();
         temp.init();
 
-        Debug.Log("mix");
         for (int j = originGenCount + 1; j < compatibility.maxCount; j++)
         {
             for (int i = 1; i < maxStage; i++)
@@ -164,20 +162,16 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     //돌연변이 유전자
     public void Mutent(int count, int stage)
     {
-        Debug.Log($"c : {count} s : {stage} mu");
         if (stage == 0)
             return;
         int monster = UnityEngine.Random.Range(0, monsterSize + 1);
 
         if (!string.IsNullOrEmpty(compatibility.gens[count].arr[stage]))
         {
-            Debug.Log($"gen : {compatibility.gens[count].arr[stage]}");
             int randomStage = UnityEngine.Random.Range(0, compatibility.gens[count].arr[stage].Length);
             char[] tempString = compatibility.gens[count].arr[stage].ToCharArray();
             tempString[randomStage] = monster.ToString()[0];
             compatibility.gens[count].arr[stage] = new string(tempString);
-            Debug.Log($"to : {compatibility.gens[count].arr[stage]}");
-
         }
 
     }
