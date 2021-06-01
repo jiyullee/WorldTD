@@ -11,6 +11,14 @@ using System;
 /// </summary>
 public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
 {
+    public string saveDirectory;
+    public string dataName = "Data.json";
+    public string filePath;
+    /// <summary>
+    /// 세이브 혹은 로드시에 갱신됨.
+    /// </summary>
+    public bool isEndCollection = false;
+
     /// <summary>
     /// 유전자를 Json으로 저장
     /// 이때 각각의 객체를 비교해주기 위해 현재시간을 string값으로 저장함
@@ -19,15 +27,13 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
     [ContextMenu("Save Data")]
     public void SaveData()
     {
-        string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
         Compatibility compatibility = NewLevelManager.Instance.Compatibility;
         compatibility.Count++;
+        if (compatibility.Count == compatibility.maxCount)
+            isEndCollection = true;
         if (!Directory.Exists(saveDirectory))
             Directory.CreateDirectory(saveDirectory);
-
         string jsonData = JsonUtility.ToJson(compatibility);
-        string filePath = Path.Combine(saveDirectory, "Data.json");
-
         File.WriteAllText(filePath, jsonData);
     }
 
@@ -38,8 +44,6 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
     [ContextMenu("Load Data")]
     public Compatibility GetData()
     {
-        string saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
-        string filePath = Path.Combine(saveDirectory, "Data.json");
         Compatibility compatibility = null;
         //아래 fileInfo가 안드에서 되는지 확인해야함
         if (new FileInfo(filePath).Exists)
@@ -50,8 +54,8 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
             if (compatibility.Count == compatibility.maxCount)
             {
                 AlgorithmApply.Instance.ApplyGen();
+                isEndCollection = true;
                 compatibility.Count = 0;
-                compatibility.isfirst = false;
             }
             compatibility = AlgorithmApply.Instance.Compatibility;
         }
@@ -66,7 +70,8 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
 
     public override void OnCreated()
     {
-        //numberOfClusters = 군집수
+        filePath = Path.Combine(saveDirectory, dataName);
+        saveDirectory = Path.Combine(Application.persistentDataPath, "DataSet");
     }
 
     public override void OnInitiate()
