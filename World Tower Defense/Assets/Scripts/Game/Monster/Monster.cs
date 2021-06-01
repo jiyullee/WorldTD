@@ -16,14 +16,14 @@ public class Monster : PollingObject
     private float initMoveSpeed;
     protected Color color;
     protected Color hitColor;
-    private float hp;
+    public float hp;
     private float armor;
     private float initArmor;
     private int index = 1;
     private int spriteIndex;
     private int maxIndex;
     private string info;
-    public bool isBoss { get; private set; }
+    public bool isBoss;
     private float time;
     private float targetDistance;
     [SerializeField] private float correctionSpeed = 1f;

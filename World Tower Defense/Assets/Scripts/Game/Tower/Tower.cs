@@ -168,7 +168,7 @@ public class Tower : PollingObject
 
     public float GetCurrentSpeed()
     {
-        return speed * (1 + increaseSpeed);
+        return speed * (1 - increaseSpeed);
     }
 
     public float GetCurrentRange()
