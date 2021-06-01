@@ -12,10 +12,13 @@ public class StateUI : MonoBehaviourSubUI
     private Text text_speed;
     
     private bool IsFast;
+    private int speed;
+    private int maxSpeed = 3;
     public override void Init()
     {
         Instance = this;
         IsFast = false;
+        speed = 1;
         AddButtonEvent("OptionBtn", () =>
         {
             SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 10);
@@ -52,17 +55,8 @@ public class StateUI : MonoBehaviourSubUI
     }
     private void ChangeSpeed()
     {
-        if (!IsFast)
-        {
-            TimeManager.Instance.ChangeSpeed(2);
-            text_speed.text = "x2";
-            IsFast = true;
-        }
-        else
-        {
-            TimeManager.Instance.ChangeSpeed(1);
-            text_speed.text = "x1";
-            IsFast = false;
-        }
+        speed = speed + 1 > maxSpeed ? 1 : speed + 1;
+        TimeManager.Instance.ChangeSpeed(speed);
+        text_speed.text = $"x{speed}";
     }
 }
