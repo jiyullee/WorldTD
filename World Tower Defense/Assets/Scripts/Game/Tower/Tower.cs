@@ -232,7 +232,7 @@ public class Tower : PollingObject
     {
         while (true)
         {
-            if (target == null)
+            if (target == null || !StageManager.IsCombatting)
             {
                 ChangeState(TOWER_STATE.SearchTarget);
                 StartCoroutine(SearchTarget());
