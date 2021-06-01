@@ -126,8 +126,11 @@ public class MonsterManager : UnitySingleton<MonsterManager>
         {
             yield return new WaitForEndOfFrame();
         }
-        NewLevelManager.Instance.Clear(time, stage);
-        StageManager.Instance.Reward();
+        if (GameManager.Instance.HP > 0)
+        {
+            NewLevelManager.Instance.Clear(time, stage);
+            StageManager.Instance.Reward();
+        }
     }
 
 
