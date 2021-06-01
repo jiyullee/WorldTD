@@ -9,7 +9,7 @@ public class MonsterManager : UnitySingleton<MonsterManager>
     #region Fields
 
     //군집체당 소환되는 시간
-    private float spawnTime = 1.25f;
+    private float spawnTime = 5f;
     public float SpawnTime { get => spawnTime; }
     private float spawnCycle;
     public Sprite[] monsterImage;
