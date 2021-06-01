@@ -16,14 +16,14 @@ public class Monster : PollingObject
     private float initMoveSpeed;
     protected Color color;
     protected Color hitColor;
-    private float hp;
+    public float hp;
     private float armor;
     private float initArmor;
     private int index = 1;
     private int spriteIndex;
     private int maxIndex;
     private string info;
-    public bool isBoss { get; private set; }
+    public bool isBoss;
     private float time;
     private float targetDistance;
     [SerializeField] private float correctionSpeed = 1f;
@@ -77,12 +77,15 @@ public class Monster : PollingObject
     /// </summary>
     public void SetMonsterData(string monster, float weight)
     {
-        isBoss = (StageManager.Instance.Stage % 5 == 0);
+        int stage = StageManager.Instance.Stage;
+        string info = MonsterData.Instance.GetTableData(stage - 1).info;
+        isBoss = info == "Boss";
         int monsterKey = Convert.ToInt32(monster);
         hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
+        float Weight = MonsterData.Instance.GetTableData(stage - 1).Weight;
         if (isBoss == false)
         {
-            hp = hp * Mathf.Pow(weight, (int)(StageManager.Instance.Stage / 5));
+            hp = hp * Mathf.Pow(Weight, (int)(stage / 5));
         }
         armor = MonsterAssocationData.Instance.GetTableData(monsterKey).Armor;
         initArmor = armor;

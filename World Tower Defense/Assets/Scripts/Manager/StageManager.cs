@@ -32,7 +32,7 @@ public class StageManager : UnitySingleton<StageManager>
 
     public override void OnInitiate()
     {
-        stage = 1;
+        stage = 0;
         maxWaitingTime = stageWaitingTime;
     }
 
@@ -57,7 +57,8 @@ public class StageManager : UnitySingleton<StageManager>
     public void ReadyStage()
     {
         StateUI.Instance.SetReadyStageText();
-        MapUI.Instance.PlayRoadAnim();
+        if(stage <= 2)
+            MapUI.Instance.PlayRoadAnim();
         StoreManager.Instance.RefreshStore(false);
         TimeManager.Instance.ProgressTime(stageWaitingTime, maxWaitingTime, () =>
         {
@@ -74,7 +75,8 @@ public class StageManager : UnitySingleton<StageManager>
     public void StartStage()
     {
         time = 0;
-        MapUI.Instance.StopRoadAnim();
+        if(stage <= 2)
+            MapUI.Instance.StopRoadAnim();
         if (stage > maxStage)
         {
             StartCoroutine("CheckGameClear");
@@ -92,8 +94,8 @@ public class StageManager : UnitySingleton<StageManager>
     /// </summary>
     public void NextStage()
     {
-        StartStage();
         stage++;
+        StartStage();
     }
 
     /// <summary>

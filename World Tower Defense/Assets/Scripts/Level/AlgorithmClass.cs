@@ -22,9 +22,9 @@ public class Compatibility
         gens = new stringArray[maxCount];
         for (int i = 0; i < maxCount; i++)
         {
-            clearTimeRate[i] = new floatArray(maxStage);
-            clearTimes[i] = new floatArray(maxStage);
-            gens[i] = new stringArray(maxStage);
+            clearTimeRate[i] = new floatArray(maxStage + 1);
+            clearTimes[i] = new floatArray(maxStage + 1);
+            gens[i] = new stringArray(maxStage + 1);
         }
         clearStages = new int[maxCount];
     }

@@ -20,6 +20,7 @@ namespace GameData
             public int Amount;
             public string info;
             public int SpriteIndex;
+            public float Weight;
         }
         
     }
