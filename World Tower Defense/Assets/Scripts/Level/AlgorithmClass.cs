@@ -15,9 +15,6 @@ public class Compatibility
     public int Count = 0;
     public int maxCount = 5;
     public int maxStage = 30;
-    //첫번째인지 판별하는 플래그
-    public bool isfirst = true;
-
     public void init()
     {
         clearTimeRate = new floatArray[maxCount];
@@ -30,7 +27,6 @@ public class Compatibility
             gens[i] = new stringArray(maxStage);
         }
         clearStages = new int[maxCount];
-        isfirst = true;
     }
 
 }

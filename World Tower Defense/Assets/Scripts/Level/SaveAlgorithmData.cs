@@ -54,7 +54,6 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
             if (compatibility.Count == compatibility.maxCount)
             {
                 AlgorithmApply.Instance.ApplyGen();
-                isEndCollection = true;
                 compatibility.Count = 0;
             }
             compatibility = AlgorithmApply.Instance.Compatibility;
@@ -63,7 +62,6 @@ public class SaveAlgorithmData : UnitySingleton<SaveAlgorithmData>
         {
             compatibility = new Compatibility();
             compatibility.init();
-            compatibility.isfirst = true;
         }
         return compatibility;
     }

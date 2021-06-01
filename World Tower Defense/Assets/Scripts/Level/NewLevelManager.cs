@@ -35,8 +35,11 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
         //초기 생성 단계
         else if (string.IsNullOrEmpty(compatibility.gens[compatibility.Count].arr[stage]))
         {
-            Debug.Log("없어");
-            compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 1] + random.ToString();
+            if (stage % 5 == 0)
+                compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 2] + random.ToString();
+            else
+                compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 1] + random.ToString();
+
         }
         //섞은 이후 는 그냥 넘김
         return compatibility.gens[compatibility.Count].arr[stage];
@@ -50,7 +53,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     public void Clear(float time, int stage)
     {
         compatibility.clearTimes[compatibility.Count].arr[stage] = time;
-        compatibility.clearTimeRate[compatibility.Count].arr[stage] = clearTimeRate(stage);
+        compatibility.clearTimeRate[compatibility.Count].arr[stage] = ClearTimeRate(stage);
         compatibility.clearStages[compatibility.Count] = StageManager.Instance.Stage;
     }
 
@@ -59,7 +62,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
     /// </summary>
     // 계산식은 |입력된 시간비율 - 계산시간비율|
     // 계산 시간은 현재 클리어 시간/최장 클리어 시간 이된다.
-    public float clearTimeRate(int stage)
+    public float ClearTimeRate(int stage)
     {
         // 데이터 파싱을 통해 예상클리어 타임 얻어오기.
         float maxClearTime;
@@ -72,10 +75,10 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
             maxClearTime = MonsterManager.Instance.SpawnTime * (stage) + 30;
 
         if (stage == 1 && compatibility.gens[compatibility.Count].arr[stage].Substring(0, 1) == "2")
-            maxClearTime = MonsterManager.Instance.SpawnTime + 15;
+            maxClearTime = MonsterManager.Instance.SpawnTime + 8;
 
-        float fitness = Mathf.Abs(AlogrithmData.Instance.GetTableData(stage).fitnessClearTimeRate - compatibility.clearTimes[compatibility.Count].arr[stage] / maxClearTime);
-        fitness = (float)System.Math.Round(fitness, 4);
+        float clearTimeRate = (compatibility.clearTimes[compatibility.Count].arr[stage] / maxClearTime);
+        float fitness = Mathf.Abs(AlogrithmData.Instance.GetTableData(stage).fitnessClearTimeRate - clearTimeRate);
         return fitness;
     }
 

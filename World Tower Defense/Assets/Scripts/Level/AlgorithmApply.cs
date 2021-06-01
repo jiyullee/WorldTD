@@ -13,9 +13,8 @@ using GameData;
 public class AlgorithmApply : UnitySingleton<AlgorithmApply>
 {
     //유전자에 포함비율
-    //위는 적합유전자 비율, 아래는 돌연변이 비율, 돌연변이는 각 mutationGenRate * 10 비율로 일어남
     private float fitnessGenRate = 0.4f;
-    private float mutationGenRate = 0.3f;
+    private float mutationGenPercentage = 0.3f;
     //몬스터 군집체 수
     private int monsterSize = 4;
     private int maxStage = 30;
@@ -107,10 +106,10 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         MixGen();
     }
 
-    [ContextMenu("MixGen")]
     /// <summary>
     /// 유전자 정렬
     /// </summary>
+    [ContextMenu("Sort")]
     public void SetGen()
     {
         for (int i = 1; i < maxStage; i++)
@@ -123,8 +122,12 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     /// 유전자 섞는 알고리즘
     /// 돌연변이, 적합유전자 까지 다 한다.
     /// </summary>
+    [ContextMenu("MixGen")]
     public void MixGen()
     {
+        Compatibility temp = new Compatibility();
+        temp.init();
+
         Debug.Log("mix");
         for (int j = originGenCount + 1; j < compatibility.maxCount; j++)
         {
@@ -132,34 +135,51 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
             {
                 int randomIndex = UnityEngine.Random.Range(0, originGenCount + 1);
                 int count = 0;
+
                 while (true)
                 {
                     randomIndex = UnityEngine.Random.Range(0, originGenCount + 1);
                     count++;
-
                     if (!string.IsNullOrEmpty(compatibility.gens[randomIndex].arr[i]) || count == originGenCount + 1)
                         break;
                 }
                 compatibility.gens[j].arr[i] = compatibility.gens[randomIndex].arr[i];
-                // if (UnityEngine.Random.Range(0, mutantionGen) == 0)
-                //     Mutent(j, i);
             }
         }
+        for (int i = 1; i < maxStage; i++)
+        {
+            if (UnityEngine.Random.Range(0, (int)(mutationGenPercentage * 10)) == 0)
+            {
+                Mutent(compatibility.maxCount - 1, i);
+            }
+        }
+
+        for (int j = 0; j < compatibility.maxCount; j++)
+        {
+            temp.gens[j] = compatibility.gens[j];
+        }
+        compatibility = temp;
     }
 
     //돌연변이 유전자
-    public void Mutent(int genIndex, int stage)
+    public void Mutent(int count, int stage)
     {
+        Debug.Log($"c : {count} s : {stage} mu");
         if (stage == 0)
             return;
         int monster = UnityEngine.Random.Range(0, monsterSize + 1);
-        int randomStage = UnityEngine.Random.Range(0, stage);
-        char[] tempString = new char[stage];
-        if (compatibility.gens[genIndex].arr[stage] == "")
-            return;
-        tempString = compatibility.gens[genIndex].arr[stage].ToCharArray();
-        tempString[randomStage] = monster.ToString()[0];
-        compatibility.gens[genIndex].arr[stage] = tempString.ToString();
+
+        if (!string.IsNullOrEmpty(compatibility.gens[count].arr[stage]))
+        {
+            Debug.Log($"gen : {compatibility.gens[count].arr[stage]}");
+            int randomStage = UnityEngine.Random.Range(0, compatibility.gens[count].arr[stage].Length);
+            char[] tempString = compatibility.gens[count].arr[stage].ToCharArray();
+            tempString[randomStage] = monster.ToString()[0];
+            compatibility.gens[count].arr[stage] = new string(tempString);
+            Debug.Log($"to : {compatibility.gens[count].arr[stage]}");
+
+        }
+
     }
 
 
