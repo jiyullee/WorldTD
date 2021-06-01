@@ -7,6 +7,7 @@ public class GameManager : UnitySingleton<GameManager>
     [SerializeField]
     private const int maxHp = 30;
     private int hp;
+    public int HP { get => hp; }
 
     public override void OnCreated()
     {

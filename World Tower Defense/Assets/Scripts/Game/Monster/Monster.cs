@@ -49,7 +49,6 @@ public class Monster : PollingObject
 
     public override void OnInitiate()
     {
-
     }
     private void FixedUpdate()
     {
@@ -57,13 +56,6 @@ public class Monster : PollingObject
         if (IsTarget)
             Move();
     }
-    private void Start()
-    {
-        CalculationRequiredTime();
-        Look();
-        ResetColor();
-    }
-
     #endregion
 
     #region Functions
@@ -91,7 +83,9 @@ public class Monster : PollingObject
         initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
         spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterAssocationData.Instance.GetTableData(monsterKey).spriteIndex];
         moveSpeed = initMoveSpeed;
+        CalculationRequiredTime();
         Look();
+        ResetColor();
     }
 
     /// <summary>
@@ -121,7 +115,7 @@ public class Monster : PollingObject
                 SoundManager.Instance.PlaySound(SOUNDTYPE.EFFECT, 4, 0.5f);
             ParticleSystem particle = EffectManager.GetDestroyParticle(gameObject);
             EffectManager.ReturnDestroyParticle(particle);
-            index = 0;
+            index = 1;
             PoolingManager.ReturnObject(this);
             MonsterManager.Instance.RemoveMonster(this);
         }
