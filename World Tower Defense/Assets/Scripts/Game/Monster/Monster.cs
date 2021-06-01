@@ -77,6 +77,8 @@ public class Monster : PollingObject
     /// </summary>
     public void SetMonsterData(string monster, float weight)
     {
+        time = 0;
+        index = 1;
         isBoss = (StageManager.Instance.Stage % 5 == 0);
         int monsterKey = Convert.ToInt32(monster);
         hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
@@ -89,6 +91,7 @@ public class Monster : PollingObject
         initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
         spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterAssocationData.Instance.GetTableData(monsterKey).spriteIndex];
         moveSpeed = initMoveSpeed;
+        Look();
     }
 
     /// <summary>
