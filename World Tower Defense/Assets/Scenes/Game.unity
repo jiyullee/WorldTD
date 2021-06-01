@@ -3803,7 +3803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1381255d6b0187947a72d2be455c1ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageWaitingTime: 10
+  stageWaitingTime: 20
   maxStage: 30
 --- !u!1 &610487479
 GameObject:
@@ -6392,10 +6392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8e9cd354a9ba94a84a9fa751044b79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveDirectory: 
-  dataName: Data.json
-  filePath: 
-  isEndCollection: 0
 --- !u!1 &967422139
 GameObject:
   m_ObjectHideFlags: 0
@@ -6996,14 +6992,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0d47b7e631c5548a2cca3bec02a08e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  compatibility:
-    clearTimeRate: []
-    clearTimes: []
-    clearStages: 
-    gens: []
-    Count: 0
-    maxCount: 5
-    maxStage: 30
 --- !u!1 &1073893339
 GameObject:
   m_ObjectHideFlags: 0

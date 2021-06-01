@@ -57,9 +57,6 @@ public class Monster : PollingObject
         if (IsTarget)
             Move();
     }
-    private void OnEnable()
-    {
-    }
     private void Start()
     {
         CalculationRequiredTime();
@@ -80,6 +77,8 @@ public class Monster : PollingObject
         int stage = StageManager.Instance.Stage;
         string info = MonsterData.Instance.GetTableData(stage - 1).info;
         isBoss = info == "Boss";
+        time = 0;
+        index = 1;
         int monsterKey = Convert.ToInt32(monster);
         hp = MonsterAssocationData.Instance.GetTableData(monsterKey).HP;
         float Weight = MonsterData.Instance.GetTableData(stage - 1).Weight;
@@ -92,6 +91,7 @@ public class Monster : PollingObject
         initMoveSpeed = MonsterAssocationData.Instance.GetTableData(monsterKey).Speed;
         spriteRenderer.sprite = MonsterManager.Instance.monsterImage[MonsterAssocationData.Instance.GetTableData(monsterKey).spriteIndex];
         moveSpeed = initMoveSpeed;
+        Look();
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ public class Monster : PollingObject
         {
             ParticleSystem particle = EffectManager.GetDestroyParticle(gameObject);
             EffectManager.ReturnDestroyParticle(particle);
-            index = 0;
+            index = 1;
             PoolingManager.ReturnObject(this);
         }
 
@@ -187,7 +187,7 @@ public class Monster : PollingObject
         time = 0;
         index = Mathf.Clamp(index, 1, maxIndex);
         targetDistance = Vector3.Magnitude(map[index - 1].position - map[index].position);
-        requiredTime = targetDistance / moveSpeed;
+        requiredTime = targetDistance / initMoveSpeed;
     }
 
     /// <summary>
@@ -195,6 +195,7 @@ public class Monster : PollingObject
     /// </summary>
     private void Move()
     {
+        index = index < 1 ? 1 : index;
         time += Time.deltaTime * moveSpeed;
         time = Mathf.Clamp(time, 0f, requiredTime);
         if (time >= requiredTime)
@@ -212,7 +213,7 @@ public class Monster : PollingObject
             CalculationRequiredTime();
         }
         index = index >= map.Length ? 1 : index;
-        index = index < 1 ? 1 : index;
+
         thisTransform.position = Vector3.Lerp(map[index - 1].position, map[index].position, _wayPointCurve.Evaluate(time / requiredTime));
     }
 
