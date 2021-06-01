@@ -35,7 +35,7 @@ public class NewLevelManager : UnitySingleton<NewLevelManager>
         //초기 생성 단계
         else if (string.IsNullOrEmpty(compatibility.gens[compatibility.Count].arr[stage]))
         {
-            if (stage % 5 == 0)
+            if ((stage - 1) % 5 == 0)
                 compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 2] + random.ToString();
             else
                 compatibility.gens[compatibility.Count].arr[stage] = (stage == 1) ? random.ToString() : compatibility.gens[compatibility.Count].arr[stage - 1] + random.ToString();
