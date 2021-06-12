@@ -31,10 +31,6 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
     //입력해줘야함. 입력 받는 클리어 비율
     private float[] inputClearRate;
 
-    private void Start()
-    {
-
-    }
 
     #region QuickSort
     /// <summary>
@@ -127,7 +123,7 @@ public class AlgorithmApply : UnitySingleton<AlgorithmApply>
         Compatibility temp = new Compatibility();
         temp.init();
 
-        for (int j = originGenCount + 1; j < compatibility.maxCount; j++)
+        for (int j = originGenCount; j < compatibility.maxCount; j++)
         {
             for (int i = 1; i < maxStage; i++)
             {
