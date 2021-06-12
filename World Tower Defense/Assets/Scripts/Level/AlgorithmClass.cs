@@ -40,7 +40,7 @@ public class floatArray
         arr = new float[stage];
         for (int j = 0; j < stage; j++)
         {
-            arr[j] = 1.0f;
+            arr[j] = 99.0f;
         }
     }
 }
